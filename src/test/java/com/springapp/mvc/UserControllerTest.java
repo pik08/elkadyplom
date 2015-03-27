@@ -16,9 +16,7 @@ public class UserControllerTest {
     when(modelMap.addAttribute(any(String.class), any(User.class))).thenReturn(mock(ModelMap.class));
     try {
       userController.listUsers(modelMap);
-    } catch (NullPointerException e) {
-      //skip
-    }
+    } catch (NullPointerException ignored) {}
     verify(modelMap.addAttribute(eq("user"), any(User.class)));
   }
 }
