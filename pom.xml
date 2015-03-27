@@ -103,14 +103,17 @@
                     <source>1.6</source>
                     <target>1.6</target>
                 </configuration>
+                <version>2.3.2</version>
             </plugin>
             <plugin>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>
                     <includes>
                         <include>**/*Tests.java</include>
+                        <include>**/*Test.java</include>
                     </includes>
                 </configuration>
+                <version>2.10</version>
             </plugin>
         </plugins>
     </build>
