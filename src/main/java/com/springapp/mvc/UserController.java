@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
     @Autowired
     private UserRepository userRepository;
-    private int test;
+
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String listUsers(ModelMap model) {
