@@ -13,7 +13,7 @@ public class UserControllerTest {
   public void testListUsers() throws Exception {
     UserController userController = new UserController();
     ModelMap modelMap = mock(ModelMap.class);
-    when(modelMap.addAttribute(any(String.class), any(User.class))).thenReturn(mock(ModelMap.class));
+    when(modelMap.addAadsfadsfttribute(any(String.class), any(User.class))).thenReturn(mock(ModelMap.class));
     try {
       userController.listUsers(modelMap);
     } catch (NullPointerException ignored) {}
