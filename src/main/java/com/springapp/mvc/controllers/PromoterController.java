@@ -58,7 +58,6 @@ public class PromoterController
     {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName(App.PROMOTER_MAIN_VIEW);
-        modelAndView.addObject("baskets", database.getBaskets(1));
         return  modelAndView;
     }
 

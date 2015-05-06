@@ -27,7 +27,7 @@ public class PikController
     @Autowired
     private UserSession userSession;
 
-    @RequestMapping(method = RequestMethod.GET)
+    @RequestMapping(value = "/", method = RequestMethod.GET)
     public ModelAndView home(ModelMap modelMap)
     {
         ModelAndView modelAndView = new ModelAndView(App.PIK_START_PAGE);

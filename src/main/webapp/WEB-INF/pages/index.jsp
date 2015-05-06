@@ -24,7 +24,6 @@
                 <td><label>Please select who you are: </label></td>
                 <td>
                     <form:select path="Who">
-                        <form:option value="" label="..." />
                         <form:options items="${who}" />
                     </form:select>
                 </td>
