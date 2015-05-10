@@ -6,7 +6,7 @@
     <title>Login required</title>
   </head>
   <body>
-    <%@ include file="tags/subhead.jspf" %>
+    <%@ include file="../../../WEB-INF/pages/tags/subhead.jspf" %>
     <h1>Login required</h1>
     <p>Please log in to access the requested page.</p>
   </body>

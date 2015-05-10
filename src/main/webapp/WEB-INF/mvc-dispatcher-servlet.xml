@@ -12,6 +12,7 @@
     <context:component-scan base-package="com.springapp.mvc"/>
     <mvc:annotation-driven/>
     <mvc:resources mapping="/resources/**" location="/resources/"/>
+    <mvc:resources mapping="/app/**" location="/app/build/"/>
 
     <mvc:default-servlet-handler />
     <mvc:view-controller path="/" view-name="redirect:/pik" />
