@@ -7,10 +7,16 @@ import com.springapp.mvc.model.Model;
 import com.springapp.mvc.database.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.net.Authenticator;
 
 /**
  * Created by PK on 4/3/2015.
@@ -27,18 +33,26 @@ public class PikController
     @Autowired
     private UserSession userSession;
 
-    @RequestMapping(value = "/", method = RequestMethod.GET)
-    public ModelAndView home(ModelMap modelMap)
+    @RequestMapping(method = RequestMethod.GET)
+    public String homePost()
     {
-        ModelAndView modelAndView = new ModelAndView(App.PIK_START_PAGE);
-        modelAndView.addObject("singInForm", new SingInForm());
-        return modelAndView;
-    }
-
-    @RequestMapping(method = RequestMethod.POST)
-    public String homePost(@ModelAttribute("SpringWeb") SingInForm singInForm)
-    {
+        SingInForm singInForm = new SingInForm();
         String url = "redirect:";
+        ModelAndView modelAndView = new ModelAndView(App.PIK_START_PAGE);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserDetails userDetails;
+        if((authentication instanceof AnonymousAuthenticationToken)) {
+            return url += "" + App.PIK_CONTROLLER_URL;
+        }
+        userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        //TODO
+        if(userDetails.getUsername().equals("admin"))
+            singInForm.setWho(SingInForm.Who.Admin);
+        else if(userDetails.getUsername().equals("promoter"))
+            singInForm.setWho(SingInForm.Who.Promoter);
+        else if (userDetails.getUsername().equals("student"))
+            singInForm.setWho(SingInForm.Who.Student);
+        //END TODO
         switch (singInForm.getWho())
         {
             case Promoter:
@@ -55,7 +69,7 @@ public class PikController
                 break;
             default:
                 userSession.setRoleTmp("Anonymous");
-                url += "" + App.PIK_CONTROLLER_URL;
+                url = "" + App.LOGIN_URL;
         }
         return url;
     }

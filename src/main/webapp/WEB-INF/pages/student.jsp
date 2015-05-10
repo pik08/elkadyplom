@@ -11,6 +11,7 @@
     <title>Status printing</title>
 </head>
 <body>
+    <%@ include file="tags/subhead.jspf" %>
     <h2>
         Status of printing your document
     </h2>

@@ -9,6 +9,7 @@ public class App
     public static final String BASKETS = "baskets";
     public static final String ADMIN = "admin";
 
+    public static final String LOGIN_URL = "login";
     public static final String PIK_CONTROLLER_URL = "/pik";
     public static final String STUDENT_CONTROLLER_URL = "/student";
     public static final String PROMOTER_CONTROLLER_URL = "/promoter";

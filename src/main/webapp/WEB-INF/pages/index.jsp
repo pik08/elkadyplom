@@ -1,12 +1,17 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
+<c:url var="postLoginUrl" value="/j_spring_security_check" />
+
 <html>
 <body>
+    <%@ include file="tags/subhead.jspf" %>
     <h2>
         Prosze sie zalogowac
     </h2>
-    <form:form method="post" action="" modelAttribute="singInForm" commandName="singInForm" enctype="multipart/form-data">
+    <h3>Details: ${details}</h3>
+    <form:form method="post" action="${postLoginUrl}" modelAttribute="singInForm" commandName="singInForm" enctype="multipart/form-data">
         <table>
             <tr>
                 <td><label><form:label path="username">Username</form:label><label></td>

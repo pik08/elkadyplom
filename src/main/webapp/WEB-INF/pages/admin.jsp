@@ -11,6 +11,7 @@
     <title>Admin</title>
 </head>
 <body>
+    <%@ include file="tags/subhead.jspf" %>
     <h1>Test ADMIN</h1>
 </body>
 </html>
