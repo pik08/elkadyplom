@@ -12,21 +12,12 @@
 </head>
     <body>
         <%@ include file="tags/subhead.jspf" %>
-
-        <h2>Submitted Student Information</h2>
-        <table>
-            <tr>
-                <td>Name</td>
-                <td>${name}</td>
-            </tr>
-            <tr>
-                <td>Age</td>
-                <td>${age}</td>
-            </tr>
-            <tr>
-                <td>ID</td>
-                <td>${id}</td>
-            </tr>
-        </table>
+        <h1>Home page</h1>
+        <p>
+            Welcome to "Shop application".<br/>
+            <i>${message}</i><br/>
+            <a href="${pageContext.request.contextPath}/shop/create.html">Create a new shop</a><br/>
+            <a href="${pageContext.request.contextPath}/shop/list.html">View all shops</a><br/>
+        </p>
     </body>
 </html>
