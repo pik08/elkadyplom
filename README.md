@@ -1,16 +1,14 @@
-spring-mvc-angularjs
+Elka Dyplom
 ====================
 
-A simple application to demonstrate how to configure angularjs with Spring MVC
+Prosta aplikacja z Angularem, jakby co na razie jest tak testowo, ale poprzerabialam linkowanie by bylo w miare ok
+ogolnie jesli chodzi o klasy to:
+Car -> Student
+Railway -> Promotor
+Train -> Admin
 
-The application demonstrates how to configure Spring MVC with AngularJS and Velocity.
-
-It uses the AngularJS-Seed with some modifications to allow Spring MVC load the HTML. Also integrated Velocity in case it is needed to pass some values from the spring mvc controller into the partials or index.html file.
-
-I also included the bootstrap library for a better UI.
-
-RUN: 
-
+Żeby uruchomić ofc mvn clean install
+a potem
 mvn tomcat:run
 
-Then open the URL: http://localhost:8080/AngularSpringApp
+wszystko co jest potrzebne do robienia stron jest w resource
