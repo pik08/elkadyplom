@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="uaiContacts:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <root id="archive" name="uaiContacts.war">
+      <element id="artifact" artifact-name="uaiContacts:war exploded" />
+    </root>
+  </artifact>
+</component>
