@@ -18,7 +18,7 @@
 		<level value="INFO" />
 	</logger>
 
-	<logger name="uaicontacts.controller">
+	<logger name="elkadyplom.controller">
 		<level value="INFO" />
 	</logger>
 

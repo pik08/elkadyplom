@@ -25,13 +25,13 @@
     <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
         <property name="persistenceProviderClass" value="org.hibernate.ejb.HibernatePersistence"/>
         <property name="dataSource" ref="myContactDataSource"/>
-        <property name="persistenceUnitName" value="uaiContactsPU"/>
+        <property name="persistenceUnitName" value="elkadyplomPU"/>
         <property name="persistenceXmlLocation" value="classpath:META-INF/persistence.xml" />
 
     </bean>
 
     <!-- Spring Data -->
-    <jpa:repositories base-package="uaiContacts.repository"
+    <jpa:repositories base-package="elkadyplom.repository"
                       entity-manager-factory-ref="entityManagerFactory"
                       transaction-manager-ref="transactionManager"/>
 </beans>

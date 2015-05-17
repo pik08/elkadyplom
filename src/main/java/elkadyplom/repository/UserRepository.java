@@ -1,7 +1,7 @@
-package uaiContacts.repository;
+package elkadyplom.repository;
 
 import org.springframework.data.repository.CrudRepository;
-import uaiContacts.model.User;
+import elkadyplom.model.User;
 
 public interface UserRepository extends CrudRepository<User, Integer> {
     User findByEmail(String email);

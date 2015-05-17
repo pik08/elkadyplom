@@ -21,6 +21,6 @@
             numTestsPerEvictionRun="5"
             timeBetweenEvictionRunsMillis="30000"
             minEvictableIdleTimeMillis="60000"
-            url="jdbc:postgresql://localhost:5432/uaiContacts" />
+            url="jdbc:postgresql://localhost:5432/elkadyplom" />
 
 </Context>

@@ -1,4 +1,4 @@
-package uaiContacts.controller;
+package elkadyplom.controller;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,9 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
-import uaiContacts.model.Contact;
-import uaiContacts.service.ContactService;
-import uaiContacts.vo.ContactListVO;
+import elkadyplom.model.Contact;
+import elkadyplom.service.ContactService;
+import elkadyplom.vo.ContactListVO;
 
 import java.util.Locale;
 

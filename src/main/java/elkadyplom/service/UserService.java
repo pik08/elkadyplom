@@ -1,9 +1,9 @@
-package uaiContacts.service;
+package elkadyplom.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import uaiContacts.model.User;
-import uaiContacts.repository.UserRepository;
+import elkadyplom.model.User;
+import elkadyplom.repository.UserRepository;
 
 @Service
 public class UserService {

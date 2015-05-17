@@ -5,7 +5,7 @@ function contactsController($scope, $http) {
 
     $scope.lastAction = '';
 
-    $scope.url = "/uaiContacts/protected/contacts/";
+    $scope.url = "/elkadyplom/protected/contacts/";
 
     $scope.errorOnSubmit = false;
     $scope.errorIllegalAccess = false;
@@ -15,9 +15,9 @@ function contactsController($scope, $http) {
     $scope.displaySearchButton = false;
     $scope.displayCreateContactButton = false;
 
-    $scope.contact = {}
+    $scope.contact = {};
 
-    $scope.searchFor = ""
+    $scope.searchFor = "";
 
     $scope.getContactList = function () {
         var url = $scope.url;
@@ -35,7 +35,7 @@ function contactsController($scope, $http) {
                 $scope.state = 'error';
                 $scope.displayCreateContactButton = false;
             });
-    }
+    };
 
     $scope.populateTable = function (data) {
         if (data.pagesCount > 0) {
@@ -67,7 +67,7 @@ function contactsController($scope, $http) {
         } else {
             $scope.displayMessageToUser = false;
         }
-    }
+    };
 
     $scope.changePage = function (page) {
         $scope.pageToGet = page;
@@ -86,7 +86,7 @@ function contactsController($scope, $http) {
         $scope.errorOnSubmit = false;
         $scope.errorIllegalAccess = false;
         $scope.displayValidationError = false;
-    }
+    };
 
     $scope.finishAjaxCallOnSuccess = function (data, modalId, isPagination) {
         $scope.populateTable(data);
@@ -99,14 +99,14 @@ function contactsController($scope, $http) {
         }
 
         $scope.lastAction = '';
-    }
+    };
 
     $scope.startDialogAjaxRequest = function () {
         $scope.displayValidationError = false;
         $("#loadingModal").modal('show');
         $scope.previousState = $scope.state;
         $scope.state = 'busy';
-    }
+    };
 
     $scope.handleErrorInDialogs = function (status) {
         $("#loadingModal").modal('hide');
@@ -120,7 +120,7 @@ function contactsController($scope, $http) {
 
         $scope.errorOnSubmit = true;
         $scope.lastAction = '';
-    }
+    };
 
     $scope.addSearchParametersIfNeeded = function(config, isPagination) {
         if(!config.params){
@@ -132,7 +132,7 @@ function contactsController($scope, $http) {
         if($scope.searchFor){
             config.params.searchFor = $scope.searchFor;
         }
-    }
+    };
 
     $scope.resetContact = function(){
         $scope.contact = {};
@@ -166,7 +166,7 @@ function contactsController($scope, $http) {
     $scope.selectedContact = function (contact) {
         var selectedContact = angular.copy(contact);
         $scope.contact = selectedContact;
-    }
+    };
 
     $scope.updateContact = function (updateContactForm) {
         if (!updateContactForm.$valid) {
@@ -180,7 +180,7 @@ function contactsController($scope, $http) {
 
         $scope.startDialogAjaxRequest();
 
-        var config = {}
+        var config = {};
 
         $scope.addSearchParametersIfNeeded(config, false);
 
@@ -247,7 +247,7 @@ function contactsController($scope, $http) {
         $scope.pageToGet = 0;
         $scope.getContactList();
         $scope.displaySearchMessage = false;
-    }
+    };
 
     $scope.getContactList();
 }

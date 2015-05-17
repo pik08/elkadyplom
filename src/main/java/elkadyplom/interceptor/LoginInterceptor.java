@@ -1,11 +1,11 @@
-package uaiContacts.interceptor;
+package elkadyplom.interceptor;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
-import uaiContacts.model.User;
-import uaiContacts.service.UserService;
+import elkadyplom.model.User;
+import elkadyplom.service.UserService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

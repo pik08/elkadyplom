@@ -1,4 +1,4 @@
-package uaiContacts.service;
+package elkadyplom.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -7,9 +7,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import uaiContacts.repository.ContactRepository;
-import uaiContacts.model.Contact;
-import uaiContacts.vo.ContactListVO;
+import elkadyplom.repository.ContactRepository;
+import elkadyplom.model.Contact;
+import elkadyplom.vo.ContactListVO;
 
 @Service
 @Transactional

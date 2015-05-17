@@ -1,7 +1,7 @@
-odpalamy przez 
+należy stworzyć bazę elkadyplom, owner postgres z hasłem postgres
 
-regulke maven:
+odpalamy przez regulke maven:
 
 clean install tomcat7:run
  
-i ogladamy http://localhost:8081/uaiContacts/login
+i ogladamy http://localhost:8081/elkadyplom/login

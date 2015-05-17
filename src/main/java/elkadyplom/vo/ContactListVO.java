@@ -1,6 +1,6 @@
-package uaiContacts.vo;
+package elkadyplom.vo;
 
-import uaiContacts.model.Contact;
+import elkadyplom.model.Contact;
 
 import java.util.List;
 
