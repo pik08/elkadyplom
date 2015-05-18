@@ -1,25 +1,25 @@
-package elkadyplom.vo;
+package elkadyplom.dto;
 
-import elkadyplom.model.Contact;
+import elkadyplom.model.Topic;
 
 import java.util.List;
 
-public class ContactListVO {
+public class TopicListDto {
     private int pagesCount;
-    private long totalContacts;
+    private long totalTopics;
 
     private String actionMessage;
     private String searchMessage;
 
-    private List<Contact> contacts;
+    private List<Topic> topics;
 
-    public ContactListVO() {
+    public TopicListDto() {
     }
 
-    public ContactListVO(int pages, long totalContacts, List<Contact> contacts) {
+    public TopicListDto(int pages, long totalTopics, List<Topic> topics) {
         this.pagesCount = pages;
-        this.contacts = contacts;
-        this.totalContacts = totalContacts;
+        this.topics = topics;
+        this.totalTopics = totalTopics;
     }
 
     public int getPagesCount() {
@@ -30,20 +30,20 @@ public class ContactListVO {
         this.pagesCount = pagesCount;
     }
 
-    public List<Contact> getContacts() {
-        return contacts;
+    public List<Topic> getTopics() {
+        return topics;
     }
 
-    public void setContacts(List<Contact> contacts) {
-        this.contacts = contacts;
+    public void setTopics(List<Topic> topics) {
+        this.topics = topics;
     }
 
-    public long getTotalContacts() {
-        return totalContacts;
+    public long getTotalTopics() {
+        return totalTopics;
     }
 
-    public void setTotalContacts(long totalContacts) {
-        this.totalContacts = totalContacts;
+    public void setTotalTopics(long totalTopics) {
+        this.totalTopics = totalTopics;
     }
 
     public String getActionMessage() {

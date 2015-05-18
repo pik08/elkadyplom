@@ -1,11 +1,9 @@
 package elkadyplom.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
+@Table(name = "topics")
 public class Topic {
 
     @Id
@@ -17,7 +15,12 @@ public class Topic {
     @Column(length = 500)
     private String description;
 
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "supervisor_id")
     private User supervisor;
+
+    @ManyToOne(optional = true)
+    @JoinColumn(name = "student_id")
     private User student;
 
     public int getId() {

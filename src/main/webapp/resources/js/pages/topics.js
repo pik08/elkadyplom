@@ -1,11 +1,11 @@
-function contactsController($scope, $http) {
+function topicsController($scope, $http) {
     $scope.pageToGet = 0;
 
     $scope.state = 'busy';
 
     $scope.lastAction = '';
 
-    $scope.url = "/elkadyplom/protected/contacts/";
+    $scope.url = "/elkadyplom/protected/topics/";
 
     $scope.errorOnSubmit = false;
     $scope.errorIllegalAccess = false;
@@ -13,13 +13,13 @@ function contactsController($scope, $http) {
     $scope.displayValidationError = false;
     $scope.displaySearchMessage = false;
     $scope.displaySearchButton = false;
-    $scope.displayCreateContactButton = false;
+    $scope.displayCreateTopicButton = false;
 
-    $scope.contact = {};
+    $scope.topic = {};
 
     $scope.searchFor = "";
 
-    $scope.getContactList = function () {
+    $scope.getTopicList = function () {
         var url = $scope.url;
         $scope.lastAction = 'list';
 
@@ -33,7 +33,7 @@ function contactsController($scope, $http) {
             })
             .error(function () {
                 $scope.state = 'error';
-                $scope.displayCreateContactButton = false;
+                $scope.displayCreateTopicButton = false;
             });
     };
 
@@ -41,18 +41,18 @@ function contactsController($scope, $http) {
         if (data.pagesCount > 0) {
             $scope.state = 'list';
 
-            $scope.page = {source: data.contacts, currentPage: $scope.pageToGet, pagesCount: data.pagesCount, totalContacts : data.totalContacts};
+            $scope.page = {source: data.topics, currentPage: $scope.pageToGet, pagesCount: data.pagesCount, totalTopics : data.totalTopics};
 
             if($scope.page.pagesCount <= $scope.page.currentPage){
                 $scope.pageToGet = $scope.page.pagesCount - 1;
                 $scope.page.currentPage = $scope.page.pagesCount - 1;
             }
 
-            $scope.displayCreateContactButton = true;
+            $scope.displayCreateTopicButton = true;
             $scope.displaySearchButton = true;
         } else {
             $scope.state = 'noresult';
-            $scope.displayCreateContactButton = true;
+            $scope.displayCreateTopicButton = true;
 
             if(!$scope.searchFor){
                 $scope.displaySearchButton = false;
@@ -73,16 +73,16 @@ function contactsController($scope, $http) {
         $scope.pageToGet = page;
 
         if($scope.searchFor){
-            $scope.searchContact($scope.searchFor, true);
+            $scope.searchTopic($scope.searchFor, true);
         } else{
-            $scope.getContactList();
+            $scope.getTopicList();
         }
     };
 
     $scope.exit = function (modalId) {
         $(modalId).modal('hide');
 
-        $scope.contact = {};
+        $scope.topic = {};
         $scope.errorOnSubmit = false;
         $scope.errorIllegalAccess = false;
         $scope.displayValidationError = false;
@@ -134,12 +134,12 @@ function contactsController($scope, $http) {
         }
     };
 
-    $scope.resetContact = function(){
-        $scope.contact = {};
+    $scope.resetTopic = function(){
+        $scope.topic = {};
     };
 
-    $scope.createContact = function (newContactForm) {
-        if (!newContactForm.$valid) {
+    $scope.createTopic = function (newTopicForm) {
+        if (!newTopicForm.$valid) {
             $scope.displayValidationError = true;
             return;
         }
@@ -154,29 +154,29 @@ function contactsController($scope, $http) {
 
         $scope.startDialogAjaxRequest();
 
-        $http.post(url, $.param($scope.contact), config)
+        $http.post(url, $.param($scope.topic), config)
             .success(function (data) {
-                $scope.finishAjaxCallOnSuccess(data, "#addContactsModal", false);
+                $scope.finishAjaxCallOnSuccess(data, "#addTopicsModal", false);
             })
             .error(function(data, status, headers, config) {
                 $scope.handleErrorInDialogs(status);
             });
     };
 
-    $scope.selectedContact = function (contact) {
-        var selectedContact = angular.copy(contact);
-        $scope.contact = selectedContact;
+    $scope.selectedTopic = function (topic) {
+        var selectedTopic = angular.copy(topic);
+        $scope.topic = selectedTopic;
     };
 
-    $scope.updateContact = function (updateContactForm) {
-        if (!updateContactForm.$valid) {
+    $scope.updateTopic = function (updateTopicForm) {
+        if (!updateTopicForm.$valid) {
             $scope.displayValidationError = true;
             return;
         }
 
         $scope.lastAction = 'update';
 
-        var url = $scope.url + $scope.contact.id;
+        var url = $scope.url + $scope.topic.id;
 
         $scope.startDialogAjaxRequest();
 
@@ -184,17 +184,17 @@ function contactsController($scope, $http) {
 
         $scope.addSearchParametersIfNeeded(config, false);
 
-        $http.put(url, $scope.contact, config)
+        $http.put(url, $scope.topic, config)
             .success(function (data) {
-                $scope.finishAjaxCallOnSuccess(data, "#updateContactsModal", false);
+                $scope.finishAjaxCallOnSuccess(data, "#updateTopicsModal", false);
             })
             .error(function(data, status, headers, config) {
                 $scope.handleErrorInDialogs(status);
             });
     };
 
-    $scope.searchContact = function (searchContactForm, isPagination) {
-        if (!($scope.searchFor) && (!searchContactForm.$valid)) {
+    $scope.searchTopic = function (searchTopicForm, isPagination) {
+        if (!($scope.searchFor) && (!searchTopicForm.$valid)) {
             $scope.displayValidationError = true;
             return;
         }
@@ -213,7 +213,7 @@ function contactsController($scope, $http) {
 
         $http.get(url, config)
             .success(function (data) {
-                $scope.finishAjaxCallOnSuccess(data, "#searchContactsModal", isPagination);
+                $scope.finishAjaxCallOnSuccess(data, "#searchTopicsModal", isPagination);
                 $scope.displaySearchMessage = true;
             })
             .error(function(data, status, headers, config) {
@@ -221,10 +221,10 @@ function contactsController($scope, $http) {
             });
     };
 
-    $scope.deleteContact = function () {
+    $scope.deleteTopic = function () {
         $scope.lastAction = 'delete';
 
-        var url = $scope.url + $scope.contact.id;
+        var url = $scope.url + $scope.topic.id;
 
         $scope.startDialogAjaxRequest();
 
@@ -235,8 +235,8 @@ function contactsController($scope, $http) {
             url: url,
             params: params
         }).success(function (data) {
-                $scope.resetContact();
-                $scope.finishAjaxCallOnSuccess(data, "#deleteContactsModal", false);
+                $scope.resetTopic();
+                $scope.finishAjaxCallOnSuccess(data, "#deleteTopicsModal", false);
             }).error(function(data, status, headers, config) {
                 $scope.handleErrorInDialogs(status);
             });
@@ -245,9 +245,9 @@ function contactsController($scope, $http) {
     $scope.resetSearch = function(){
         $scope.searchFor = "";
         $scope.pageToGet = 0;
-        $scope.getContactList();
+        $scope.getTopicList();
         $scope.displaySearchMessage = false;
     };
 
-    $scope.getContactList();
+    $scope.getTopicList();
 }

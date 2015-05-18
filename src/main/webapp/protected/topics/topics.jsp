@@ -2,15 +2,15 @@
          pageEncoding="UTF-8" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<div class="row-fluid" ng-controller="contactsController">
+<div class="row-fluid" ng-controller="topicsController">
     <h2>
         <p class="text-center">
-            <spring:message code='contacts.header'/>
-            <a href="#searchContactsModal"
-               id="contactsHeaderButton"
+            <spring:message code='topics.header'/>
+            <a href="#searchTopicsModal"
+               id="topicsHeaderButton"
                role="button"
                ng-class="{'': displaySearchButton == true, 'none': displaySearchButton == false}"
-               title="<spring:message code="search"/>&nbsp;<spring:message code="contact"/>"
+               title="<spring:message code="search"/>&nbsp;<spring:message code="topic"/>"
                class="btn btn-inverse" data-toggle="modal">
                 <i class="icon-search"></i>
             </a>
@@ -19,7 +19,7 @@
     <h4>
         <div ng-class="{'': state == 'list', 'none': state != 'list'}">
             <p class="text-center">
-                <spring:message code="message.total.records.found"/>:&nbsp;{{page.totalContacts}}
+                <spring:message code="message.total.records.found"/>:&nbsp;{{page.totalTopics}}
             </p>
         </div>
     </h4>
@@ -27,7 +27,7 @@
     <div>
         <div id="loadingModal" class="modal hide fade in centering"
              role="dialog"
-             aria-labelledby="deleteContactsModalLabel" aria-hidden="true">
+             aria-labelledby="deleteTopicsModalLabel" aria-hidden="true">
             <div id="divLoadingIcon" class="text-center">
                 <div class="icon-align-center loading"></div>
             </div>
@@ -60,40 +60,40 @@
         </div>
 
         <div ng-class="{'alert alert-info': state == 'noresult', 'none': state != 'noresult'}">
-            <h4><i class="icon-info-sign"></i> <spring:message code="contacts.emptyData"/></h4><br/>
+            <h4><i class="icon-info-sign"></i> <spring:message code="topics.emptyData"/></h4><br/>
 
-            <p><spring:message code="contacts.emptyData.text"/></p>
+            <p><spring:message code="topics.emptyData.text"/></p>
         </div>
 
         <div id="gridContainer" ng-class="{'': state == 'list', 'none': state != 'list'}">
             <table class="table table-bordered table-striped">
                 <thead>
                 <tr>
-                    <th scope="col"><spring:message code="contacts.name"/></th>
-                    <th scope="col"><spring:message code="contacts.email"/></th>
-                    <th scope="col"><spring:message code="contacts.phone"/></th>
+                    <th scope="col"><spring:message code="topics.title"/></th>
+                    <th scope="col"><spring:message code="topics.supervisor"/></th>
+                    <th scope="col"><spring:message code="topics.description"/></th>
                     <th scope="col"></th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="contact in page.source">
-                    <td class="tdContactsCentered">{{contact.name}}</td>
-                    <td class="tdContactsCentered">{{contact.email}}</td>
-                    <td class="tdContactsCentered">{{contact.phoneNumber}}</td>
+                <tr ng-repeat="topic in page.source">
+                    <td class="tdTopicsCentered">{{topic.title}}</td>
+                    <td class="tdTopicsCentered">{{topic.supervisor.name}}</td>
+                    <td class="tdTopicsCentered">{{topic.description}}</td>
                     <td class="width15">
                         <div class="text-center">
-                            <input type="hidden" value="{{contact.id}}"/>
-                            <a href="#updateContactsModal"
-                               ng-click="selectedContact(contact);"
+                            <input type="hidden" value="{{topic.id}}"/>
+                            <a href="#updateTopicsModal"
+                               ng-click="selectedTopic(topic);"
                                role="button"
-                               title="<spring:message code="update"/>&nbsp;<spring:message code="contact"/>"
+                               title="<spring:message code="update"/>&nbsp;<spring:message code="topic"/>"
                                class="btn btn-inverse" data-toggle="modal">
                                 <i class="icon-pencil"></i>
                             </a>
-                            <a href="#deleteContactsModal"
-                               ng-click="selectedContact(contact);"
+                            <a href="#deleteTopicsModal"
+                               ng-click="selectedTopic(topic);"
                                role="button"
-                               title="<spring:message code="delete"/>&nbsp;<spring:message code="contact"/>"
+                               title="<spring:message code="delete"/>&nbsp;<spring:message code="topic"/>"
                                class="btn btn-inverse" data-toggle="modal">
                                 <i class="icon-minus"></i>
                             </a>
@@ -137,22 +137,22 @@
                 </button>
             </div>
         </div>
-        <div ng-class="{'text-center': displayCreateContactButton == true, 'none': displayCreateContactButton == false}">
+        <div ng-class="{'text-center': displayCreateTopicButton == true, 'none': displayCreateTopicButton == false}">
             <br/>
-            <a href="#addContactsModal"
+            <a href="#addTopicsModal"
                role="button"
-               ng-click="resetContact();"
-               title="<spring:message code='create'/>&nbsp;<spring:message code='contact'/>"
+               ng-click="resetTopic();"
+               title="<spring:message code='create'/>&nbsp;<spring:message code='topic'/>"
                class="btn btn-inverse"
                data-toggle="modal">
                 <i class="icon-plus"></i>
-                &nbsp;&nbsp;<spring:message code="create"/>&nbsp;<spring:message code="contact"/>
+                &nbsp;&nbsp;<spring:message code="create"/>&nbsp;<spring:message code="topic"/>
             </a>
         </div>
 
-        <jsp:include page="dialogs/contactsDialogs.jsp"/>
+        <jsp:include page="dialogs/topicsDialogs.jsp"/>
 
     </div>
 </div>
 
-<script src="<c:url value="/resources/js/pages/contacts.js" />"></script>
+<script src="<c:url value="/resources/js/pages/topics.js" />"></script>

@@ -151,7 +151,7 @@ body {
     height: 19px;
 }
 
-#contactsHeaderButton {
+#topicsHeaderButton {
     margin-left: 7px;
 }
 
@@ -170,7 +170,7 @@ body {
     text-shadow: none;
 }
 
-.tdContactsCentered {
+.tdTopicsCentered {
     vertical-align: middle;
 }
 
@@ -191,13 +191,13 @@ body {
     margin-left: 10px;
 }
 
-#deleteContactsModal {
+#deleteTopicsModal {
     width: 500px;
     height: 220px;
     overflow: hidden;
 }
 
-#searchContactsModal {
+#searchTopicsModal {
     width: 500px;
     height: 180px;
     overflow: hidden;

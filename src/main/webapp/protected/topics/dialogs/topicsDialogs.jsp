@@ -1,34 +1,34 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
-<div id="addContactsModal"
+<div id="addTopicsModal"
      class="modal hide fade in centering insertAndUpdateDialogs"
      role="dialog"
-     aria-labelledby="addContactsModalLabel"
+     aria-labelledby="addTopicsModalLabel"
      aria-hidden="true">
     <div class="modal-header">
-        <h3 id="addContactsModalLabel" class="displayInLine">
-            <spring:message code="create"/>&nbsp;<spring:message code="contact"/>
+        <h3 id="addTopicsModalLabel" class="displayInLine">
+            <spring:message code="create"/>&nbsp;<spring:message code="topic"/>
         </h3>
     </div>
     <div class="modal-body">
-        <form name="newContactForm" novalidate >
+        <form name="newTopicForm" novalidate >
             <div class="pull-left">
                 <div>
                     <div class="input-append">
-                        <label>* <spring:message code="contacts.name"/>:</label>
+                        <label>* <spring:message code="topics.title"/>:</label>
                     </div>
                     <div class="input-append">
                         <input type="text"
                                required
                                autofocus
-                               ng-model="contact.name"
+                               ng-model="topic.title"
                                name="name"
-                               placeholder="<spring:message code='contact'/>&nbsp;<spring:message code='contacts.name'/>"/>
+                               placeholder="<spring:message code='topic'/>&nbsp;<spring:message code='topics.title'/>"/>
                     </div>
                     <div class="input-append">
                         <label>
                                 <span class="alert alert-error"
-                                      ng-show="displayValidationError && newContactForm.name.$error.required">
+                                      ng-show="displayValidationError && newTopicForm.title.$error.required">
                                         <spring:message code="required"/>
                                 </span>
                         </label>
@@ -36,19 +36,19 @@
                 </div>
                 <div>
                     <div class="input-append">
-                        <label>* <spring:message code="contacts.email"/>:</label>
+                        <label>* <spring:message code="topics.description"/>:</label>
                     </div>
                     <div class="input-append">
                         <input type="text"
                                required
-                               ng-model="contact.email"
-                               name="email"
-                               placeholder="<spring:message code='sample.email'/> "/>
+                               ng-model="topic.description"
+                               name="description"
+                               />
                     </div>
                     <div class="input-append">
                         <label>
                                 <span class="alert alert-error"
-                                      ng-show="displayValidationError && newContactForm.email.$error.required">
+                                      ng-show="displayValidationError && newTopicForm.description.$error.required">
                                     <spring:message code="required"/>
                                 </span>
                         </label>
@@ -56,19 +56,19 @@
                 </div>
                 <div>
                     <div class="input-append">
-                        <label>* <spring:message code="contacts.phone"/>:</label>
+                        <label>* <spring:message code="topics.supervisor"/>:</label>
                     </div>
                     <div class="input-append">
                         <input type="text"
                                required
-                               ng-model="contact.phoneNumber"
-                               name="phoneNumber"
-                               placeholder="<spring:message code='sample.phone'/> "/>
+                               ng-model="topic.supervisor_id"
+                               name="supervisor"
+                               />
                     </div>
                     <div class="input-append">
                         <label>
                                 <span class="alert alert-error"
-                                      ng-show="displayValidationError && newContactForm.phoneNumber.$error.required">
+                                      ng-show="displayValidationError && newTopicForm.supervisor_id.$error.required">
                                     <spring:message code="required"/>
                                 </span>
                         </label>
@@ -76,11 +76,11 @@
                 </div>
                 <input type="submit"
                        class="btn btn-inverse"
-                       ng-click="createContact(newContactForm);"
+                       ng-click="createTopic(newTopicForm);"
                        value='<spring:message code="create"/>'/>
                 <button class="btn btn-inverse"
                         data-dismiss="modal"
-                        ng-click="exit('#addContactsModal');"
+                        ng-click="exit('#addTopicsModal');"
                         aria-hidden="true">
                     <spring:message code="cancel"/>
                 </button>
@@ -93,41 +93,41 @@
     </span>
 </div>
 
-<div id="updateContactsModal"
+<div id="updateTopicsModal"
      class="modal hide fade in centering insertAndUpdateDialogs"
      role="dialog"
-     aria-labelledby="updateContactsModalLabel"
+     aria-labelledby="updateTopicsModalLabel"
      aria-hidden="true">
     <div class="modal-header">
-        <h3 id="updateContactsModalLabel" class="displayInLine">
-            <spring:message code="update"/>&nbsp;<spring:message code="contact"/>
+        <h3 id="updateTopicsModalLabel" class="displayInLine">
+            <spring:message code="update"/>&nbsp;<spring:message code="topic"/>
         </h3>
     </div>
     <div class="modal-body">
-        <form name="updateContactForm" novalidate>
+        <form name="updateTopicForm" novalidate>
             <input type="hidden"
                    required
-                   ng-model="contact.id"
+                   ng-model="topic.id"
                    name="id"
-                   value="{{contact.id}}"/>
+                   value="{{topic.id}}"/>
 
             <div class="pull-left">
                 <div>
                     <div class="input-append">
-                        <label>* <spring:message code="contacts.name"/>:</label>
+                        <label>* <spring:message code="topics.title"/>:</label>
                     </div>
                     <div class="input-append">
                         <input type="text"
                                autofocus
                                required
-                               ng-model="contact.name"
-                               name="name"
-                               placeholder="<spring:message code='contact'/>&nbsp;<spring:message code='contacts.name'/> "/>
+                               ng-model="topic.title"
+                               name="title"
+                               placeholder="<spring:message code='topic'/>&nbsp;<spring:message code='topics.title'/> "/>
                     </div>
                     <div class="input-append">
                         <label>
                                 <span class="alert alert-error"
-                                      ng-show="displayValidationError && updateContactForm.name.$error.required">
+                                      ng-show="displayValidationError && updateTopicForm.title.$error.required">
                                     <spring:message code="required"/>
                                 </span>
                         </label>
@@ -135,19 +135,19 @@
                 </div>
                 <div>
                     <div class="input-append">
-                        <label>* <spring:message code="contacts.email"/>:</label>
+                        <label>* <spring:message code="topics.description"/>:</label>
                     </div>
                     <div class="input-append">
                         <input type="text"
                                required
-                               ng-model="contact.email"
-                               name="email"
-                               placeholder="<spring:message code='sample.email'/> "/>
+                               ng-model="topic.description"
+                               name="description"
+                               />
                     </div>
                     <div class="input-append">
                         <label>
                                 <span class="alert alert-error"
-                                      ng-show="displayValidationError && updateContactForm.email.$error.required">
+                                      ng-show="displayValidationError && updateTopicForm.description.$error.required">
                                     <spring:message code="required"/>
                                 </span>
                         </label>
@@ -155,19 +155,19 @@
                 </div>
                 <div>
                     <div class="input-append">
-                        <label>* <spring:message code="contacts.phone"/>:</label>
+                        <label>* <spring:message code="topics.supervisor"/>:</label>
                     </div>
                     <div class="input-append">
                         <input type="text"
                                required
-                               ng-model="contact.phoneNumber"
-                               name="phoneNumber"
-                               placeholder="<spring:message code='sample.phone'/> "/>
+                               ng-model="topic.supervisor_id"
+                               name="supervisor"
+                               />
                     </div>
                     <div class="input-append">
                         <label>
                                 <span class="alert alert-error"
-                                      ng-show="displayValidationError && updateContactForm.phoneNumber.$error.required">
+                                      ng-show="displayValidationError && updateTopicForm.supervisor_id.$error.required">
                                     <spring:message code="required"/>
                                 </span>
                         </label>
@@ -175,11 +175,11 @@
                 </div>
                 <input type="submit"
                        class="btn btn-inverse"
-                       ng-click="updateContact(updateContactForm);"
+                       ng-click="updateTopic(updateTopicForm);"
                        value='<spring:message code="update"/>'/>
                 <button class="btn btn-inverse"
                         data-dismiss="modal"
-                        ng-click="exit('#updateContactsModal');"
+                        ng-click="exit('#updateTopicsModal');"
                         aria-hidden="true">
                     <spring:message code="cancel"/></button>
             </div>
@@ -191,27 +191,27 @@
     </span>
 </div>
 
-<div id="deleteContactsModal"
+<div id="deleteTopicsModal"
      class="modal hide fade in centering"
      role="dialog"
-     aria-labelledby="searchContactsModalLabel"
+     aria-labelledby="searchTopicsModalLabel"
      aria-hidden="true">
     <div class="modal-header">
-        <h3 id="deleteContactsModalLabel" class="displayInLine">
-            <spring:message code="delete"/>&nbsp;<spring:message code="contact"/>
+        <h3 id="deleteTopicsModalLabel" class="displayInLine">
+            <spring:message code="delete"/>&nbsp;<spring:message code="topic"/>
         </h3>
     </div>
     <div class="modal-body">
-        <form name="deleteContactForm" novalidate>
-            <p><spring:message code="delete.confirm"/>:&nbsp;{{contact.name}}?</p>
+        <form name="deleteTopicForm" novalidate>
+            <p><spring:message code="delete.confirm"/>:&nbsp;{{topic.title}}?</p>
 
             <input type="submit"
                    class="btn btn-inverse"
-                   ng-click="deleteContact();"
+                   ng-click="deleteTopic();"
                    value='<spring:message code="delete"/>'/>
             <button class="btn btn-inverse"
                     data-dismiss="modal"
-                    ng-click="exit('#deleteContactsModal');"
+                    ng-click="exit('#deleteTopicsModal');"
                     aria-hidden="true">
                 <spring:message code="cancel"/>
             </button>
@@ -227,18 +227,18 @@
     </span>
 </div>
 
-<div id="searchContactsModal"
+<div id="searchTopicsModal"
      class="modal hide fade in centering"
      role="dialog"
-     aria-labelledby="searchContactsModalLabel"
+     aria-labelledby="searchTopicsModalLabel"
      aria-hidden="true">
     <div class="modal-header">
-        <h3 id="searchContactsModalLabel" class="displayInLine">
+        <h3 id="searchTopicsModalLabel" class="displayInLine">
             <spring:message code="search"/>
         </h3>
     </div>
     <div class="modal-body">
-        <form name="searchContactForm" novalidate>
+        <form name="searchTopicForm" novalidate>
             <label><spring:message code="search.for"/></label>
 
             <div>
@@ -248,12 +248,12 @@
                            required
                            ng-model="searchFor"
                            name="searchFor"
-                           placeholder="<spring:message code='contact'/>&nbsp;<spring:message code='contacts.name'/> "/>
+                           placeholder="<spring:message code='topic'/>&nbsp;<spring:message code='topics.title'/> "/>
                 </div>
                 <div class="input-append displayInLine">
                     <label class="displayInLine">
                         <span class="alert alert-error"
-                              ng-show="displayValidationError && searchContactForm.searchFor.$error.required">
+                              ng-show="displayValidationError && searchTopicForm.searchFor.$error.required">
                             <spring:message code="required"/>
                         </span>
                     </label>
@@ -261,12 +261,12 @@
             </div>
             <input type="submit"
                    class="btn btn-inverse"
-                   ng-click="searchContact(searchContactForm, false);"
+                   ng-click="searchTopic(searchTopicForm, false);"
                    value='<spring:message code="search"/>'
                     />
             <button class="btn btn-inverse"
                     data-dismiss="modal"
-                    ng-click="exit('#searchContactsModal');"
+                    ng-click="exit('#searchTopicsModal');"
                     aria-hidden="true">
                 <spring:message code="cancel"/>
             </button>

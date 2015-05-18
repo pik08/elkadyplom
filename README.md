@@ -1,7 +1,12 @@
-należy stworzyć bazę elkadyplom, owner postgres z hasłem postgres
+Należy stworzyć bazę elkadyplom, owner postgres z hasłem postgres
 
-odpalamy przez regulke maven:
+Żeby odpalić:
 
-clean install tomcat7:run
+mvn clean install tomcat7:run
  
-i ogladamy http://localhost:8081/elkadyplom/login
+System dostępny pod adresem http://localhost:8080/elkadyplom/login
+
+==========================
+
+debug:
+jak tutaj: http://stackoverflow.com/questions/14602540/how-to-debug-a-maven-goal-with-intellij-idea
