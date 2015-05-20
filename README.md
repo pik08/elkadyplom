@@ -4,7 +4,7 @@ Należy stworzyć bazę elkadyplom, owner postgres z hasłem postgres
 
 mvn clean install tomcat7:run
  
-System dostępny pod adresem http://localhost:8080/elkadyplom/login
+System dostępny pod adresem http://localhost:8093/elkadyplom/login
 
 ==========================
 

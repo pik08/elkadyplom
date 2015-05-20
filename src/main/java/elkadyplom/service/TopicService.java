@@ -90,16 +90,18 @@ public class TopicService {
         return result.getTotalElements() > 0;
     }
 
-    public void save(TopicDto topicDto) {
-        User supervisor = userRepository.findOne(topicDto.getSupervisor_id());
-        if (supervisor == null || !Role.ROLE_SUPERVISOR.equals(supervisor.getRole()) ) return; // TODO zwracać błąd
+    public boolean save(TopicDto topicDto) {
+        User supervisor = userRepository.findOne(topicDto.getSupervisorId());
+        if (supervisor == null || !supervisor.isSupervisor() )
+            return false;
 
         Topic topic = new Topic();
         topic.setSupervisor(supervisor);
 
-        if (topicDto.getStudent_id() != 0) {
-            User student = userRepository.findOne(topicDto.getStudent_id());
-            if (student == null || !Role.ROLE_STUDENT.equals(student.getRole()) ) return; // TODO zwracać błąd
+        if (topicDto.getStudentId() != 0) {
+            User student = userRepository.findOne(topicDto.getStudentId());
+            if (student == null || !student.isStudent() )
+                return false;
             topic.setStudent(student);
         }
 
@@ -107,5 +109,37 @@ public class TopicService {
         topic.setDescription(topicDto.getDescription());
 
         save(topic);
+        return true;
     }
+
+    public boolean update(TopicDto topicDto) {
+        if (topicDto == null)
+            return false;
+
+        Topic topic = topicsRepository.findOne(topicDto.getId());
+        if (topic == null)
+            return false;
+
+        topic.setConfirmed(topicDto.isConfirmed());
+        topic.setDescription(topicDto.getDescription());
+        topic.setTitle(topicDto.getTitle());
+
+        if (topic.getSupervisorId() != topicDto.getSupervisorId()) {
+            User supervisor = userRepository.findOne(topicDto.getSupervisorId());
+            if (supervisor == null || !supervisor.isSupervisor() )
+                return false;
+            topic.setSupervisor(supervisor);
+        }
+
+        if (topicDto.getStudentId() > 0 && topic.getStudentId() != topicDto.getStudentId() ) {
+            User student = userRepository.findOne(topicDto.getStudentId());
+            if (student == null || !student.isStudent() )
+                return false;
+            topic.setStudent(student);
+        }
+
+        save(topic);
+        return true;
+    }
+
 }

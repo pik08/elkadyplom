@@ -16,13 +16,20 @@ public class User {
     @GeneratedValue
     private int id;
 
+    @Column(nullable = false)
     private String email;
+
+    @Column(nullable = false)
     private String name;
+
+    @Column(nullable = false)
     private String enabled;
+
+    @Column(nullable = false)
     private String password;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "user_role")
+    @Column(name = "user_role", nullable = false)
     private Role role;
 
     public int getId() {
@@ -71,5 +78,17 @@ public class User {
 
     public void setEnabled(String enabled) {
         this.enabled = enabled;
+    }
+
+    public boolean isAdmin() {
+        return Role.ROLE_ADMIN.equals(role);
+    }
+
+    public boolean isSupervisor() {
+        return Role.ROLE_SUPERVISOR.equals(role);
+    }
+
+    public boolean isStudent() {
+        return Role.ROLE_STUDENT.equals(role);
     }
 }

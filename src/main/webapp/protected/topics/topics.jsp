@@ -70,16 +70,20 @@
                 <thead>
                 <tr>
                     <th scope="col"><spring:message code="topics.title"/></th>
-                    <th scope="col"><spring:message code="topics.supervisor"/></th>
                     <th scope="col"><spring:message code="topics.description"/></th>
+                    <th scope="col"><spring:message code="topics.supervisor"/></th>
+                    <th scope="col"><spring:message code="topics.student"/></th>
+                    <th scope="col"><spring:message code="topics.confirmed"/></th>
                     <th scope="col"></th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr ng-repeat="topic in page.source">
                     <td class="tdTopicsCentered">{{topic.title}}</td>
-                    <td class="tdTopicsCentered">{{topic.supervisor.name}}</td>
                     <td class="tdTopicsCentered">{{topic.description}}</td>
+                    <td class="tdTopicsCentered">{{topic.supervisorName}}</td>
+                    <td class="tdTopicsCentered">{{topic.studentName}}</td>
+                    <td class="tdTopicsCentered">TODO</td>
                     <td class="width15">
                         <div class="text-center">
                             <input type="hidden" value="{{topic.id}}"/>

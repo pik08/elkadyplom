@@ -1,25 +1,54 @@
 package elkadyplom.dto;
 
 
+import elkadyplom.model.Topic;
+
 public class TopicDto {
 
+    private int id;
     private String title;
     private String description;
-    private int supervisor_id;
-    private int student_id;
+    private int supervisorId;
+    private int studentId;
+    private String supervisorName;
+    private String studentName;
+    boolean confirmed;
 
     public TopicDto() {
+        // default constructor enabled
     }
 
-    public TopicDto(String title, String description, int supervisor_id) {
-        this(title, description, supervisor_id, 0);
+    public TopicDto(Topic topic) {
+        this.id = topic.getId();
+        this.title = topic.getTitle();
+        this.description = topic.getDescription();
+        this.supervisorId = topic.getSupervisorId();
+        this.studentId = topic.getStudentId();
+        this.supervisorName = topic.getSupervisorName();
+        this.studentName = topic.getStudentName();
+        this.confirmed = topic.isConfirmed();
     }
 
-    public TopicDto(String title, String description, int supervisor_id, int student_id) {
+    public TopicDto(String title, String description, int supervisorId, String supervisorName, boolean confirmed) {
+        this(title, description, supervisorId, supervisorName, 0, "", confirmed);
+    }
+
+    public TopicDto(String title, String description, int supervisorId, String supersorName, int studentId, String studentName, boolean confirmed) {
         this.title = title;
         this.description = description;
-        this.supervisor_id = supervisor_id;
-        this.student_id = student_id;
+        this.supervisorId = supervisorId;
+        this.supervisorName = supersorName;
+        this.studentId = studentId;
+        this.studentName = studentName;
+        this.confirmed = confirmed;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getTitle() {
@@ -38,19 +67,43 @@ public class TopicDto {
         this.description = description;
     }
 
-    public int getSupervisor_id() {
-        return supervisor_id;
+    public int getSupervisorId() {
+        return supervisorId;
     }
 
-    public void setSupervisor_id(int supervisor_id) {
-        this.supervisor_id = supervisor_id;
+    public void setSupervisorId(int supervisorId) {
+        this.supervisorId = supervisorId;
     }
 
-    public int getStudent_id() {
-        return student_id;
+    public int getStudentId() {
+        return studentId;
     }
 
-    public void setStudent_id(int student_id) {
-        this.student_id = student_id;
+    public void setStudentId(int studentId) {
+        this.studentId = studentId;
+    }
+
+    public String getSupervisorName() {
+        return supervisorName;
+    }
+
+    public void setSupervisorName(String supervisorName) {
+        this.supervisorName = supervisorName;
+    }
+
+    public String getStudentName() {
+        return studentName;
+    }
+
+    public void setStudentName(String studentName) {
+        this.studentName = studentName;
+    }
+
+    public boolean isConfirmed() {
+        return confirmed;
+    }
+
+    public void setConfirmed(boolean confirmed) {
+        this.confirmed = confirmed;
     }
 }

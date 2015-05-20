@@ -1,5 +1,6 @@
 package elkadyplom.model;
 
+
 import javax.persistence.*;
 
 @Entity
@@ -22,6 +23,8 @@ public class Topic {
     @ManyToOne(optional = true)
     @JoinColumn(name = "student_id")
     private User student;
+
+    private boolean confirmed = false;
 
     public int getId() {
         return id;
@@ -61,5 +64,33 @@ public class Topic {
 
     public void setStudent(User student) {
         this.student = student;
+    }
+
+    public boolean isConfirmed() {
+        return confirmed;
+    }
+
+    public void setConfirmed(boolean confirmed) {
+        this.confirmed = confirmed;
+    }
+
+    public int getSupervisorId() {
+        if (supervisor == null) return 0;
+        return supervisor.getId();
+    }
+
+    public int getStudentId() {
+        if (student == null) return 0;
+        return student.getId();
+    }
+
+    public String getSupervisorName() {
+        if (supervisor == null) return "";
+        return supervisor.getName();
+    }
+
+    public String getStudentName() {
+        if (student == null) return "";
+        return student.getName();
     }
 }

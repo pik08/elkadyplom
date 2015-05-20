@@ -61,14 +61,14 @@
                     <div class="input-append">
                         <input type="text"
                                required
-                               ng-model="topic.supervisor_id"
+                               ng-model="topic.supervisorId"
                                name="supervisor"
                                />
                     </div>
                     <div class="input-append">
                         <label>
                                 <span class="alert alert-error"
-                                      ng-show="displayValidationError && newTopicForm.supervisor_id.$error.required">
+                                      ng-show="displayValidationError && newTopicForm.supervisorId.$error.required">
                                     <spring:message code="required"/>
                                 </span>
                         </label>
@@ -160,14 +160,14 @@
                     <div class="input-append">
                         <input type="text"
                                required
-                               ng-model="topic.supervisor_id"
+                               ng-model="topic.supervisorId"
                                name="supervisor"
                                />
                     </div>
                     <div class="input-append">
                         <label>
                                 <span class="alert alert-error"
-                                      ng-show="displayValidationError && updateTopicForm.supervisor_id.$error.required">
+                                      ng-show="displayValidationError && updateTopicForm.supervisorId.$error.required">
                                     <spring:message code="required"/>
                                 </span>
                         </label>

@@ -2,6 +2,7 @@ package elkadyplom.dto;
 
 import elkadyplom.model.Topic;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class TopicListDto {
@@ -11,15 +12,19 @@ public class TopicListDto {
     private String actionMessage;
     private String searchMessage;
 
-    private List<Topic> topics;
+    private List<TopicDto> topics;
 
     public TopicListDto() {
     }
 
     public TopicListDto(int pages, long totalTopics, List<Topic> topics) {
         this.pagesCount = pages;
-        this.topics = topics;
         this.totalTopics = totalTopics;
+
+        this.topics = new ArrayList<TopicDto>();
+        for (Topic t : topics ) {
+            this.topics.add(new TopicDto(t));
+        }
     }
 
     public int getPagesCount() {
@@ -30,11 +35,11 @@ public class TopicListDto {
         this.pagesCount = pagesCount;
     }
 
-    public List<Topic> getTopics() {
+    public List<TopicDto> getTopics() {
         return topics;
     }
 
-    public void setTopics(List<Topic> topics) {
+    public void setTopics(List<TopicDto> topics) {
         this.topics = topics;
     }
 
