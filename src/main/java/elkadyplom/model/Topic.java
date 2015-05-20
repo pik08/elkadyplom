@@ -1,6 +1,8 @@
 package elkadyplom.model;
 
 
+import elkadyplom.dto.TopicDto;
+
 import javax.persistence.*;
 
 @Entity
@@ -24,7 +26,19 @@ public class Topic {
     @JoinColumn(name = "student_id")
     private User student;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "thesis_type")
+    private ThesisType thesisType;
+
     private boolean confirmed = false;
+
+    public Topic() {
+        // enable default
+    }
+
+    public Topic(TopicDto topicDto, User supervisor, User student) {
+        this.setAll(topicDto, supervisor, student);
+    }
 
     public int getId() {
         return id;
@@ -74,6 +88,14 @@ public class Topic {
         this.confirmed = confirmed;
     }
 
+    public ThesisType getThesisType() {
+        return thesisType;
+    }
+
+    public void setThesisType(ThesisType thesisType) {
+        this.thesisType = thesisType;
+    }
+
     public int getSupervisorId() {
         if (supervisor == null) return 0;
         return supervisor.getId();
@@ -92,5 +114,17 @@ public class Topic {
     public String getStudentName() {
         if (student == null) return "";
         return student.getName();
+    }
+
+    public void setAll(TopicDto topicDto, User supervisor, User student) {
+        this.confirmed = topicDto.isConfirmed();
+        this.description = topicDto.getDescription();
+        this.title = topicDto.getTitle();
+        this.thesisType = topicDto.getThesisType();
+
+        if (supervisor != null)
+            this.supervisor = supervisor;
+        if (student != null)
+            this.student = student;
     }
 }

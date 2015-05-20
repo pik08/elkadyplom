@@ -74,6 +74,38 @@
                         </label>
                     </div>
                 </div>
+                <div>
+                    <div class="input-append">
+                        <label>* <spring:message code="topics.thesisType"/>:</label>
+                    </div>
+                    <div class="input-append">
+                        <label>
+                        <input type="radio"
+                               required
+                               ng-model="topic.thesisType"
+                               value="TYPE_ENGINEER"
+                               name="thesisType"
+                                />
+                        <spring:message code="topics.thesisType.engineer"/>
+                        </label><label>
+                        <input type="radio"
+                               required
+                               ng-model="topic.thesisType"
+                               value="TYPE_MASTER"
+                               name="thesisType"
+                                />
+                        <spring:message code="topics.thesisType.master"/>
+                        </label>
+                    </div>
+                    <div class="input-append">
+                        <label>
+                                <span class="alert alert-error"
+                                      ng-show="displayValidationError && newTopicForm.thesisType.$error.required">
+                                    <spring:message code="required"/>
+                                </span>
+                        </label>
+                    </div>
+                </div>
                 <input type="submit"
                        class="btn btn-inverse"
                        ng-click="createTopic(newTopicForm);"
@@ -168,6 +200,38 @@
                         <label>
                                 <span class="alert alert-error"
                                       ng-show="displayValidationError && updateTopicForm.supervisorId.$error.required">
+                                    <spring:message code="required"/>
+                                </span>
+                        </label>
+                    </div>
+                </div>
+                <div>
+                    <div class="input-append">
+                        <label>* <spring:message code="topics.thesisType"/>:</label>
+                    </div>
+                    <div class="input-append">
+                        <label>
+                            <input type="radio"
+                                   required
+                                   ng-model="topic.thesisType"
+                                   value="TYPE_ENGINEER"
+                                   name="thesisType"
+                                    />
+                            <spring:message code="topics.thesisType.engineer"/>
+                        </label><label>
+                        <input type="radio"
+                               required
+                               ng-model="topic.thesisType"
+                               value="TYPE_MASTER"
+                               name="thesisType"
+                                />
+                        <spring:message code="topics.thesisType.master"/>
+                    </label>
+                    </div>
+                    <div class="input-append">
+                        <label>
+                                <span class="alert alert-error"
+                                      ng-show="displayValidationError && newTopicForm.thesisType.$error.required">
                                     <spring:message code="required"/>
                                 </span>
                         </label>

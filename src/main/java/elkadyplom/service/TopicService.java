@@ -95,18 +95,14 @@ public class TopicService {
         if (supervisor == null || !supervisor.isSupervisor() )
             return false;
 
-        Topic topic = new Topic();
-        topic.setSupervisor(supervisor);
-
+        User student = null;
         if (topicDto.getStudentId() != 0) {
-            User student = userRepository.findOne(topicDto.getStudentId());
+            student = userRepository.findOne(topicDto.getStudentId());
             if (student == null || !student.isStudent() )
                 return false;
-            topic.setStudent(student);
         }
 
-        topic.setTitle(topicDto.getTitle());
-        topic.setDescription(topicDto.getDescription());
+        Topic topic = new Topic(topicDto, supervisor, student);
 
         save(topic);
         return true;
@@ -120,23 +116,20 @@ public class TopicService {
         if (topic == null)
             return false;
 
-        topic.setConfirmed(topicDto.isConfirmed());
-        topic.setDescription(topicDto.getDescription());
-        topic.setTitle(topicDto.getTitle());
-
+        User supervisor = null, student = null;
         if (topic.getSupervisorId() != topicDto.getSupervisorId()) {
-            User supervisor = userRepository.findOne(topicDto.getSupervisorId());
+            supervisor = userRepository.findOne(topicDto.getSupervisorId());
             if (supervisor == null || !supervisor.isSupervisor() )
                 return false;
-            topic.setSupervisor(supervisor);
         }
 
         if (topicDto.getStudentId() > 0 && topic.getStudentId() != topicDto.getStudentId() ) {
-            User student = userRepository.findOne(topicDto.getStudentId());
+            student = userRepository.findOne(topicDto.getStudentId());
             if (student == null || !student.isStudent() )
                 return false;
-            topic.setStudent(student);
         }
+
+        topic.setAll(topicDto, supervisor, student);
 
         save(topic);
         return true;

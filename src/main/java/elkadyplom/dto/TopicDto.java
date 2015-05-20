@@ -1,6 +1,7 @@
 package elkadyplom.dto;
 
 
+import elkadyplom.model.ThesisType;
 import elkadyplom.model.Topic;
 
 public class TopicDto {
@@ -12,7 +13,8 @@ public class TopicDto {
     private int studentId;
     private String supervisorName;
     private String studentName;
-    boolean confirmed;
+    private boolean confirmed;
+    private ThesisType thesisType;
 
     public TopicDto() {
         // default constructor enabled
@@ -27,6 +29,7 @@ public class TopicDto {
         this.supervisorName = topic.getSupervisorName();
         this.studentName = topic.getStudentName();
         this.confirmed = topic.isConfirmed();
+        this.thesisType = topic.getThesisType();
     }
 
     public TopicDto(String title, String description, int supervisorId, String supervisorName, boolean confirmed) {
@@ -105,5 +108,13 @@ public class TopicDto {
 
     public void setConfirmed(boolean confirmed) {
         this.confirmed = confirmed;
+    }
+
+    public ThesisType getThesisType() {
+        return thesisType;
+    }
+
+    public void setThesisType(ThesisType thesisType) {
+        this.thesisType = thesisType;
     }
 }

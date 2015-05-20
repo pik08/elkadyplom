@@ -74,6 +74,7 @@
                     <th scope="col"><spring:message code="topics.supervisor"/></th>
                     <th scope="col"><spring:message code="topics.student"/></th>
                     <th scope="col"><spring:message code="topics.confirmed"/></th>
+                    <th scope="col"><spring:message code="topics.thesisType"/></th>
                     <th scope="col"></th>
                 </tr>
                 </thead>
@@ -83,7 +84,15 @@
                     <td class="tdTopicsCentered">{{topic.description}}</td>
                     <td class="tdTopicsCentered">{{topic.supervisorName}}</td>
                     <td class="tdTopicsCentered">{{topic.studentName}}</td>
-                    <td class="tdTopicsCentered">TODO</td>
+
+                    <td class="tdTopicsCentered" ng-show="topic.confirmed"><spring:message code="yes"/></td>
+                    <td class="tdTopicsCentered" ng-show="!topic.confirmed"><spring:message code="no"/></td>
+
+                    <td class="tdTopicsCentered" ng-show="topic.thesisType == 'TYPE_ENGINEER' ">
+                        <spring:message code="topics.thesisType.engineer"/></td>
+                    <td class="tdTopicsCentered" ng-show="topic.thesisType == 'TYPE_MASTER' ">
+                        <spring:message code="topics.thesisType.master"/></td>
+
                     <td class="width15">
                         <div class="text-center">
                             <input type="hidden" value="{{topic.id}}"/>
