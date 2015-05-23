@@ -1,7 +1,6 @@
 package elkadyplom.service;
 
 import elkadyplom.dto.TopicDto;
-import elkadyplom.model.Role;
 import elkadyplom.model.Topic;
 import elkadyplom.dto.TopicListDto;
 import elkadyplom.model.User;
@@ -46,17 +45,17 @@ public class TopicService {
         topicsRepository.delete(topicId);
     }
 
-//    @Transactional(readOnly = true)
-//    public TopicListDto findByNameLike(int page, int maxResults, String name) {
-//        Page<Topic> result = executeQueryFindByName(page, maxResults, name);
-//
-//        if(shouldExecuteSameQueryInLastPage(page, result)){
-//            int lastPage = result.getTotalPages() - 1;
-//            result = executeQueryFindByName(lastPage, maxResults, name);
-//        }
-//
-//        return buildResult(result);
-//    }
+    @Transactional(readOnly = true)
+    public TopicListDto findByKeyword(int page, int maxResults, String name) {
+        Page<Topic> result = executeQueryFindByKeyword(page, maxResults, name);
+
+        if(shouldExecuteSameQueryInLastPage(page, result)){
+            int lastPage = result.getTotalPages() - 1;
+            result = executeQueryFindByKeyword(lastPage, maxResults, name);
+        }
+
+        return buildResult(result);
+    }
 
     private boolean shouldExecuteSameQueryInLastPage(int page, Page<Topic> result) {
         return isUserAfterOrOnLastPage(page, result) && hasDataInDataBase(result);
@@ -76,11 +75,11 @@ public class TopicService {
         return new TopicListDto(result.getTotalPages(), result.getTotalElements(), result.getContent());
     }
 
-//    private Page<Topic> executeQueryFindByName(int page, int maxResults, String name) {
-//        final PageRequest pageRequest = new PageRequest(page, maxResults, sortByNameASC());
-//
-//        return topicsRepository.findByNameLike(pageRequest, "%" + name + "%");
-//    }
+    private Page<Topic> executeQueryFindByKeyword(int page, int maxResults, String name) {
+        final PageRequest pageRequest = new PageRequest(page, maxResults, sortByNameASC());
+
+        return topicsRepository.findByTitleLike(pageRequest, "%" + name + "%");
+    }
 
     private boolean isUserAfterOrOnLastPage(int page, Page<Topic> result) {
         return page >= result.getTotalPages() - 1;

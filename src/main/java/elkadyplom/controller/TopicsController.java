@@ -50,9 +50,9 @@ public class TopicsController {
             return getBadRequest();
         }
 
-//        if (isSearchActivated(searchFor)) {
-//            return search(searchFor, page, locale, "message.create.success");
-//        }
+        if (isSearchActivated(searchFor)) {
+            return search(searchFor, page, locale, "message.create.success");
+        }
 
         return createListAllResponse(page, locale, "message.create.success");
     }
@@ -69,9 +69,9 @@ public class TopicsController {
             return getBadRequest();
         }
 
-//        if (isSearchActivated(searchFor)) {
-//            return search(searchFor, page, locale, "message.update.success");
-//        }
+        if (isSearchActivated(searchFor)) {
+            return search(searchFor, page, locale, "message.update.success");
+        }
 
         return createListAllResponse(page, locale, "message.update.success");
     }
@@ -88,33 +88,33 @@ public class TopicsController {
             return new ResponseEntity<Object>(HttpStatus.FORBIDDEN);
         }
 
-//        if (isSearchActivated(searchFor)) {
-//            return search(searchFor, page, locale, "message.delete.success");
-//        }
+        if (isSearchActivated(searchFor)) {
+            return search(searchFor, page, locale, "message.delete.success");
+        }
 
         return createListAllResponse(page, locale, "message.delete.success");
     }
-//
-//    @RequestMapping(value = "/{name}", method = RequestMethod.GET, produces = "application/json")
-//    public ResponseEntity<?> search(@PathVariable("name") String name,
-//                                    @RequestParam(required = false, defaultValue = DEFAULT_PAGE_DISPLAYED_TO_USER) int page,
-//                                    Locale locale) {
-//        return search(name, page, locale, null);
-//    }
-//
-//    private ResponseEntity<?> search(String name, int page, Locale locale, String actionMessageKey) {
-//        TopicListDto topicListDto = topicService.findByNameLike(page, maxResults, name);
-//
-//        if (!StringUtils.isEmpty(actionMessageKey)) {
-//            addActionMessageToDto(topicListDto, locale, actionMessageKey, null);
-//        }
-//
-//        Object[] args = {name};
-//
-//        addSearchMessageToDto(topicListDto, locale, "message.search.for.active", args);
-//
-//        return new ResponseEntity<TopicListDto>(topicListDto, HttpStatus.OK);
-//    }
+
+    @RequestMapping(value = "/{keyword}", method = RequestMethod.GET, produces = "application/json")
+    public ResponseEntity<?> search(@PathVariable("keyword") String keyword,
+                                    @RequestParam(required = false, defaultValue = DEFAULT_PAGE_DISPLAYED_TO_USER) int page,
+                                    Locale locale) {
+        return search(keyword, page, locale, null);
+    }
+
+    private ResponseEntity<?> search(String keyword, int page, Locale locale, String actionMessageKey) {
+        TopicListDto topicListDto = topicService.findByKeyword(page, maxResults, keyword);
+
+        if (!StringUtils.isEmpty(actionMessageKey)) {
+            addActionMessageToDto(topicListDto, locale, actionMessageKey, null);
+        }
+
+        Object[] args = {keyword};
+
+        addSearchMessageToDto(topicListDto, locale, "message.search.for.active", args);
+
+        return new ResponseEntity<TopicListDto>(topicListDto, HttpStatus.OK);
+    }
 
     private TopicListDto listAll(int page) {
         return topicService.findAll(page, maxResults);
