@@ -99,14 +99,14 @@
                             <a href="#updateTopicsModal"
                                ng-click="selectedTopic(topic);"
                                role="button"
-                               title="<spring:message code="update"/>&nbsp;<spring:message code="topic"/>"
+                               title="<spring:message code="topic.edit"/>"
                                class="btn btn-inverse" data-toggle="modal">
                                 <i class="icon-pencil"></i>
                             </a>
                             <a href="#deleteTopicsModal"
                                ng-click="selectedTopic(topic);"
                                role="button"
-                               title="<spring:message code="delete"/>&nbsp;<spring:message code="topic"/>"
+                               title="<spring:message code="topic.delete"/>"
                                class="btn btn-inverse" data-toggle="modal">
                                 <i class="icon-minus"></i>
                             </a>
@@ -159,7 +159,7 @@
                class="btn btn-inverse"
                data-toggle="modal">
                 <i class="icon-plus"></i>
-                &nbsp;&nbsp;<spring:message code="create"/>&nbsp;<spring:message code="topic"/>
+                &nbsp;&nbsp;<spring:message code="topic.create"/>
             </a>
         </div>
 
