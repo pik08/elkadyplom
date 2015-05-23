@@ -1,6 +1,8 @@
 package elkadyplom.service;
 
+import elkadyplom.dto.BasicUserDto;
 import elkadyplom.dto.TopicDto;
+import elkadyplom.model.Role;
 import elkadyplom.model.Topic;
 import elkadyplom.dto.TopicListDto;
 import elkadyplom.model.User;
@@ -13,6 +15,9 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import elkadyplom.repository.TopicsRepository;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @Transactional
@@ -134,4 +139,13 @@ public class TopicService {
         return true;
     }
 
+    public List<BasicUserDto> getSupervisorList() {
+        List<User> list = userRepository.getUserListByRole(Role.ROLE_SUPERVISOR);
+        List<BasicUserDto> supervisorList = new ArrayList<BasicUserDto>();
+
+        for (User u : list)
+            supervisorList.add(new BasicUserDto(u));
+
+        return supervisorList;
+    }
 }

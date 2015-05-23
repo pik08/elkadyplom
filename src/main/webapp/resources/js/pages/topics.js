@@ -15,6 +15,8 @@ function topicsController($scope, $http) {
     $scope.displaySearchButton = false;
     $scope.displayCreateTopicButton = false;
 
+    $scope.supervisors = [];
+
     $scope.topic = {};
 
     $scope.searchFor = "";
@@ -249,5 +251,20 @@ function topicsController($scope, $http) {
         $scope.displaySearchMessage = false;
     };
 
+    $scope.getSupervisorList = function(){
+        var url = $scope.url + "supervisors";
+        var config = {};
+
+        $http.get(url, config)
+            .success(function (data) {
+                $scope.supervisors = data;
+            })
+            .error(function () {
+                $scope.state = 'error';
+                $scope.displayCreateTopicButton = false;
+            });
+    }
+
+    $scope.getSupervisorList();
     $scope.getTopicList();
 }

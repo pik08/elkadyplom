@@ -1,5 +1,6 @@
 package elkadyplom.controller;
 
+import elkadyplom.dto.BasicUserDto;
 import elkadyplom.dto.TopicDto;
 import elkadyplom.dto.TopicListDto;
 import org.apache.commons.lang.StringUtils;
@@ -14,6 +15,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import elkadyplom.service.TopicService;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 @Controller
@@ -39,6 +42,13 @@ public class TopicsController {
     @RequestMapping(method = RequestMethod.GET, produces = "application/json")
     public ResponseEntity<?> listAll(@RequestParam int page, Locale locale) {
         return createListAllResponse(page, locale);
+    }
+
+    @RequestMapping(value="/supervisors", method = RequestMethod.GET, produces = "application/json")
+    public ResponseEntity<?> getSupervisors(Locale locale) {
+        List<BasicUserDto> supervisorList = topicService.getSupervisorList();
+
+        return new ResponseEntity<List<BasicUserDto>>(supervisorList, HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.POST, produces = "application/json")

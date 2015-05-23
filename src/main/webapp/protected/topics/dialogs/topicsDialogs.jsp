@@ -63,11 +63,11 @@
                         <label>* <spring:message code="topics.supervisor"/>:</label>
                     </div>
                     <div class="input-append">
-                        <input type="text"
-                               required
-                               ng-model="topic.supervisorId"
-                               name="supervisor"
-                               />
+                        <select ng-options="s.id as s.name for s in supervisors"
+                                required
+                                ng-model="topic.supervisorId"
+                                name="supervisor"
+                                ></select>
                     </div>
                     <div class="input-append">
                         <label>
@@ -209,11 +209,11 @@
                         <label>* <spring:message code="topics.supervisor"/>:</label>
                     </div>
                     <div class="input-append">
-                        <input type="text"
+                        <select ng-options="s.id as s.name for s in supervisors"
                                required
                                ng-model="topic.supervisorId"
                                name="supervisor"
-                               />
+                               ></select>
                     </div>
                     <div class="input-append">
                         <label>
