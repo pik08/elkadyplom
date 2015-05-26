@@ -14,7 +14,7 @@
 						   http://www.springframework.org/schema/context http://www.springframework.org/schema/task/spring-context-3.0.xsd">
 
     <!-- JPA Configurations -->
-    <jee:jndi-lookup id="myTopicsDataSource" jndi-name="jdbc/tomcatDataSource" lookup-on-startup="false"
+    <jee:jndi-lookup id="myTopicsDataSource" jndi-name="java:comp/env/jdbc/tomcatDataSource" lookup-on-startup="false"
                      proxy-interface="javax.sql.DataSource"/>
 
     <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager"/>

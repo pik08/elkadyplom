@@ -3,6 +3,14 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd ">
 
+    <resource-ref>
+        <description>postgreSQL Datasource example</description>
+        <res-ref-name>java:comp/env/jdbc/tomcatDataSource</res-ref-name>
+        <res-type>javax.sql.DataSource</res-type>
+        <res-auth>Container</res-auth>
+        <!--<lookup-name>jdbc/tomcatDataSource</lookup-name>-->
+    </resource-ref>
+
     <!-- Spring servlet that will handle the requests-->
     <servlet>
         <servlet-name>dispatcher</servlet-name>
