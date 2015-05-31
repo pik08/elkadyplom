@@ -7,6 +7,7 @@ import elkadyplom.model.Topic;
 import elkadyplom.dto.TopicListDto;
 import elkadyplom.model.User;
 import elkadyplom.repository.UserRepository;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -41,6 +42,22 @@ public class TopicService {
         return buildResult(result);
     }
 
+    @Transactional(readOnly = true)
+    public TopicListDto findBySupervisor(int page, int maxResults, String supervisorEmail) {
+        User supervisor = userRepository.findByEmail(supervisorEmail);
+        if (supervisor == null)
+            return null;
+
+        Page<Topic> result = executeQueryFindBySupervisor(page, maxResults, supervisor);
+
+        if(shouldExecuteSameQueryInLastPage(page, result)){
+            int lastPage = result.getTotalPages() - 1;
+            result = executeQueryFindBySupervisor(lastPage, maxResults, supervisor);
+        }
+
+        return buildResult(result);
+    }
+
     public void save(Topic topic) {
         topicsRepository.save(topic);
     }
@@ -62,6 +79,22 @@ public class TopicService {
         return buildResult(result);
     }
 
+    @Transactional(readOnly = true)
+    public TopicListDto findByKeywordForSupervisor(int page, int maxResults, String name, String supervisorEmail) {
+        User supervisor = userRepository.findByEmail(supervisorEmail);
+        if (supervisor == null)
+            return null;
+
+        Page<Topic> result = executeQueryFindByKeywordAndSupervisor(page, maxResults, name, supervisor);
+
+        if(shouldExecuteSameQueryInLastPage(page, result)){
+            int lastPage = result.getTotalPages() - 1;
+            result = executeQueryFindByKeywordAndSupervisor(lastPage, maxResults, name, supervisor);
+        }
+
+        return buildResult(result);
+    }
+
     private boolean shouldExecuteSameQueryInLastPage(int page, Page<Topic> result) {
         return isUserAfterOrOnLastPage(page, result) && hasDataInDataBase(result);
     }
@@ -71,6 +104,13 @@ public class TopicService {
 
         return topicsRepository.findAll(pageRequest);
     }
+
+    private Page<Topic> executeQueryFindBySupervisor(int page, int maxResults, User supervisor) {
+        final PageRequest pageRequest = new PageRequest(page, maxResults, sortByNameASC());
+
+        return topicsRepository.findBySupervisor(pageRequest, supervisor);
+    }
+
 
     private Sort sortByNameASC() {
         return new Sort(Sort.Direction.ASC, "title");
@@ -86,6 +126,12 @@ public class TopicService {
         return topicsRepository.findByTitleLike(pageRequest, "%" + name + "%");
     }
 
+    private Page<Topic> executeQueryFindByKeywordAndSupervisor(int page, int maxResults, String name, User supervisor) {
+        final PageRequest pageRequest = new PageRequest(page, maxResults, sortByNameASC());
+
+        return topicsRepository.findByTitleAndSupervisor("%" + name + "%", supervisor, pageRequest);
+    }
+
     private boolean isUserAfterOrOnLastPage(int page, Page<Topic> result) {
         return page >= result.getTotalPages() - 1;
     }
@@ -96,6 +142,24 @@ public class TopicService {
 
     public boolean save(TopicDto topicDto) {
         User supervisor = userRepository.findOne(topicDto.getSupervisorId());
+        if (supervisor == null || !supervisor.isSupervisor() )
+            return false;
+
+        User student = null;
+        if (topicDto.getStudentId() != 0) {
+            student = userRepository.findOne(topicDto.getStudentId());
+            if (student == null || !student.isStudent() )
+                return false;
+        }
+
+        Topic topic = new Topic(topicDto, supervisor, student);
+
+        save(topic);
+        return true;
+    }
+
+    public boolean saveAsSupervisor(TopicDto topicDto, String supervisorEmail) {
+        User supervisor = userRepository.findByEmail(supervisorEmail);
         if (supervisor == null || !supervisor.isSupervisor() )
             return false;
 
@@ -139,6 +203,35 @@ public class TopicService {
         return true;
     }
 
+    public boolean updateBySupervisor(TopicDto topicDto, String supervisorEmail) {
+        if (topicDto == null || StringUtils.isEmpty(supervisorEmail))
+            return false;
+
+        User supervisor = userRepository.findByEmail(supervisorEmail);
+        if (supervisor == null)
+            return false;
+
+        Topic topic = topicsRepository.findOne(topicDto.getId());
+
+        // nie możemy edytować zatwierdzonego tematu albo tematu innego promotora
+        if (topic == null || topic.isConfirmed() || !supervisor.equals(topic.getSupervisor()) )
+            return false;
+
+        User student = null;
+        if (topicDto.getStudentId() > 0 && topic.getStudentId() != topicDto.getStudentId() ) {
+            student = userRepository.findOne(topicDto.getStudentId());
+            if (student == null || !student.isStudent() )
+                return false;
+        }
+
+        topicDto.setConfirmed(false); // tego nie możemy przestawić jako supervisor
+        topic.setAll(topicDto, null, student);
+
+        save(topic);
+        return true;
+    }
+
+
     public List<BasicUserDto> getSupervisorList() {
         List<User> list = userRepository.getUserListByRole(Role.ROLE_SUPERVISOR);
         List<BasicUserDto> supervisorList = new ArrayList<BasicUserDto>();
@@ -147,5 +240,16 @@ public class TopicService {
             supervisorList.add(new BasicUserDto(u));
 
         return supervisorList;
+    }
+
+
+    public List<BasicUserDto> getStudentList() {
+        List<User> list = userRepository.getUserListByRole(Role.ROLE_STUDENT);
+        List<BasicUserDto> studentList = new ArrayList<BasicUserDto>();
+
+        for (User u : list)
+            studentList.add(new BasicUserDto(u));
+
+        return studentList;
     }
 }

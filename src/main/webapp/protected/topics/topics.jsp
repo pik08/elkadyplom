@@ -71,7 +71,7 @@
                 <tr>
                     <th scope="col"><spring:message code="topics.title"/></th>
                     <th scope="col"><spring:message code="topics.description"/></th>
-                    <th scope="col"><spring:message code="topics.supervisor"/></th>
+                    <th ng-show="isAdmin" scope="col"><spring:message code="topics.supervisor"/></th>
                     <th scope="col"><spring:message code="topics.student"/></th>
                     <th scope="col"><spring:message code="topics.confirmed"/></th>
                     <th scope="col"><spring:message code="topics.thesisType"/></th>
@@ -82,7 +82,7 @@
                 <tr ng-repeat="topic in page.source">
                     <td class="tdTopicsCentered">{{topic.title}}</td>
                     <td class="tdTopicsCentered">{{topic.description}}</td>
-                    <td class="tdTopicsCentered">{{topic.supervisorName}}</td>
+                    <td ng-show="isAdmin" class="tdTopicsCentered">{{topic.supervisorName}}</td>
                     <td class="tdTopicsCentered">{{topic.studentName}}</td>
 
                     <td class="tdTopicsCentered" ng-show="topic.confirmed"><spring:message code="yes"/></td>
@@ -98,6 +98,7 @@
                             <input type="hidden" value="{{topic.id}}"/>
                             <a href="#updateTopicsModal"
                                ng-click="selectedTopic(topic);"
+                               ng-show="isAdmin || !topic.confirmed"
                                role="button"
                                title="<spring:message code="topic.edit"/>"
                                class="btn btn-inverse" data-toggle="modal">
@@ -105,6 +106,7 @@
                             </a>
                             <a href="#deleteTopicsModal"
                                ng-click="selectedTopic(topic);"
+                               ng-show="isAdmin"
                                role="button"
                                title="<spring:message code="topic.delete"/>"
                                class="btn btn-inverse" data-toggle="modal">

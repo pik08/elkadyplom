@@ -265,6 +265,38 @@ function topicsController($scope, $http) {
             });
     }
 
-    $scope.getSupervisorList();
+    $scope.getStudentList = function(){
+        var url = $scope.url + "students";
+        var config = {};
+
+        $http.get(url, config)
+            .success(function (data) {
+                $scope.students = data;
+            })
+            .error(function () {
+                $scope.state = 'error';
+                $scope.displayCreateTopicButton = false;
+            });
+    }
+
+    $scope.isAdminFunc = function() {
+        var url = $scope.url + "isAdmin";
+        var config = {};
+
+        $http.get(url, config)
+            .success(function (data) {
+                $scope.isAdmin = (data == 'true');
+            })
+            .error(function () {
+                $scope.state = 'error';
+                $scope.displayCreateTopicButton = false;
+            });
+
+    }
+
+    $scope.isAdminFunc();
     $scope.getTopicList();
+
+    $scope.getStudentList();
+    $scope.getSupervisorList();
 }

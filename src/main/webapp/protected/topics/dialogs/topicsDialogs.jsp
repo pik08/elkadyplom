@@ -58,13 +58,13 @@
                         </label>
                     </div>
                 </div>
-                <div>
+                <div ng-show="isAdmin">
                     <div class="input-append">
                         <label>* <spring:message code="topics.supervisor"/>:</label>
                     </div>
                     <div class="input-append">
                         <select ng-options="s.id as s.name for s in supervisors"
-                                required
+                                ng-required="isAdmin"
                                 ng-model="topic.supervisorId"
                                 name="supervisor"
                                 ></select>
@@ -76,6 +76,17 @@
                                     <spring:message code="required"/>
                                 </span>
                         </label>
+                    </div>
+                </div>
+                <div>
+                    <div class="input-append">
+                        <label>* <spring:message code="topics.student"/>:</label>
+                    </div>
+                    <div class="input-append">
+                        <select ng-options="s.id as s.name for s in students"
+                                ng-model="topic.studentId"
+                                name="student"
+                                ></select>
                     </div>
                 </div>
                 <div>
@@ -110,7 +121,7 @@
                         </label>
                     </div>
                 </div>
-                <div>
+                <div ng-show="isAdmin">
                     <div class="input-append">
                         <label><spring:message code="topics.confirmed"/>:</label>
                     </div>
@@ -204,13 +215,13 @@
                         </label>
                     </div>
                 </div>
-                <div>
+                <div ng-show="isAdmin">
                     <div class="input-append">
                         <label>* <spring:message code="topics.supervisor"/>:</label>
                     </div>
                     <div class="input-append">
                         <select ng-options="s.id as s.name for s in supervisors"
-                               required
+                               ng-required="isAdmin"
                                ng-model="topic.supervisorId"
                                name="supervisor"
                                ></select>
@@ -222,6 +233,17 @@
                                     <spring:message code="required"/>
                                 </span>
                         </label>
+                    </div>
+                </div>
+                <div>
+                    <div class="input-append">
+                        <label>* <spring:message code="topics.student"/>:</label>
+                    </div>
+                    <div class="input-append">
+                        <select ng-options="s.id as s.name for s in students"
+                                ng-model="topic.studentId"
+                                name="student"
+                                ></select>
                     </div>
                 </div>
                 <div>
@@ -256,7 +278,7 @@
                         </label>
                     </div>
                 </div>
-                <div>
+                <div ng-show="isAdmin">
                     <div class="input-append">
                         <label><spring:message code="topics.confirmed"/>:</label>
                     </div>
