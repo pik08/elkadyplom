@@ -279,24 +279,7 @@ function topicsController($scope, $http) {
             });
     }
 
-    $scope.isAdminFunc = function() {
-        var url = $scope.url + "isAdmin";
-        var config = {};
-
-        $http.get(url, config)
-            .success(function (data) {
-                $scope.isAdmin = (data == 'true');
-            })
-            .error(function () {
-                $scope.state = 'error';
-                $scope.displayCreateTopicButton = false;
-            });
-
-    }
-
-    $scope.isAdminFunc();
     $scope.getTopicList();
-
     $scope.getStudentList();
     $scope.getSupervisorList();
 }

@@ -67,6 +67,8 @@ public class TopicService {
         topicsRepository.delete(topicId);
     }
 
+
+
     @Transactional(readOnly = true)
     public TopicListDto findByKeyword(int page, int maxResults, String name) {
         Page<Topic> result = executeQueryFindByKeyword(page, maxResults, name);
@@ -251,5 +253,18 @@ public class TopicService {
             studentList.add(new BasicUserDto(u));
 
         return studentList;
+    }
+
+    public boolean deleteBySupervisor(int topicId, String supervisorEmail) {
+        Topic topic = topicsRepository.findOne(topicId);
+        if (topic == null || topic.isConfirmed())
+            return false;
+
+        User supervisor = userRepository.findByEmail(supervisorEmail);
+        if (supervisor == null || !supervisor.isSupervisor() || !supervisor.equals(topic.getSupervisor()))
+            return false;
+
+        topicsRepository.delete(topicId);
+        return true;
     }
 }

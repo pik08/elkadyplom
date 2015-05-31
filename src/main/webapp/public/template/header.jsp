@@ -1,6 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
 
 <div class="masthead">
     <h3 class="muted">
@@ -18,10 +19,25 @@
                             <p><spring:message code="header.home"/></p>
                         </a>
                     </li>
-                    <li ng-class="{'gray': activeURL == 'topics', '': activeURL != 'topics'}"><a title='<spring:message code="header.topics"/>' href="<c:url value='/protected/topics'/>"><p><spring:message code="header.topics"/></p></a></li>
+                    <li ng-class="{'gray': activeURL == 'topics', '': activeURL != 'topics'}">
+                        <a title='<spring:message code="header.topics"/>' href="<c:url value='/protected/topics'/>">
+                            <p><spring:message code="header.topics"/></p>
+                        </a>
+                    </li>
+                    <security:authorize  ifAnyGranted="ROLE_STUDENT">
+                    <li ng-class="{'gray': activeURL == 'topics', '': activeURL != 'topics'}">
+                        <a title='<spring:message code="header.student.topic"/>' href="<c:url value='/protected/topics'/>">
+                            <p><spring:message code="header.student.topic"/></p>
+                        </a>
+                    </li>
+                        </security:authorize>
                 </ul>
                 <ul class="nav pull-right">
-                    <li><a href="<c:url value='/logout' />" title='<spring:message code="header.logout"/>'><p class="displayInLine"><spring:message code="header.logout"/>&nbsp;(${user.name})</p></a></li>
+                    <li>
+                        <a href="<c:url value='/logout' />" title='<spring:message code="header.logout"/>'>
+                            <p class="displayInLine"><spring:message code="header.logout"/>&nbsp;(${user.name})</p>
+                        </a>
+                    </li>
                 </ul>
             </div>
         </div>

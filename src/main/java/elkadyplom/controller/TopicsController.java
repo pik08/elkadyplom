@@ -128,24 +128,31 @@ public class TopicsController {
         return createListResponse(page, locale, "message.update.success", all);
     }
 
-    @Secured("ROLE_ADMIN")
     @RequestMapping(value = "/{topicId}", method = RequestMethod.DELETE, produces = "application/json")
     public ResponseEntity<?> delete(@PathVariable("topicId") int topicId,
                                     @RequestParam(required = false) String searchFor,
                                     @RequestParam(required = false, defaultValue = DEFAULT_PAGE_DISPLAYED_TO_USER) int page,
                                     Locale locale) {
-
-        try {
-            topicService.delete(topicId);
-        } catch (AccessDeniedException e) {
-            return new ResponseEntity<Object>(HttpStatus.FORBIDDEN);
+        boolean all = true;
+        if (isAdmin()) {
+            try {
+                topicService.delete(topicId);
+            } catch (AccessDeniedException e) {
+                return new ResponseEntity<Object>(HttpStatus.FORBIDDEN);
+            }
+        } else if (isSupervisor()) {
+            all = false;
+            if (!topicService.deleteBySupervisor(topicId, getCurrentUserEmail()))
+                return new ResponseEntity<Object>(HttpStatus.FORBIDDEN);
+        } else {
+            new ResponseEntity<Object>(HttpStatus.FORBIDDEN);
         }
 
         if (isSearchActivated(searchFor)) {
             return search(searchFor, page, locale, "message.delete.success");
         }
 
-        return createListResponse(page, locale, "message.delete.success", true);
+        return createListResponse(page, locale, "message.delete.success", all);
     }
 
     @RequestMapping(value = "/{keyword}", method = RequestMethod.GET, produces = "application/json")

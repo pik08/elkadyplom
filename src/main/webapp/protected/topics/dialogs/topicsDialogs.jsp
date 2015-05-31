@@ -1,6 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
-
+<%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
 
 <!-- NEW TOPIC ------------------------------------------------------------------>
 
@@ -58,13 +58,15 @@
                         </label>
                     </div>
                 </div>
-                <div ng-show="isAdmin">
+
+                <security:authorize ifAnyGranted="ROLE_ADMIN">
+                <div>
                     <div class="input-append">
                         <label>* <spring:message code="topics.supervisor"/>:</label>
                     </div>
                     <div class="input-append">
                         <select ng-options="s.id as s.name for s in supervisors"
-                                ng-required="isAdmin"
+                                required
                                 ng-model="topic.supervisorId"
                                 name="supervisor"
                                 ></select>
@@ -78,6 +80,8 @@
                         </label>
                     </div>
                 </div>
+                </security:authorize>
+
                 <div>
                     <div class="input-append">
                         <label>* <spring:message code="topics.student"/>:</label>
@@ -121,7 +125,9 @@
                         </label>
                     </div>
                 </div>
-                <div ng-show="isAdmin">
+
+                <security:authorize ifAnyGranted="ROLE_ADMIN">
+                <div>
                     <div class="input-append">
                         <label><spring:message code="topics.confirmed"/>:</label>
                     </div>
@@ -132,6 +138,8 @@
                                 />
                     </div>
                 </div>
+                </security:authorize>
+
                 <input type="submit"
                        class="btn btn-inverse"
                        ng-click="createTopic(newTopicForm);"
@@ -215,13 +223,15 @@
                         </label>
                     </div>
                 </div>
-                <div ng-show="isAdmin">
+
+                <security:authorize ifAnyGranted="ROLE_ADMIN">
+                <div>
                     <div class="input-append">
                         <label>* <spring:message code="topics.supervisor"/>:</label>
                     </div>
                     <div class="input-append">
                         <select ng-options="s.id as s.name for s in supervisors"
-                               ng-required="isAdmin"
+                               required
                                ng-model="topic.supervisorId"
                                name="supervisor"
                                ></select>
@@ -235,6 +245,8 @@
                         </label>
                     </div>
                 </div>
+                </security:authorize>
+
                 <div>
                     <div class="input-append">
                         <label>* <spring:message code="topics.student"/>:</label>
@@ -278,7 +290,9 @@
                         </label>
                     </div>
                 </div>
-                <div ng-show="isAdmin">
+
+                <security:authorize ifAnyGranted="ROLE_ADMIN">
+                <div>
                     <div class="input-append">
                         <label><spring:message code="topics.confirmed"/>:</label>
                     </div>
@@ -289,6 +303,8 @@
                                 />
                     </div>
                 </div>
+                </security:authorize>
+
                 <input type="submit"
                        class="btn btn-inverse"
                        ng-click="updateTopic(updateTopicForm);"
@@ -401,3 +417,80 @@
 </div>
 
 <!-- END OF SEARCH TOPIC ------------------------------------------------------------->
+<!-- START DETAILS TOPIC ------------------------------------------------------------->
+<div id="detailsTopicsModal"
+     class="modal hide fade in centering insertAndUpdateDialogs"
+     role="dialog"
+     aria-labelledby="detailsTopicsModalLabel"
+     aria-hidden="true">
+    <div class="modal-header">
+        <h3 id="detailsTopicsModalLabel" class="displayInLine">
+            <spring:message code="topic.details"/>
+        </h3>
+    </div>
+    <div class="modal-body">
+        <form name="updateTopicForm" novalidate>
+            <input type="hidden"
+                   required
+                   ng-model="topic.id"
+                   name="id"
+                   value="{{topic.id}}"/>
+
+            <div class="pull-left">
+
+                <table class="table table-bordered table-striped">
+                    <tr>
+                        <th scope="col">
+                            <label><b><spring:message code="topics.title"/>:</b></label>
+                        </th>
+                        <th scope="col">
+                            <label>{{topic.title}}</label>
+                        </th>
+                    </tr>
+                    <tr>
+                        <th scope="col">
+                            <label><b><spring:message code="topics.description"/>:</b></label>
+                        </th>
+                        <th scope="col">
+                            <label>{{topic.description}}</label>
+                        </th>
+                    </tr>
+                    <tr>
+                        <th scope="col">
+                            <label><b><spring:message code="topics.supervisor"/>:</b></label>
+                        </th>
+                        <th scope="col">
+                            <label>{{topic.supervisorName}}</label>
+                        </th>
+                    </tr>
+                    <tr>
+                        <th scope="col">
+                            <label><b><spring:message code="topics.thesisType"/>:</b></label>
+                        </th>
+                        <th scope="col" ng-show="topic.thesisType == 'TYPE_ENGINEER' ">
+                            <label>
+                                <spring:message code="topics.thesisType.engineer"/>
+                            </label>
+                        </th>
+                        <th scope="col" ng-show="topic.thesisType == 'TYPE_MASTER' ">
+                            <label>
+                                <spring:message code="topics.thesisType.master"/>
+                            </label>
+                        </th>
+                    </tr>
+
+                </table>
+                <button class="btn btn-inverse"
+                        data-dismiss="modal"
+                        ng-click="exit('#detailsTopicsModal');"
+                        aria-hidden="true">
+                    <spring:message code="ok"/></button>
+            </div>
+        </form>
+    </div>
+    <span class="alert alert-error dialogErrorMessage"
+          ng-show="errorOnSubmit">
+        <spring:message code="request.error"/>
+    </span>
+</div>
+<!--END TOPIC DETAILS --------------------------------------------------->

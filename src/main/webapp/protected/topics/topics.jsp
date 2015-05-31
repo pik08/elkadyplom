@@ -2,6 +2,7 @@
          pageEncoding="UTF-8" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
 <div class="row-fluid" ng-controller="topicsController">
     <h2>
         <p class="text-center">
@@ -71,48 +72,86 @@
                 <tr>
                     <th scope="col"><spring:message code="topics.title"/></th>
                     <th scope="col"><spring:message code="topics.description"/></th>
-                    <th ng-show="isAdmin" scope="col"><spring:message code="topics.supervisor"/></th>
-                    <th scope="col"><spring:message code="topics.student"/></th>
-                    <th scope="col"><spring:message code="topics.confirmed"/></th>
+                    <th scope="col"><spring:message code="topics.supervisor"/></th>
+                    <security:authorize  ifAnyGranted="ROLE_SUPERVISOR, ROLE_ADMIN">
+                        <th scope="col"><spring:message code="topics.student"/></th>
+                        <th scope="col"><spring:message code="topics.confirmed"/></th>
+                    </security:authorize>
                     <th scope="col"><spring:message code="topics.thesisType"/></th>
-                    <th scope="col"></th>
+                    <th scope="col">
+                        <security:authorize  ifAnyGranted="ROLE_STUDENT">
+                            <spring:message code="topics.details"/>
+                        </security:authorize>
+                    </th>
+
                 </tr>
                 </thead>
                 <tbody>
                 <tr ng-repeat="topic in page.source">
                     <td class="tdTopicsCentered">{{topic.title}}</td>
                     <td class="tdTopicsCentered">{{topic.description}}</td>
-                    <td ng-show="isAdmin" class="tdTopicsCentered">{{topic.supervisorName}}</td>
-                    <td class="tdTopicsCentered">{{topic.studentName}}</td>
-
-                    <td class="tdTopicsCentered" ng-show="topic.confirmed"><spring:message code="yes"/></td>
-                    <td class="tdTopicsCentered" ng-show="!topic.confirmed"><spring:message code="no"/></td>
-
+                    <td class="tdTopicsCentered">{{topic.supervisorName}}</td>
+                    <security:authorize  ifAnyGranted="ROLE_SUPERVISOR, ROLE_ADMIN">
+                         <td class="tdTopicsCentered">{{topic.studentName}}</td>
+                        <td class="tdTopicsCentered" ng-show="topic.confirmed"><spring:message code="yes"/></td>
+                        <td class="tdTopicsCentered" ng-show="!topic.confirmed"><spring:message code="no"/></td>
+                     </security:authorize>
                     <td class="tdTopicsCentered" ng-show="topic.thesisType == 'TYPE_ENGINEER' ">
                         <spring:message code="topics.thesisType.engineer"/></td>
                     <td class="tdTopicsCentered" ng-show="topic.thesisType == 'TYPE_MASTER' ">
                         <spring:message code="topics.thesisType.master"/></td>
 
                     <td class="width15">
-                        <div class="text-center">
-                            <input type="hidden" value="{{topic.id}}"/>
-                            <a href="#updateTopicsModal"
-                               ng-click="selectedTopic(topic);"
-                               ng-show="isAdmin || !topic.confirmed"
-                               role="button"
-                               title="<spring:message code="topic.edit"/>"
-                               class="btn btn-inverse" data-toggle="modal">
-                                <i class="icon-pencil"></i>
-                            </a>
-                            <a href="#deleteTopicsModal"
-                               ng-click="selectedTopic(topic);"
-                               ng-show="isAdmin"
-                               role="button"
-                               title="<spring:message code="topic.delete"/>"
-                               class="btn btn-inverse" data-toggle="modal">
-                                <i class="icon-minus"></i>
-                            </a>
-                        </div>
+                        <security:authorize  ifAnyGranted="ROLE_ADMIN">
+                            <div class="text-center">
+                                <input type="hidden" value="{{topic.id}}"/>
+                                <a href="#updateTopicsModal"
+                                   ng-click="selectedTopic(topic);"
+                                   role="button"
+                                   title="<spring:message code="topic.edit"/>"
+                                   class="btn btn-inverse" data-toggle="modal">
+                                    <i class="icon-pencil"></i>
+                                </a>
+                                <a href="#deleteTopicsModal"
+                                   ng-click="selectedTopic(topic);"
+                                   role="button"
+                                   title="<spring:message code="topic.delete"/>"
+                                   class="btn btn-inverse" data-toggle="modal">
+                                    <i class="icon-minus"></i>
+                                </a>
+                            </div>
+                        </security:authorize>
+                        <security:authorize  ifAnyGranted="ROLE_SUPERVISOR">
+                            <div class="text-center" ng-show="!topic.confirmed">
+                                <input type="hidden" value="{{topic.id}}"/>
+                                <a href="#updateTopicsModal"
+                                   ng-click="selectedTopic(topic);"
+                                   role="button"
+                                   title="<spring:message code="topic.edit"/>"
+                                   class="btn btn-inverse" data-toggle="modal">
+                                    <i class="icon-pencil"></i>
+                                </a>
+                                <a href="#deleteTopicsModal"
+                                   ng-click="selectedTopic(topic);"
+                                   role="button"
+                                   title="<spring:message code="topic.delete"/>"
+                                   class="btn btn-inverse" data-toggle="modal">
+                                    <i class="icon-minus"></i>
+                                </a>
+                            </div>
+                        </security:authorize>
+                        <security:authorize  ifAnyGranted="ROLE_STUDENT">
+                            <div class="text-center">
+                                <input type="hidden" value="{{topic.id}}"/>
+                                <a href="#detailsTopicsModal"
+                                   ng-click="selectedTopic(topic);"
+                                   role="button"
+                                   title="<spring:message code="topic.details"/>"
+                                   class="btn btn-inverse" data-toggle="modal">
+                                    <i class="icon-eye-open"></i>
+                                </a>
+                            </div>
+                        </security:authorize>
                     </td>
                 </tr>
                 </tbody>
@@ -152,18 +191,20 @@
                 </button>
             </div>
         </div>
-        <div ng-class="{'text-center': displayCreateTopicButton == true, 'none': displayCreateTopicButton == false}">
-            <br/>
-            <a href="#addTopicsModal"
-               role="button"
-               ng-click="resetTopic();"
-               title="<spring:message code='create'/>&nbsp;<spring:message code='topic'/>"
-               class="btn btn-inverse"
-               data-toggle="modal">
-                <i class="icon-plus"></i>
-                &nbsp;&nbsp;<spring:message code="topic.create"/>
-            </a>
-        </div>
+        <security:authorize  ifAnyGranted="ROLE_SUPERVISOR, ROLE_ADMIN">
+            <div ng-class="{'text-center': displayCreateTopicButton == true, 'none': displayCreateTopicButton == false}">
+                <br/>
+                <a href="#addTopicsModal"
+                   role="button"
+                   ng-click="resetTopic();"
+                   title="<spring:message code='create'/>&nbsp;<spring:message code='topic'/>"
+                   class="btn btn-inverse"
+                   data-toggle="modal">
+                    <i class="icon-plus"></i>
+                    &nbsp;&nbsp;<spring:message code="topic.create"/>
+                </a>
+            </div>
+        </security:authorize>
 
         <jsp:include page="dialogs/topicsDialogs.jsp"/>
 
