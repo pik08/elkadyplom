@@ -78,7 +78,11 @@
                         <th scope="col"><spring:message code="topics.confirmed"/></th>
                     </security:authorize>
                     <th scope="col"><spring:message code="topics.thesisType"/></th>
-                    <th scope="col"><spring:message code="topics.details"/></th>
+                    <th scope="col">
+                        <security:authorize  ifAnyGranted="ROLE_STUDENT">
+                            <spring:message code="topics.details"/>
+                        </security:authorize>
+                    </th>
 
                 </tr>
                 </thead>
@@ -92,13 +96,13 @@
                         <td class="tdTopicsCentered" ng-show="topic.confirmed"><spring:message code="yes"/></td>
                         <td class="tdTopicsCentered" ng-show="!topic.confirmed"><spring:message code="no"/></td>
                      </security:authorize>
-
                     <td class="tdTopicsCentered" ng-show="topic.thesisType == 'TYPE_ENGINEER' ">
                         <spring:message code="topics.thesisType.engineer"/></td>
                     <td class="tdTopicsCentered" ng-show="topic.thesisType == 'TYPE_MASTER' ">
                         <spring:message code="topics.thesisType.master"/></td>
-                    <security:authorize  ifAnyGranted="ROLE_SUPERVISOR, ROLE_ADMIN">
-                        <td class="width15">
+
+                    <td class="width15">
+                        <security:authorize  ifAnyGranted="ROLE_ADMIN">
                             <div class="text-center">
                                 <input type="hidden" value="{{topic.id}}"/>
                                 <a href="#updateTopicsModal"
@@ -116,10 +120,27 @@
                                     <i class="icon-minus"></i>
                                 </a>
                             </div>
-                        </td>
-                    </security:authorize>
-                    <security:authorize  ifAnyGranted="ROLE_STUDENT">
-                        <td class="width15">
+                        </security:authorize>
+                        <security:authorize  ifAnyGranted="ROLE_SUPERVISOR">
+                            <div class="text-center" ng-show="!topic.confirmed">
+                                <input type="hidden" value="{{topic.id}}"/>
+                                <a href="#updateTopicsModal"
+                                   ng-click="selectedTopic(topic);"
+                                   role="button"
+                                   title="<spring:message code="topic.edit"/>"
+                                   class="btn btn-inverse" data-toggle="modal">
+                                    <i class="icon-pencil"></i>
+                                </a>
+                                <a href="#deleteTopicsModal"
+                                   ng-click="selectedTopic(topic);"
+                                   role="button"
+                                   title="<spring:message code="topic.delete"/>"
+                                   class="btn btn-inverse" data-toggle="modal">
+                                    <i class="icon-minus"></i>
+                                </a>
+                            </div>
+                        </security:authorize>
+                        <security:authorize  ifAnyGranted="ROLE_STUDENT">
                             <div class="text-center">
                                 <input type="hidden" value="{{topic.id}}"/>
                                 <a href="#detailsTopicsModal"
@@ -130,8 +151,8 @@
                                     <i class="icon-eye-open"></i>
                                 </a>
                             </div>
-                        </td>
-                    </security:authorize>
+                        </security:authorize>
+                    </td>
                 </tr>
                 </tbody>
             </table>

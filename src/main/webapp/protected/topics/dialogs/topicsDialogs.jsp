@@ -1,6 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
-
+<%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
 
 <!-- NEW TOPIC ------------------------------------------------------------------>
 
@@ -58,6 +58,8 @@
                         </label>
                     </div>
                 </div>
+
+                <security:authorize ifAnyGranted="ROLE_ADMIN">
                 <div>
                     <div class="input-append">
                         <label>* <spring:message code="topics.supervisor"/>:</label>
@@ -76,6 +78,19 @@
                                     <spring:message code="required"/>
                                 </span>
                         </label>
+                    </div>
+                </div>
+                </security:authorize>
+
+                <div>
+                    <div class="input-append">
+                        <label>* <spring:message code="topics.student"/>:</label>
+                    </div>
+                    <div class="input-append">
+                        <select ng-options="s.id as s.name for s in students"
+                                ng-model="topic.studentId"
+                                name="student"
+                                ></select>
                     </div>
                 </div>
                 <div>
@@ -110,6 +125,8 @@
                         </label>
                     </div>
                 </div>
+
+                <security:authorize ifAnyGranted="ROLE_ADMIN">
                 <div>
                     <div class="input-append">
                         <label><spring:message code="topics.confirmed"/>:</label>
@@ -121,6 +138,8 @@
                                 />
                     </div>
                 </div>
+                </security:authorize>
+
                 <input type="submit"
                        class="btn btn-inverse"
                        ng-click="createTopic(newTopicForm);"
@@ -204,6 +223,8 @@
                         </label>
                     </div>
                 </div>
+
+                <security:authorize ifAnyGranted="ROLE_ADMIN">
                 <div>
                     <div class="input-append">
                         <label>* <spring:message code="topics.supervisor"/>:</label>
@@ -222,6 +243,19 @@
                                     <spring:message code="required"/>
                                 </span>
                         </label>
+                    </div>
+                </div>
+                </security:authorize>
+
+                <div>
+                    <div class="input-append">
+                        <label>* <spring:message code="topics.student"/>:</label>
+                    </div>
+                    <div class="input-append">
+                        <select ng-options="s.id as s.name for s in students"
+                                ng-model="topic.studentId"
+                                name="student"
+                                ></select>
                     </div>
                 </div>
                 <div>
@@ -256,6 +290,8 @@
                         </label>
                     </div>
                 </div>
+
+                <security:authorize ifAnyGranted="ROLE_ADMIN">
                 <div>
                     <div class="input-append">
                         <label><spring:message code="topics.confirmed"/>:</label>
@@ -267,6 +303,8 @@
                                 />
                     </div>
                 </div>
+                </security:authorize>
+
                 <input type="submit"
                        class="btn btn-inverse"
                        ng-click="updateTopic(updateTopicForm);"
