@@ -183,6 +183,11 @@ body {
     height: 380px;
 }
 
+.declarationDialog {
+    width: 500px;
+    min-height: 400px;
+}
+
 .displayInLine {
     display: inline;
 }

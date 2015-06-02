@@ -1,6 +1,7 @@
 package elkadyplom.controller;
 
 import elkadyplom.dto.BasicUserDto;
+import elkadyplom.dto.DeclarationDto;
 import elkadyplom.dto.TopicDto;
 import elkadyplom.dto.TopicListDto;
 import org.apache.commons.lang.StringUtils;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import elkadyplom.service.TopicService;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -46,11 +48,11 @@ public class TopicsController {
     @RequestMapping(method = RequestMethod.GET, produces = "application/json")
     public ResponseEntity<?> listAll(@RequestParam int page, Locale locale) {
         if (isAdmin())
-            return createListResponse(page, locale, true);      // wszystkie tematy
+            return createListResponse(page, locale, true);          // wszystkie tematy
         else if (isSupervisor())
             return createListResponse(page, locale, false);        // tylko tematy do niego przypisane
         else
-            return getBadRequest();
+            return createListResponse(page, locale, true);          // wszystkie tematy FIXME
     }
 
     @RequestMapping(value="/supervisors", method = RequestMethod.GET, produces = "application/json")
@@ -67,11 +69,6 @@ public class TopicsController {
         return new ResponseEntity<List<BasicUserDto>>(studentList, HttpStatus.OK);
     }
 
-
-    @RequestMapping(value="/isAdmin", method = RequestMethod.GET, produces = "application/json")
-    public ResponseEntity<?> isAdmin(Locale locale) {
-        return new ResponseEntity<Boolean>(isAdmin(), HttpStatus.OK);
-    }
 
     @RequestMapping(method = RequestMethod.POST, produces = "application/json")
     public ResponseEntity<?> create(@ModelAttribute("topic") TopicDto topicDto,
@@ -99,6 +96,38 @@ public class TopicsController {
         return createListResponse(page, locale, "message.create.success", all);
     }
 
+    @RequestMapping(value="/declare", method = RequestMethod.GET, produces = "application/json")
+    public ResponseEntity<?> getDeclarations(Locale locale) {
+        if (isAdmin() || isSupervisor())
+            return getBadRequest();
+
+        List<DeclarationDto> declarationDtos = topicService.getDeclarationDtos(getCurrentUserEmail());
+        if (declarationDtos == null)
+            declarationDtos = new ArrayList<DeclarationDto>();
+        return new ResponseEntity<List<DeclarationDto>>(declarationDtos, HttpStatus.OK);
+    }
+
+    @RequestMapping(value="/declare", method = RequestMethod.POST, produces = "application/json")
+    public ResponseEntity<?> saveDeclarations(@ModelAttribute("declarationList") ArrayList<DeclarationDto> declarationList,
+                                              @RequestParam(required = false) String searchFor,
+                                              @RequestParam(required = false, defaultValue = DEFAULT_PAGE_DISPLAYED_TO_USER) int page,
+                                              Locale locale) {
+
+//        declarationList.add(new DeclarationDto(1, 2, 16, "", ""));
+//        declarationList.add(new DeclarationDto(2, 1, 18, "", ""));
+//        declarationList.add(new DeclarationDto(3, 3, 19, "", ""));
+//        declarationList.add(new DeclarationDto(0, 4, 1001, "", ""));
+
+        if (!topicService.saveDeclarations(declarationList, getCurrentUserEmail())) {
+            return getBadRequest();
+        }
+
+        if (isSearchActivated(searchFor)) {
+            return search(searchFor, page, locale, "message.create.success");
+        }
+
+        return createListResponse(page, locale, "message.create.success", true); // FIXME
+    }
 
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT, produces = "application/json")
@@ -204,7 +233,7 @@ public class TopicsController {
     private ResponseEntity<?> createListResponse(int page, Locale locale, String messageKey, boolean all) {
         TopicListDto topicListDto;
         if (all)
-           topicListDto  = listAll(page);
+            topicListDto  = listAll(page);
         else
             topicListDto = listForSupervisor(page);
 
@@ -243,7 +272,7 @@ public class TopicsController {
 
     private boolean isAdmin() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-         return auth.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"));
+        return auth.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"));
     }
 
     private boolean isSupervisor() {

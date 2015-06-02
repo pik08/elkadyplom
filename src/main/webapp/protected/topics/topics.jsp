@@ -92,10 +92,10 @@
                     <td class="tdTopicsCentered">{{topic.description}}</td>
                     <td class="tdTopicsCentered">{{topic.supervisorName}}</td>
                     <security:authorize  ifAnyGranted="ROLE_SUPERVISOR, ROLE_ADMIN">
-                         <td class="tdTopicsCentered">{{topic.studentName}}</td>
+                        <td class="tdTopicsCentered">{{topic.studentName}}</td>
                         <td class="tdTopicsCentered" ng-show="topic.confirmed"><spring:message code="yes"/></td>
                         <td class="tdTopicsCentered" ng-show="!topic.confirmed"><spring:message code="no"/></td>
-                     </security:authorize>
+                    </security:authorize>
                     <td class="tdTopicsCentered" ng-show="topic.thesisType == 'TYPE_ENGINEER' ">
                         <spring:message code="topics.thesisType.engineer"/></td>
                     <td class="tdTopicsCentered" ng-show="topic.thesisType == 'TYPE_MASTER' ">
@@ -150,6 +150,14 @@
                                    class="btn btn-inverse" data-toggle="modal">
                                     <i class="icon-eye-open"></i>
                                 </a>
+                                <input type="hidden" value="{{topic.id}}"/>
+                                <a href="#"
+                                   ng-click="addTopicToDeclared(topic);"
+                                   role="button"
+                                   title="<spring:message code="topics.declare"/>"
+                                   class="btn btn-inverse" data-toggle="modal">
+                                    <i class="icon-plus"></i>
+                                </a>
                             </div>
                         </security:authorize>
                     </td>
@@ -202,6 +210,19 @@
                    data-toggle="modal">
                     <i class="icon-plus"></i>
                     &nbsp;&nbsp;<spring:message code="topic.create"/>
+                </a>
+            </div>
+        </security:authorize>
+        <security:authorize  ifAnyGranted="ROLE_STUDENT">
+            <div ng-class="{'text-center': displayCreateTopicButton == true, 'none': displayCreateTopicButton == false}">
+                <br/>
+                <a href="#declareTopicsModal"
+                   role="button"
+                   title="<spring:message code="declarations.header"/>"
+                   class="btn btn-inverse"
+                   data-toggle="modal">
+                    <i class="icon-plus"></i>
+                    &nbsp;&nbsp;<spring:message code="declarations.header"/>
                 </a>
             </div>
         </security:authorize>

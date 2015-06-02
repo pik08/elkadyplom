@@ -27,7 +27,7 @@
                                autofocus
                                ng-model="topic.title"
                                name="name"
-                               />
+                                />
                     </div>
                     <div class="input-append">
                         <label>
@@ -47,7 +47,7 @@
                                required
                                ng-model="topic.description"
                                name="description"
-                               />
+                                />
                     </div>
                     <div class="input-append">
                         <label>
@@ -60,26 +60,26 @@
                 </div>
 
                 <security:authorize ifAnyGranted="ROLE_ADMIN">
-                <div>
-                    <div class="input-append">
-                        <label>* <spring:message code="topics.supervisor"/>:</label>
-                    </div>
-                    <div class="input-append">
-                        <select ng-options="s.id as s.name for s in supervisors"
-                                required
-                                ng-model="topic.supervisorId"
-                                name="supervisor"
-                                ></select>
-                    </div>
-                    <div class="input-append">
-                        <label>
+                    <div>
+                        <div class="input-append">
+                            <label>* <spring:message code="topics.supervisor"/>:</label>
+                        </div>
+                        <div class="input-append">
+                            <select ng-options="s.id as s.name for s in supervisors"
+                                    required
+                                    ng-model="topic.supervisorId"
+                                    name="supervisor"
+                                    ></select>
+                        </div>
+                        <div class="input-append">
+                            <label>
                                 <span class="alert alert-error"
                                       ng-show="displayValidationError && newTopicForm.supervisorId.$error.required">
                                     <spring:message code="required"/>
                                 </span>
-                        </label>
+                            </label>
+                        </div>
                     </div>
-                </div>
                 </security:authorize>
 
                 <div>
@@ -99,13 +99,13 @@
                     </div>
                     <div class="input-append">
                         <label>
-                        <input type="radio"
-                               required
-                               ng-model="topic.thesisType"
-                               value="TYPE_ENGINEER"
-                               name="thesisType"
-                                />
-                        <spring:message code="topics.thesisType.engineer"/>
+                            <input type="radio"
+                                   required
+                                   ng-model="topic.thesisType"
+                                   value="TYPE_ENGINEER"
+                                   name="thesisType"
+                                    />
+                            <spring:message code="topics.thesisType.engineer"/>
                         </label><label>
                         <input type="radio"
                                required
@@ -114,7 +114,7 @@
                                name="thesisType"
                                 />
                         <spring:message code="topics.thesisType.master"/>
-                        </label>
+                    </label>
                     </div>
                     <div class="input-append">
                         <label>
@@ -127,17 +127,17 @@
                 </div>
 
                 <security:authorize ifAnyGranted="ROLE_ADMIN">
-                <div>
-                    <div class="input-append">
-                        <label><spring:message code="topics.confirmed"/>:</label>
+                    <div>
+                        <div class="input-append">
+                            <label><spring:message code="topics.confirmed"/>:</label>
+                        </div>
+                        <div class="input-append">
+                            <input type="checkbox"
+                                   ng-model="topic.confirmed"
+                                   name="confirmed"
+                                    />
+                        </div>
                     </div>
-                    <div class="input-append">
-                        <input type="checkbox"
-                               ng-model="topic.confirmed"
-                               name="confirmed"
-                                />
-                    </div>
-                </div>
                 </security:authorize>
 
                 <input type="submit"
@@ -192,7 +192,7 @@
                                required
                                ng-model="topic.title"
                                name="title"
-                               />
+                                />
                     </div>
                     <div class="input-append">
                         <label>
@@ -212,7 +212,7 @@
                                required
                                ng-model="topic.description"
                                name="description"
-                               />
+                                />
                     </div>
                     <div class="input-append">
                         <label>
@@ -225,26 +225,26 @@
                 </div>
 
                 <security:authorize ifAnyGranted="ROLE_ADMIN">
-                <div>
-                    <div class="input-append">
-                        <label>* <spring:message code="topics.supervisor"/>:</label>
-                    </div>
-                    <div class="input-append">
-                        <select ng-options="s.id as s.name for s in supervisors"
-                               required
-                               ng-model="topic.supervisorId"
-                               name="supervisor"
-                               ></select>
-                    </div>
-                    <div class="input-append">
-                        <label>
+                    <div>
+                        <div class="input-append">
+                            <label>* <spring:message code="topics.supervisor"/>:</label>
+                        </div>
+                        <div class="input-append">
+                            <select ng-options="s.id as s.name for s in supervisors"
+                                    required
+                                    ng-model="topic.supervisorId"
+                                    name="supervisor"
+                                    ></select>
+                        </div>
+                        <div class="input-append">
+                            <label>
                                 <span class="alert alert-error"
                                       ng-show="displayValidationError && updateTopicForm.supervisorId.$error.required">
                                     <spring:message code="required"/>
                                 </span>
-                        </label>
+                            </label>
+                        </div>
                     </div>
-                </div>
                 </security:authorize>
 
                 <div>
@@ -292,17 +292,17 @@
                 </div>
 
                 <security:authorize ifAnyGranted="ROLE_ADMIN">
-                <div>
-                    <div class="input-append">
-                        <label><spring:message code="topics.confirmed"/>:</label>
+                    <div>
+                        <div class="input-append">
+                            <label><spring:message code="topics.confirmed"/>:</label>
+                        </div>
+                        <div class="input-append">
+                            <input type="checkbox"
+                                   ng-model="topic.confirmed"
+                                   name="confirmed"
+                                    />
+                        </div>
                     </div>
-                    <div class="input-append">
-                        <input type="checkbox"
-                               ng-model="topic.confirmed"
-                               name="confirmed"
-                                />
-                    </div>
-                </div>
                 </security:authorize>
 
                 <input type="submit"
@@ -386,7 +386,7 @@
                            required
                            ng-model="searchFor"
                            name="searchFor"
-                           />
+                            />
                 </div>
                 <div class="input-append displayInLine">
                     <label class="displayInLine">
@@ -417,7 +417,7 @@
 </div>
 
 <!-- END OF SEARCH TOPIC ------------------------------------------------------------->
-<!-- START DETAILS TOPIC ------------------------------------------------------------->
+<!-- TOPIC DETAILS ------------------------------------------------------------------->
 <div id="detailsTopicsModal"
      class="modal hide fade in centering insertAndUpdateDialogs"
      role="dialog"
@@ -493,4 +493,95 @@
         <spring:message code="request.error"/>
     </span>
 </div>
-<!--END TOPIC DETAILS --------------------------------------------------->
+<!-- END OF TOPIC DETAILS --------------------------------------------------->
+
+<!-- TOPIC DECLARATIONS ----------------------------------------------------->
+
+<div id="declareTopicsModal"
+     class="modal hide fade in centering declarationDialog"
+     role="dialog"
+     aria-labelledby="declareTopicsModalLabel"
+     aria-hidden="true">
+    <div class="modal-header">
+        <h3 id="declareTopicsModalLabel" class="displayInLine">
+            <spring:message code="declarations.header"/>
+        </h3>
+    </div>
+    <div class="modal-body">
+        <form name="declareTopicsForm" novalidate >
+            <div class="pull-left">
+
+                <table class="table table-bordered table-striped">
+                    <thead>
+                    <tr>
+                        <th scope="col"><spring:message code="topics.title"/></th>
+                        <th scope="col"><spring:message code="topics.supervisor"/></th>
+                        <th scope="col"><spring:message code="declaration.rank"/></th>
+                        <th scope="col"></th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    <tr ng-repeat="d in declarations">
+                        <td class="tdTopicsCentered">{{d.topicTitle}}</td>
+                        <td class="tdTopicsCentered">{{d.topicSupervisorName}}</td>
+                        <td class="tdTopicsCentered">
+                            <div>
+                                <div class="input-append">
+                                    <input type="text"
+                                           required
+                                           ng-model="d.rank"
+                                           name="rank"
+                                            />
+                                </div>
+                                <div class="input-append">
+                                    <label>
+                                        <span class="alert alert-error"
+                                              ng-show="displayValidationError">
+                                                <spring:message code="required"/>
+                                        </span>
+                                    </label>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="tdTopicsCentered">
+                            <a href="#"
+                               ng-click="removeTopicSelectedToDeclare(t);"
+                               role="button"
+                               title="<spring:message code="topic.delete"/>"
+                               class="btn btn-inverse" data-toggle="modal">
+                                <i class="icon-minus"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <input type="submit"
+                       class="btn btn-inverse"
+                       ng-click="declareTopics(declareTopicsForm);"
+                       value='<spring:message code="declarations.add"/>'/>
+                <button class="btn btn-inverse"
+                        data-dismiss="modal"
+                        ng-click="exit('#declareTopicsModal');"
+                        aria-hidden="true">
+                    <spring:message code="cancel"/>
+                </button>
+                <button class="btn btn-inverse"
+                        data-dismiss="modal"
+                        ng-click="resetTopicsSelectedToDeclare()"
+                        aria-hidden="true">
+                    <spring:message code="removeAll"/>
+                </button>
+            </div>
+        </form>
+    </div>
+    <span class="alert alert-error dialogErrorMessage"
+          ng-show="errorOnSubmit">
+        <spring:message code="request.error"/>
+    </span>
+</div>
+
+
+
+<!-- END OF TOPIC DECLARATIONS ---------------------------------------------->

@@ -1,11 +1,14 @@
 package elkadyplom.service;
 
 import elkadyplom.dto.BasicUserDto;
+import elkadyplom.dto.DeclarationDto;
 import elkadyplom.dto.TopicDto;
+import elkadyplom.model.Declaration;
 import elkadyplom.model.Role;
 import elkadyplom.model.Topic;
 import elkadyplom.dto.TopicListDto;
 import elkadyplom.model.User;
+import elkadyplom.repository.DeclarationRepository;
 import elkadyplom.repository.UserRepository;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +32,9 @@ public class TopicService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private DeclarationRepository declarationRepository;
 
     @Transactional(readOnly = true)
     public TopicListDto findAll(int page, int maxResults) {
@@ -266,5 +272,58 @@ public class TopicService {
 
         topicsRepository.delete(topicId);
         return true;
+    }
+
+    @Transactional
+    public boolean saveDeclarations(List<DeclarationDto> declarationDtoList, String studentEmail) {
+        if (declarationDtoList == null)
+            return false;
+
+        User student = userRepository.findByEmail(studentEmail);
+        if (student == null || !student.isStudent())
+            return false;
+
+        Topic topic;
+        for (DeclarationDto dto : declarationDtoList) {
+            if (dto == null)
+                return false;
+
+            if (dto.getDeclarationId() > 0) {
+                // istnieje już taka deklaracja
+                Declaration d = declarationRepository.findOne(dto.getDeclarationId());
+                if (d == null)
+                    return false;
+                d.setRank(dto.getRank());   // tylko to się może zmienić
+                declarationRepository.save(d);
+            } else {
+                // tworzymy nową deklarację
+                topic = topicsRepository.findOne(dto.getTopicId());
+                if (topic == null)
+                    return false;
+                Declaration d = new Declaration(student, topic, dto.getRank());
+                declarationRepository.save(d);
+            }
+        }
+
+        return true;
+    }
+
+    public List<DeclarationDto> getDeclarationDtos(String currentUserEmail) {
+        if (currentUserEmail == null)
+            return null;
+
+        User student = userRepository.findByEmail(currentUserEmail);
+        if (student == null || !student.isStudent())
+            return null;
+
+        List<Declaration> declarations = declarationRepository.findByStudent(student);
+        if (declarations == null)
+            return null;
+
+        List<DeclarationDto> dtoList = new ArrayList<DeclarationDto>();
+        for (Declaration d : declarations)
+            dtoList.add(new DeclarationDto(d));
+
+        return dtoList;
     }
 }

@@ -21,6 +21,9 @@ function topicsController($scope, $http) {
 
     $scope.searchFor = "";
 
+    $scope.declarations = [];
+    $scope.declarationList = [];
+
     $scope.getTopicList = function () {
         var url = $scope.url;
         $scope.lastAction = 'list';
@@ -237,11 +240,11 @@ function topicsController($scope, $http) {
             url: url,
             params: params
         }).success(function (data) {
-                $scope.resetTopic();
-                $scope.finishAjaxCallOnSuccess(data, "#deleteTopicsModal", false);
-            }).error(function(data, status, headers, config) {
-                $scope.handleErrorInDialogs(status);
-            });
+            $scope.resetTopic();
+            $scope.finishAjaxCallOnSuccess(data, "#deleteTopicsModal", false);
+        }).error(function(data, status, headers, config) {
+            $scope.handleErrorInDialogs(status);
+        });
     };
 
     $scope.resetSearch = function(){
@@ -279,7 +282,76 @@ function topicsController($scope, $http) {
             });
     }
 
+    $scope.addTopicToDeclared = function(topic) {
+        // if ($scope.declarations.indexOf(topic) == -1) FIXME
+        $scope.declarations.push({
+            topicId : topic.id,
+            topicTitle : topic.title,
+            topicSupervisorName : topic.supervisor.name,
+            declarationId : 0,
+            rank : 1
+        });
+    }
+
+    $scope.resetTopicsSelectedToDeclare = function() {
+        $scope.declarations = [];
+    }
+
+    $scope.removeTopicSelectedToDeclare = function(topic) {
+        var idx = $scope.declarations.indexOf(topic);
+        if (idx > -1)
+            $scope.declarations.splice(idx, 1);
+    }
+
+    $scope.getDeclarations = function() {
+        var url = $scope.url + "/declare";
+        $scope.lastAction = 'getDeclarations';
+
+        $scope.startDialogAjaxRequest();
+
+        var config = {}
+
+        $http.get(url, config)
+            .success(function (data) {
+                $scope.declarations = data;
+            })
+            .error(function () {
+                $scope.state = 'error';
+                $scope.displayCreateTopicButton = false;
+            });
+    }
+
+    $scope.declareTopics = function(declareTopicsForm) {
+        if (!declareTopicsForm.$valid) {
+            $scope.displayValidationError = true;
+            return;
+        }
+
+        $scope.lastAction = 'declare';
+
+        var url = $scope.url + '/declare';
+
+        $scope.startDialogAjaxRequest();
+
+        var config = {headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}};
+
+        $scope.addSearchParametersIfNeeded(config, false);
+
+        $scope.declarations.forEach(function(t) {
+            $scope.declarationList.push(t.declaration);
+        });
+
+        $http.post(url, $.param($scope.declarationList), config)
+            .success(function (data) {
+                $scope.finishAjaxCallOnSuccess(data, "#declareTopicsModal", false);
+            })
+            .error(function(data, status, headers, config) {
+                $scope.handleErrorInDialogs(status);
+            });
+    }
+
     $scope.getTopicList();
     $scope.getStudentList();
     $scope.getSupervisorList();
+    $scope.getDeclarations();
 }
