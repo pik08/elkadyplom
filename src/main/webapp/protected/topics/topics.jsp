@@ -70,7 +70,8 @@
         <security:authorize  ifAnyGranted="ROLE_SUPERVISOR, ROLE_ADMIN">
             <div ng-class="{'text-center': displayCreateTopicButton == true, 'none': displayCreateTopicButton == false}">
                 <br/>
-                <a href="#addTopicsModal"
+                <a id="addTopicsModal"
+                   href="#addTopicsModal"
                    role="button"
                    ng-click="resetTopic();"
                    title="<spring:message code='create'/>&nbsp;<spring:message code='topic'/>"
@@ -84,7 +85,8 @@
         <security:authorize  ifAnyGranted="ROLE_STUDENT">
             <div ng-class="{'text-center': displayCreateTopicButton == true, 'none': displayCreateTopicButton == false}">
                 <br/>
-                <a href="#declareTopicsModal"
+                <a id="declareTopicsModal"
+                   href="#declareTopicsModal"
                    role="button"
                    title="<spring:message code="declarations.header"/>"
                    class="btn btn-inverse"
