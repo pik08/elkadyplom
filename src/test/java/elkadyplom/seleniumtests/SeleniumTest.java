@@ -83,7 +83,7 @@ public class SeleniumTest {
       try {
         waitElement = driver.findElement(by);
       } catch (NoSuchElementException e) {
-        logger.info("waiting...");
+        logger.info("waiting for {}...", by);
       }
 
       if (waitElement != null && waitElement.isDisplayed()) {
