@@ -5,6 +5,8 @@ import elkadyplom.dto.DeclarationDto;
 import elkadyplom.dto.TopicDto;
 import elkadyplom.dto.TopicListDto;
 import org.apache.commons.lang.StringUtils;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.type.TypeReference;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import elkadyplom.service.TopicService;
 
+import javax.annotation.processing.SupportedSourceVersion;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -108,17 +111,25 @@ public class TopicsController {
     }
 
     @RequestMapping(value="/declare", method = RequestMethod.POST, produces = "application/json")
-    public ResponseEntity<?> saveDeclarations(@ModelAttribute("declarationList") ArrayList<DeclarationDto> declarationList,
+    public ResponseEntity<?> saveDeclarations(@RequestBody String declarationList,
                                               @RequestParam(required = false) String searchFor,
                                               @RequestParam(required = false, defaultValue = DEFAULT_PAGE_DISPLAYED_TO_USER) int page,
                                               Locale locale) {
 
-//        declarationList.add(new DeclarationDto(1, 2, 16, "", ""));
-//        declarationList.add(new DeclarationDto(2, 1, 18, "", ""));
-//        declarationList.add(new DeclarationDto(3, 3, 19, "", ""));
-//        declarationList.add(new DeclarationDto(0, 4, 1001, "", ""));
+        ObjectMapper mapper = new ObjectMapper();
+        List<DeclarationDto> myObjects = null;
+        try {
+            myObjects = mapper.readValue(declarationList, new TypeReference<List<DeclarationDto>>() {
+            });
+        }catch (Exception e){
+            return getBadRequest();
+        }
 
-        if (!topicService.saveDeclarations(declarationList, getCurrentUserEmail())) {
+        if (myObjects != null) {
+            return getBadRequest();
+        }
+
+        if (!topicService.saveDeclarations(myObjects, getCurrentUserEmail())) {
             return getBadRequest();
         }
 

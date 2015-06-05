@@ -546,7 +546,7 @@
                         </td>
                         <td class="tdTopicsCentered">
                             <a href="#"
-                               ng-click="removeTopicSelectedToDeclare(t);"
+                               ng-click="removeTopicSelectedToDeclare(d);"
                                role="button"
                                title="<spring:message code="topic.delete"/>"
                                class="btn btn-inverse" data-toggle="modal">

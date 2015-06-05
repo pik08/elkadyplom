@@ -287,7 +287,7 @@ function topicsController($scope, $http) {
         $scope.declarations.push({
             topicId : topic.id,
             topicTitle : topic.title,
-            topicSupervisorName : topic.supervisor.name,
+            topicSupervisorName : topic.supervisorName,
             declarationId : 0,
             rank : 1
         });
@@ -304,7 +304,7 @@ function topicsController($scope, $http) {
     }
 
     $scope.getDeclarations = function() {
-        var url = $scope.url + "/declare";
+        var url = $scope.url + "declare";
         $scope.lastAction = 'getDeclarations';
 
         $scope.startDialogAjaxRequest();
@@ -329,7 +329,7 @@ function topicsController($scope, $http) {
 
         $scope.lastAction = 'declare';
 
-        var url = $scope.url + '/declare';
+        var url = $scope.url + 'declare';
 
         $scope.startDialogAjaxRequest();
 
@@ -337,11 +337,11 @@ function topicsController($scope, $http) {
 
         $scope.addSearchParametersIfNeeded(config, false);
 
-        $scope.declarations.forEach(function(t) {
+      /*  $scope.declarations.forEach(function(t) {
             $scope.declarationList.push(t.declaration);
         });
-
-        $http.post(url, $.param($scope.declarationList), config)
+*/
+        $http.post(url, $scope.declarations)
             .success(function (data) {
                 $scope.finishAjaxCallOnSuccess(data, "#declareTopicsModal", false);
             })
