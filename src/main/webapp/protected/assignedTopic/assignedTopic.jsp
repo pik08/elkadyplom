@@ -8,8 +8,7 @@
         <h2 >
             <spring:message code='assignedTopic.title'/>
         </h2>
-        <h3 ng-if="!page.source.length">
-            <p></p>
+        <h3 ng-show="!page.source.length">
             <spring:message code="assignedTopic.noTopicMessage"/>
         </h3>
         <table width="50%" ng-repeat="topic in page.source" class=" table table-bordered table-striped table-hover">
