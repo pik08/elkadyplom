@@ -19,18 +19,18 @@
                             <p><spring:message code="header.home"/></p>
                         </a>
                     </li>
-                    <li ng-class="{'gray': activeURL == 'topics', '': activeURL != 'topics'}">
+                    <li ng-class="{'active': activeURL == 'topics', '': activeURL != 'topics'}">
                         <a title='<spring:message code="header.topics"/>' href="<c:url value='/protected/topics'/>">
                             <p><spring:message code="header.topics"/></p>
                         </a>
                     </li>
                     <security:authorize  ifAnyGranted="ROLE_STUDENT">
-                    <li ng-class="{'gray': activeURL == 'topics', '': activeURL != 'topics'}">
-                        <a title='<spring:message code="header.student.topic"/>' href="<c:url value='/protected/topics'/>">
+                    <li ng-class="{'active': activeURL == 'assignedTopic', '': activeURL != 'assignedTopic'}">
+                        <a title='<spring:message code="header.student.topic"/>' href="<c:url value='/protected/assignedTopic/'/>">
                             <p><spring:message code="header.student.topic"/></p>
                         </a>
                     </li>
-                        </security:authorize>
+                    </security:authorize>
                 </ul>
                 <ul class="nav pull-right">
                     <li>

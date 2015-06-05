@@ -16,6 +16,9 @@
     <definition name="topicsList" extends="master.page">
         <put-attribute name="body" value="/protected/topics/topics.jsp"/>
     </definition>
+    <definition name="assignedTopic" extends="master.page">
+        <put-attribute name="body" value="/protected/assignedTopic/assignedTopic.jsp"/>
+    </definition>
     <definition name="login" extends="master.page">
         <put-attribute name="header" value=""/>
         <put-attribute name="footer" value=""/>

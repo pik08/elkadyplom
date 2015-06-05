@@ -1,7 +1,12 @@
 function LocationController($scope, $location) {
     if($location.$$absUrl.lastIndexOf('/topics') > 0){
         $scope.activeURL = 'topics';
-    } else{
+    }
+    if($location.$$absUrl.lastIndexOf('/assignedTopic') > 0){
+        $scope.activeURL = 'assignedTopic';
+    }
+
+    if($location.$$absUrl.lastIndexOf('/home') > 0){
         $scope.activeURL = 'home';
     }
 }
