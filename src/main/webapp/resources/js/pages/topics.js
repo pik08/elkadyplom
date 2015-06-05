@@ -337,10 +337,6 @@ function topicsController($scope, $http) {
 
         $scope.addSearchParametersIfNeeded(config, false);
 
-      /*  $scope.declarations.forEach(function(t) {
-            $scope.declarationList.push(t.declaration);
-        });
-*/
         $http.post(url, $scope.declarations)
             .success(function (data) {
                 $scope.finishAjaxCallOnSuccess(data, "#declareTopicsModal", false);

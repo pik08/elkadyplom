@@ -119,17 +119,14 @@ public class TopicsController {
         ObjectMapper mapper = new ObjectMapper();
         List<DeclarationDto> myObjects = null;
         try {
-            myObjects = mapper.readValue(declarationList, new TypeReference<List<DeclarationDto>>() {
-            });
+            myObjects = mapper.readValue(declarationList, new TypeReference<List<DeclarationDto>>() {});
+            if  (myObjects != null) {
+                if (!topicService.saveDeclarations(myObjects, getCurrentUserEmail())) {
+                    return getBadRequest();
+                }
+            }
+
         }catch (Exception e){
-            return getBadRequest();
-        }
-
-        if (myObjects != null) {
-            return getBadRequest();
-        }
-
-        if (!topicService.saveDeclarations(myObjects, getCurrentUserEmail())) {
             return getBadRequest();
         }
 

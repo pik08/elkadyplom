@@ -284,6 +284,9 @@ public class TopicService {
             return false;
 
         Topic topic;
+
+        List<DeclarationDto> allStudentDeclarationDtos = getDeclarationDtos(studentEmail);
+
         for (DeclarationDto dto : declarationDtoList) {
             if (dto == null)
                 return false;
@@ -294,6 +297,7 @@ public class TopicService {
                 if (d == null)
                     return false;
                 d.setRank(dto.getRank());   // tylko to się może zmienić
+                allStudentDeclarationDtos.remove(dto);
                 declarationRepository.save(d);
             } else {
                 // tworzymy nową deklarację
@@ -303,6 +307,11 @@ public class TopicService {
                 Declaration d = new Declaration(student, topic, dto.getRank());
                 declarationRepository.save(d);
             }
+        }
+
+        for (DeclarationDto dto: allStudentDeclarationDtos) {
+            Declaration d = declarationRepository.findOne(dto.getDeclarationId());
+            declarationRepository.delete(d);
         }
 
         return true;
