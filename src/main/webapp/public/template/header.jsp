@@ -26,8 +26,8 @@
                     </li>
                     <security:authorize  ifAnyGranted="ROLE_STUDENT">
                     <li ng-class="{'active': activeURL == 'assignedTopic', '': activeURL != 'assignedTopic'}">
-                        <a title='<spring:message code="header.student.topic"/>' href="<c:url value='/protected/assignedTopic/'/>">
-                            <p><spring:message code="header.student.topic"/></p>
+                        <a title='<spring:message code="assignedTopic.title"/>' href="<c:url value='/protected/assignedTopic/'/>">
+                            <p><spring:message code="assignedTopic.title"/></p>
                         </a>
                     </li>
                     </security:authorize>

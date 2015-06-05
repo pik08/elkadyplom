@@ -438,12 +438,12 @@
 
             <div class="pull-left">
 
-                <table class="table table-bordered table-striped">
+                <table  class="table table-bordered table-striped">
                     <tr>
-                        <th scope="col">
+                        <th scope="col" width="50%">
                             <label><b><spring:message code="topics.title"/>:</b></label>
                         </th>
-                        <th scope="col">
+                        <th scope="col" width="50%">
                             <label>{{topic.title}}</label>
                         </th>
                     </tr>

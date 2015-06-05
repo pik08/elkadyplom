@@ -64,6 +64,23 @@ public class TopicService {
         return buildResult(result);
     }
 
+    @Transactional(readOnly = true)
+    public TopicListDto findByAssignedStudent(int page, int maxResults, String studentEmail) {
+        User supervisor = userRepository.findByEmail(studentEmail);
+        if (supervisor == null)
+            return null;
+
+        Page<Topic> result = executeQueryFindByAssignedStudent(page, maxResults, supervisor);
+
+        if(shouldExecuteSameQueryInLastPage(page, result)){
+            int lastPage = result.getTotalPages() - 1;
+            result = executeQueryFindByAssignedStudent(lastPage, maxResults, supervisor);
+        }
+
+        return buildResult(result);
+    }
+
+
     public void save(Topic topic) {
         topicsRepository.save(topic);
     }
@@ -117,6 +134,12 @@ public class TopicService {
         final PageRequest pageRequest = new PageRequest(page, maxResults, sortByNameASC());
 
         return topicsRepository.findBySupervisor(pageRequest, supervisor);
+    }
+
+    private Page<Topic> executeQueryFindByAssignedStudent(int page, int maxResults, User student) {
+        final PageRequest pageRequest = new PageRequest(page, maxResults, sortByNameASC());
+
+        return topicsRepository.findByStudent(pageRequest, student);
     }
 
 

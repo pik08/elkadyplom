@@ -23,4 +23,5 @@ public interface TopicsRepository extends PagingAndSortingRepository<Topic, Inte
 
     public Page<Topic> findBySupervisor(Pageable pageable, User supervisor);
 
+    public Page<Topic> findByStudent(Pageable pageable, User student);
 }
