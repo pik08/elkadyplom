@@ -4,6 +4,9 @@ import elkadyplom.dto.BasicUserDto;
 import elkadyplom.dto.DeclarationDto;
 import elkadyplom.dto.TopicDto;
 import elkadyplom.dto.TopicListDto;
+import elkadyplom.model.Declaration;
+import elkadyplom.service.DeclarationService;
+import elkadyplom.service.UserService;
 import org.apache.commons.lang.StringUtils;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
@@ -38,6 +41,12 @@ public class TopicsController {
     private TopicService topicService;
 
     @Autowired
+    private UserService userService;
+
+    @Autowired
+    private DeclarationService declarationService;
+
+    @Autowired
     private MessageSource messageSource;
 
     @Value("10")
@@ -57,21 +66,6 @@ public class TopicsController {
         else
             return createListResponse(page, locale, true);          // wszystkie tematy FIXME
     }
-
-    @RequestMapping(value="/supervisors", method = RequestMethod.GET, produces = "application/json")
-    public ResponseEntity<?> getSupervisors(Locale locale) {
-        List<BasicUserDto> supervisorList = topicService.getSupervisorList();
-
-        return new ResponseEntity<List<BasicUserDto>>(supervisorList, HttpStatus.OK);
-    }
-
-    @RequestMapping(value="/students", method = RequestMethod.GET, produces = "application/json")
-    public ResponseEntity<?> getStudents(Locale locale) {
-        List<BasicUserDto> studentList = topicService.getStudentList();
-
-        return new ResponseEntity<List<BasicUserDto>>(studentList, HttpStatus.OK);
-    }
-
 
     @RequestMapping(method = RequestMethod.POST, produces = "application/json")
     public ResponseEntity<?> create(@ModelAttribute("topic") TopicDto topicDto,
@@ -104,7 +98,7 @@ public class TopicsController {
         if (isAdmin() || isSupervisor())
             return getBadRequest();
 
-        List<DeclarationDto> declarationDtos = topicService.getDeclarationDtos(getCurrentUserEmail());
+        List<DeclarationDto> declarationDtos = declarationService.getDeclarationDtos(getCurrentUserEmail());
         if (declarationDtos == null)
             declarationDtos = new ArrayList<DeclarationDto>();
         return new ResponseEntity<List<DeclarationDto>>(declarationDtos, HttpStatus.OK);
@@ -121,7 +115,7 @@ public class TopicsController {
         try {
             myObjects = mapper.readValue(declarationList, new TypeReference<List<DeclarationDto>>() {});
             if  (myObjects != null) {
-                if (!topicService.saveDeclarations(myObjects, getCurrentUserEmail())) {
+                if (!declarationService.saveDeclarations(myObjects, getCurrentUserEmail())) {
                     return getBadRequest();
                 }
             }
@@ -216,18 +210,25 @@ public class TopicsController {
         Object[] args = {keyword};
 
         addSearchMessageToDto(topicListDto, locale, "message.search.for.active", args);
+        addUserListsToDto(topicListDto);
 
         return new ResponseEntity<TopicListDto>(topicListDto, HttpStatus.OK);
     }
 
+
+
     private TopicListDto listAll(int page) {
-        return topicService.findAll(page, maxResults);
+        TopicListDto dto =  topicService.findAll(page, maxResults);
+        dto.setStudents(userService.getStudentList());
+        dto.setSupervisors(userService.getSupervisorList());
+        return dto;
     }
 
     private TopicListDto listForSupervisor(int page) {
         String supervisorEmail = getCurrentUserEmail();
-        return topicService.findBySupervisor(page, maxResults, supervisorEmail);
-
+        TopicListDto dto = topicService.findBySupervisor(page, maxResults, supervisorEmail);
+        dto.setStudents(userService.getStudentList());
+        return dto;
     }
 
     private ResponseEntity<TopicListDto> returnListToUser(TopicListDto topicList) {
@@ -290,5 +291,14 @@ public class TopicsController {
 
     private String getCurrentUserEmail() {
         return ((User)SecurityContextHolder.getContext().getAuthentication().getPrincipal() ).getUsername() ;
+    }
+
+    private void addUserListsToDto(TopicListDto topicListDto) {
+        if (isAdmin()) {
+            topicListDto.setSupervisors(userService.getSupervisorList());
+            topicListDto.setStudents(userService.getStudentList());
+        } else if (isAdmin()) {
+            topicListDto.setStudents(userService.getStudentList());
+        }
     }
 }

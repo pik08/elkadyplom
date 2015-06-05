@@ -15,6 +15,7 @@ function topicsController($scope, $http) {
     $scope.displaySearchButton = false;
     $scope.displayCreateTopicButton = false;
 
+    $scope.students = [];
     $scope.supervisors = [];
 
     $scope.topic = {};
@@ -102,6 +103,9 @@ function topicsController($scope, $http) {
                 $scope.exit(modalId);
             }
         }
+
+        $scope.students = data.students;
+        $scope.supervisors = data.supervisors;
 
         $scope.lastAction = '';
     };
@@ -254,34 +258,6 @@ function topicsController($scope, $http) {
         $scope.displaySearchMessage = false;
     };
 
-    $scope.getSupervisorList = function(){
-        var url = $scope.url + "supervisors";
-        var config = {};
-
-        $http.get(url, config)
-            .success(function (data) {
-                $scope.supervisors = data;
-            })
-            .error(function () {
-                $scope.state = 'error';
-                $scope.displayCreateTopicButton = false;
-            });
-    }
-
-    $scope.getStudentList = function(){
-        var url = $scope.url + "students";
-        var config = {};
-
-        $http.get(url, config)
-            .success(function (data) {
-                $scope.students = data;
-            })
-            .error(function () {
-                $scope.state = 'error';
-                $scope.displayCreateTopicButton = false;
-            });
-    }
-
     $scope.addTopicToDeclared = function(topic) {
         // if ($scope.declarations.indexOf(topic) == -1) FIXME
         $scope.declarations.push({
@@ -347,7 +323,5 @@ function topicsController($scope, $http) {
     }
 
     $scope.getTopicList();
-    $scope.getStudentList();
-    $scope.getSupervisorList();
     $scope.getDeclarations();
 }

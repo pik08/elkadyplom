@@ -90,8 +90,6 @@ public class TopicService {
         topicsRepository.delete(topicId);
     }
 
-
-
     @Transactional(readOnly = true)
     public TopicListDto findByKeyword(int page, int maxResults, String name) {
         Page<Topic> result = executeQueryFindByKeyword(page, maxResults, name);
@@ -148,7 +146,8 @@ public class TopicService {
     }
 
     private TopicListDto buildResult(Page<Topic> result) {
-        return new TopicListDto(result.getTotalPages(), result.getTotalElements(), result.getContent());
+        TopicListDto dto = new TopicListDto(result.getTotalPages(), result.getTotalElements(), result.getContent());
+        return dto;
     }
 
     private Page<Topic> executeQueryFindByKeyword(int page, int maxResults, String name) {
@@ -263,27 +262,6 @@ public class TopicService {
     }
 
 
-    public List<BasicUserDto> getSupervisorList() {
-        List<User> list = userRepository.getUserListByRole(Role.ROLE_SUPERVISOR);
-        List<BasicUserDto> supervisorList = new ArrayList<BasicUserDto>();
-
-        for (User u : list)
-            supervisorList.add(new BasicUserDto(u));
-
-        return supervisorList;
-    }
-
-
-    public List<BasicUserDto> getStudentList() {
-        List<User> list = userRepository.getUserListByRole(Role.ROLE_STUDENT);
-        List<BasicUserDto> studentList = new ArrayList<BasicUserDto>();
-
-        for (User u : list)
-            studentList.add(new BasicUserDto(u));
-
-        return studentList;
-    }
-
     public boolean deleteBySupervisor(int topicId, String supervisorEmail) {
         Topic topic = topicsRepository.findOne(topicId);
         if (topic == null || topic.isConfirmed())
@@ -297,65 +275,5 @@ public class TopicService {
         return true;
     }
 
-    @Transactional
-    public boolean saveDeclarations(List<DeclarationDto> declarationDtoList, String studentEmail) {
-        if (declarationDtoList == null)
-            return false;
 
-        User student = userRepository.findByEmail(studentEmail);
-        if (student == null || !student.isStudent())
-            return false;
-
-        Topic topic;
-
-        List<DeclarationDto> allStudentDeclarationDtos = getDeclarationDtos(studentEmail);
-
-        for (DeclarationDto dto : declarationDtoList) {
-            if (dto == null)
-                return false;
-
-            if (dto.getDeclarationId() > 0) {
-                // istnieje już taka deklaracja
-                Declaration d = declarationRepository.findOne(dto.getDeclarationId());
-                if (d == null)
-                    return false;
-                d.setRank(dto.getRank());   // tylko to się może zmienić
-                allStudentDeclarationDtos.remove(dto);
-                declarationRepository.save(d);
-            } else {
-                // tworzymy nową deklarację
-                topic = topicsRepository.findOne(dto.getTopicId());
-                if (topic == null)
-                    return false;
-                Declaration d = new Declaration(student, topic, dto.getRank());
-                declarationRepository.save(d);
-            }
-        }
-
-        for (DeclarationDto dto: allStudentDeclarationDtos) {
-            Declaration d = declarationRepository.findOne(dto.getDeclarationId());
-            declarationRepository.delete(d);
-        }
-
-        return true;
-    }
-
-    public List<DeclarationDto> getDeclarationDtos(String currentUserEmail) {
-        if (currentUserEmail == null)
-            return null;
-
-        User student = userRepository.findByEmail(currentUserEmail);
-        if (student == null || !student.isStudent())
-            return null;
-
-        List<Declaration> declarations = declarationRepository.findByStudent(student);
-        if (declarations == null)
-            return null;
-
-        List<DeclarationDto> dtoList = new ArrayList<DeclarationDto>();
-        for (Declaration d : declarations)
-            dtoList.add(new DeclarationDto(d));
-
-        return dtoList;
-    }
 }

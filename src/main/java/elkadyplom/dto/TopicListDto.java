@@ -1,6 +1,7 @@
 package elkadyplom.dto;
 
 import elkadyplom.model.Topic;
+import elkadyplom.model.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,16 +15,39 @@ public class TopicListDto {
 
     private List<TopicDto> topics;
 
+    private List<BasicUserDto> supervisors;
+    private List<BasicUserDto> students;
+
     public TopicListDto() {
     }
 
     public TopicListDto(int pages, long totalTopics, List<Topic> topics) {
+        this(pages, totalTopics, topics, null, null);
+    }
+
+    public TopicListDto(int pages, long totalTopics, List<Topic> topics, List<User> supervisors, List<User> students) {
         this.pagesCount = pages;
         this.totalTopics = totalTopics;
 
         this.topics = new ArrayList<TopicDto>();
-        for (Topic t : topics ) {
-            this.topics.add(new TopicDto(t));
+        if (topics != null) {
+            for (Topic t : topics) {
+                this.topics.add(new TopicDto(t));
+            }
+        }
+
+        this.supervisors = new ArrayList<BasicUserDto>();
+        if (supervisors != null) {
+            for (User supervisor : supervisors) {
+                this.supervisors.add(new BasicUserDto(supervisor));
+            }
+        }
+
+        this.students = new ArrayList<BasicUserDto>();
+        if (students != null) {
+            for (User student : students) {
+                this.students.add(new BasicUserDto(student));
+            }
         }
     }
 
@@ -65,5 +89,21 @@ public class TopicListDto {
 
     public void setSearchMessage(String searchMessage) {
         this.searchMessage = searchMessage;
+    }
+
+    public List<BasicUserDto> getSupervisors() {
+        return supervisors;
+    }
+
+    public void setSupervisors(List<BasicUserDto> supervisors) {
+        this.supervisors = supervisors;
+    }
+
+    public List<BasicUserDto> getStudents() {
+        return students;
+    }
+
+    public void setStudents(List<BasicUserDto> students) {
+        this.students = students;
     }
 }
