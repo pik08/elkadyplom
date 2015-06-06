@@ -3,13 +3,30 @@ package elkadyplom.dto;
 
 import elkadyplom.model.Topic;
 
+/**
+ * DTO trzymające dane zadeklarowanego tematu.
+ */
+
 public class DeclaredTopicDto {
 
+    /**
+     * Id tematu w bazie.
+     */
     private int topicId;
 
+    /**
+     * Imię i nazwisko promotora proponującego temat.
+     */
     private String supervisorName;
+
+    /**
+     * Tytuł tematu.
+     */
     private String title;
 
+    /**
+     * Czy temat został przyporządkowany.
+     */
     private boolean assigned = false;
 
     public DeclaredTopicDto() {

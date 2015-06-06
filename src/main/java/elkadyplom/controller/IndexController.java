@@ -5,10 +5,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+/**
+ * Konstroler obsługujący stronę powitalnej.
+ */
+
 @Controller
 @RequestMapping(value = "/protected/home")
 public class IndexController {
 
+    /**
+     * Metoda zwracająca widok strony powitalnej.
+     * @return widok strony powitalnej
+     */
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView welcome() {
         return new ModelAndView("welcomePage");

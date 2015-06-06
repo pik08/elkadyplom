@@ -20,6 +20,10 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Locale;
 
+/**
+ * Kontroler obsługujący stronę z przypisanymi tematami.
+ */
+
 @Controller
 @RequestMapping(value = "/protected/assignedTopic")
 public class AssignedTopicController {
@@ -30,25 +34,53 @@ public class AssignedTopicController {
     @Autowired
     private MessageSource messageSource;
 
+    /**
+     * Liczba winików na stronie.
+     */
     @Value("1")
     private int maxResults;
 
+    /**
+     * Metoda zwracająca widok tej strony.
+     * @return widok
+     */
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView welcome() {
         return new ModelAndView("assignedTopic");
     }
 
+    /**
+     * Metoda pobierająca listę przypisanych tematów.
+     * @param page numer strony
+     * @param locale informacja o jezyku
+     * @return ResponseEntity z listą tematów
+     */
     @RequestMapping(method = RequestMethod.GET, produces = "application/json")
     public ResponseEntity<?> listAll(@RequestParam int page, Locale locale) {
         if (isStudent())
-            return createListResponse(page, locale, false);          // wszystkie tematy
+            return createListResponse(page, locale, false);
         return createListResponse(page, locale, true);
     }
 
+    /**
+     * Metoda tworząca ResponseEntity z listą tematów.
+     * @param page numer strony
+     * @param locale informacja o języku
+     * @param all czy wybrać wszystkie tematy
+     * @return ResponseEntity z listą tematów
+     */
     private ResponseEntity<?> createListResponse(int page, Locale locale, boolean all) {
         return createListResponse(page, locale, null, all);
     }
 
+    /**
+     * Metoda tworząca ResponseEntity z listą tematów.
+     * @param page numer strony
+     * @param locale informacja o języku
+     * @param all czy wybrać wszystkie tematy
+     * @param messageKey kod wiadomości
+     * @return ResponseEntity z listą tematów
+     */
     private ResponseEntity<?> createListResponse(int page, Locale locale, String messageKey, boolean all) {
         TopicListDto topicListDto;
         if (all)
@@ -61,16 +93,34 @@ public class AssignedTopicController {
         return returnListToUser(topicListDto);
     }
 
+    /**
+     * Metoda zbierająca wszystkie tematy.
+     * @param page numer strony
+     * @return dto z listą tematów
+     */
     private TopicListDto listAll(int page) {
         return topicService.findAll(page, maxResults);
     }
 
+    /**
+     * Metoda zbierająca wszystkie tematy dla studenta.
+     * @param page numer strony
+     * @return dto z listą tematów
+     */
     private TopicListDto listForStudent(int page) {
         String supervisorEmail = getCurrentUserEmail();
         return topicService.findByAssignedStudent(page, maxResults, supervisorEmail);
 
     }
 
+    /**
+     * Metoda dołączająca wiadomość do dto.
+     * @param topicListDto dto
+     * @param locale informacja o języku
+     * @param actionMessageKey kod wiadomości
+     * @param args argumenty wiadomości
+     * @return dto z wiadomością
+     */
     private TopicListDto addActionMessageToDto(TopicListDto topicListDto, Locale locale, String actionMessageKey, Object[] args) {
         if (StringUtils.isEmpty(actionMessageKey)) {
             return topicListDto;
@@ -81,14 +131,27 @@ public class AssignedTopicController {
         return topicListDto;
     }
 
+    /**
+     * Metoda otaczająca dto w ResponseEntity
+     * @param topicList dto
+     * @return ResponseEntity z dto
+     */
     private ResponseEntity<TopicListDto> returnListToUser(TopicListDto topicList) {
         return new ResponseEntity<TopicListDto>(topicList, HttpStatus.OK);
     }
 
+    /**
+     * Metoda pobierająca login obecnego użytkownika.
+     * @return email
+     */
     private String getCurrentUserEmail() {
         return ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal() ).getUsername() ;
     }
 
+    /**
+     * Metoda sprawdzająca, czy użytkownik jest studentem.
+     * @return true jeśli użytkownik jest studentem
+     */
     private boolean isStudent() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         return auth.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_STUDENT"));

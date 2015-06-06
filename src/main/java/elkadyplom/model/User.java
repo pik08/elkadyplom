@@ -8,6 +8,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+/**
+ * Encja reprezentująca użytkownika systemu. Są trzy rodzaje użytkownikow: student, promotor i administrator.
+ */
+
 @Entity
 @Table(name = "users")
 public class User {
@@ -16,18 +20,33 @@ public class User {
     @GeneratedValue
     private int id;
 
+    /**
+     * Adres email uzytkownika, bedący jego loginem.
+     */
     @Column(nullable = false, unique = true)
     private String email;
 
+    /**
+     * Imię i nazwisko.
+     */
     @Column(nullable = false)
     private String name;
 
+    /**
+     * Czy uzytkownik jest niezablokowany w systemie.
+     */
     @Column(nullable = false)
     private String enabled;
 
+    /**
+     * Hasło.
+     */
     @Column(nullable = false)
     private String password;
 
+    /**
+     * Rola użytkownika.
+     */
     @Enumerated(EnumType.STRING)
     @Column(name = "user_role", nullable = false)
     private Role role;

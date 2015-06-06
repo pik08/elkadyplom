@@ -1,5 +1,23 @@
 package elkadyplom.model;
 
+/**
+ * Role użytkowników.
+ */
+
 public enum Role {
-    ROLE_ADMIN, ROLE_STUDENT, ROLE_SUPERVISOR
+
+    /**
+     * Administrator.
+     */
+    ROLE_ADMIN,
+
+    /**
+     * Student.
+     */
+    ROLE_STUDENT,
+
+    /**
+     * Promotor.
+     */
+    ROLE_SUPERVISOR
 }

@@ -3,9 +3,20 @@ package elkadyplom.dto;
 
 import elkadyplom.model.User;
 
+/**
+ * DTO przechowujące podstawowe dane użytkownika.
+ */
+
 public class BasicUserDto {
 
+    /**
+     * Identyfikator użytkownika w bazie.
+     */
     private int id;
+
+    /**
+     * Imię i nazwisko użytkownika.
+     */
     private String name;
 
     public BasicUserDto() {

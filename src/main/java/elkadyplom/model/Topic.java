@@ -5,6 +5,11 @@ import elkadyplom.dto.TopicDto;
 
 import javax.persistence.*;
 
+/**
+ * Encja reprezentująca temat pracy dyplomowej. Temat musi być przypisany do promotora i może mieć przypisanego studenta (jest to wtedy
+ * temat prywatny lub temat został już przyporządkowany na podstawie deklaracji studenta).
+ */
+
 @Entity
 @Table(name = "topics")
 public class Topic {
@@ -13,23 +18,41 @@ public class Topic {
     @GeneratedValue
     private int id;
 
+    /**
+     * Tytuł.
+     */
     private String title;
 
+    /**
+     * Opis.
+     */
     @Column(length = 500)
     private String description;
 
+    /**
+     * Promotor.
+     */
     @ManyToOne(optional = false)
     @JoinColumn(name = "supervisor_id")
     private User supervisor;
 
+    /**
+     * Przypisany student. Argument opcjonalny.
+     */
     @ManyToOne(optional = true)
     @JoinColumn(name = "student_id")
     private User student;
 
+    /**
+     * Typ pracy dyplomowej (inżynierska/magisterska).
+     */
     @Enumerated(EnumType.STRING)
     @Column(name = "thesis_type")
     private ThesisType thesisType;
 
+    /**
+     * Czy temat został zatwierdzony przez administratora.
+     */
     private boolean confirmed = false;
 
 
@@ -37,6 +60,12 @@ public class Topic {
         // enable default
     }
 
+    /**
+     * Konstruktor.
+     * @param topicDto dto z danymi tematu
+     * @param supervisor promotor
+     * @param student student
+     */
     public Topic(TopicDto topicDto, User supervisor, User student) {
         this.setAll(topicDto, supervisor, student);
     }
@@ -117,6 +146,12 @@ public class Topic {
         return student.getName();
     }
 
+    /**
+     * Metoda ustawiająca wszystkie parametry tematu.
+     * @param topicDto dto z danymi tematu
+     * @param supervisor promotor
+     * @param student student
+     */
     public void setAll(TopicDto topicDto, User supervisor, User student) {
         this.confirmed = topicDto.isConfirmed();
         this.description = topicDto.getDescription();

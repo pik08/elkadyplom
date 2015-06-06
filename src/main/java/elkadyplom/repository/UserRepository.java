@@ -9,12 +9,29 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
+/**
+ * Warstwa abstrakcji danych, zajmująca się użytkownikami.
+ */
+
 public interface UserRepository extends CrudRepository<User, Integer> {
 
-    public final static String GET_SUPERVISOR_LIST = "select u from Users u where u.role = :role";
+    /**
+     * Zapytanie wyszukujące użytkowników o danej roli.
+     */
+    public final static String GET_USERS_BY_ROLE = "select u from User u where u.role = :role";
 
+    /**
+     * Metoda wyszukująca użytkownika po adresie email.
+     * @param email adres email
+     * @return użytkownik
+     */
     User findByEmail(String email);
 
-    @Query()
+    /**
+     * Metoda wyszukująca uzytkowników o danej roli.
+     * @param role rola
+     * @return lista użytkowników
+     */
+    @Query(GET_USERS_BY_ROLE)
     List<User> getUserListByRole(@Param("role") Role role);
 }

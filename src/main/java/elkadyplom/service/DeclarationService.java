@@ -17,10 +17,17 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Warstwa serwisowa, zajmująca się deklaracjami studentów.
+ */
+
 @Service
 @Transactional
 public class DeclarationService {
 
+    /**
+     * Maksymalna liczba dyplomantów jednego promotora.
+     */
     private final int SUPERVISED_STUDENTS_LIMIT = 5;
 
     @Autowired
@@ -35,7 +42,12 @@ public class DeclarationService {
     @Autowired
     private CumulativeAverageRepository cumulativeAverageRepository;
 
-
+    /**
+     * Zapisuje deklaracje studenta na podstawie dto z danymi deklaracji.
+     * @param declarationDtoList dto z danymi deklaracji
+     * @param studentEmail login studenta
+     * @return true, jesli zapis się powiódł
+     */
     @Transactional
     public boolean saveDeclarations(List<DeclarationDto> declarationDtoList, String studentEmail) {
         if (declarationDtoList == null)
@@ -60,11 +72,16 @@ public class DeclarationService {
         return true;
     }
 
-    public List<DeclarationDto> getDeclarationDtos(String currentUserEmail) {
-        if (currentUserEmail == null)
+    /**
+     * Wyszukuje dotychczasowe deklaracje studenta i zwraca je w postaci dto.
+     * @param studentEmail login studenta
+     * @return lista dto z deklaracjami
+     */
+    public List<DeclarationDto> getDeclarationDtos(String studentEmail) {
+        if (studentEmail == null)
             return null;
 
-        User student = userRepository.findByEmail(currentUserEmail);
+        User student = userRepository.findByEmail(studentEmail);
         if (student == null || !student.isStudent())
             return null;
 
@@ -79,6 +96,11 @@ public class DeclarationService {
         return dtoList;
     }
 
+    /**
+     * Metoda zapisująca przyporządkowanie tematów do studentów.
+     * @param list lista przyporządkowań tematów do studentów
+     * @return true, jeśli zapis się powiedzie
+     */
     public boolean saveAssignedTopics(List<AssignmentDto> list) {
         if (list == null)
             return false;
@@ -112,6 +134,18 @@ public class DeclarationService {
         return true;
     }
 
+    /**
+     * Metoda przetwarzająca dane dot. średnich skumulowanych i deklaracji studentów i znajduje przyporządkowanie tematów do studentów.
+     *
+     * Zasady przyporzadkowania:
+     * 1. Z listy dziekańskiej biorę osobę bez przydzielonego tematu z najwyższą średnią skumulowaną.
+     * 2. Biorę pierwszy niezaalokowany jeszcze temat pracowni z listy preferencji tej osoby.
+     * 3. Jeżeli opiekun proponujący temat nie osiągnął limitu studentów przydzielam osobie niezaalokowany jeszcze temat
+     *    pracowni znajdujący się na jej liście preferencji.
+     * 4. Jeśli warunek na limit studentów danego opiekuna nie był spełniony usuwam temat z listy preferencji osoby i wracam do punktu 2.
+     *
+     * @return lista dto z przyporządkowaniami tematów do studentów
+     */
     public List<AssignmentDto> assignTopics() {
         Iterable<CumulativeAverage> averages = cumulativeAverageRepository.findAll(new Sort(Sort.Direction.DESC, "average"));
         List<Topic> assignedTopics = topicsRepository.findAssignedConfirmedTopics();
@@ -154,6 +188,12 @@ public class DeclarationService {
         return assignmentsList;
     }
 
+    /**
+     * Sprawdza, czy dany promotor osiągnął już limit dyplomantów (studentów przypisanych do jego tematów).
+     * @param supervisor
+     * @param assignedTopics
+     * @return
+     */
     private boolean isSupervisedStudentsLimitReached(User supervisor, List<Topic> assignedTopics) {
         if (supervisor == null || assignedTopics == null)
             return false;
@@ -170,6 +210,12 @@ public class DeclarationService {
         return supervisedStudentsNumber >= SUPERVISED_STUDENTS_LIMIT;
     }
 
+    /**
+     * Sprawdza, czy student ma już przypisany do siebie temat na liście przypisanych tematów.
+     * @param student stuent
+     * @param assignedTopics lista przypisanych tematów
+     * @return true, jesli student ma już przypisany temat
+     */
     private boolean hasAssignedTopic(User student, List<Topic> assignedTopics) {
         if (student == null || assignedTopics == null)
             return false;

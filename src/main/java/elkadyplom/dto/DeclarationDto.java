@@ -2,12 +2,35 @@ package elkadyplom.dto;
 
 import elkadyplom.model.Declaration;
 
+/**
+ * DTO przechowujące dane dot. deklaracji studenta.
+ */
+
 public class DeclarationDto {
 
+    /**
+     * Id deklaracji, jeśli jest już ona w bazie.
+     */
     private int declarationId;
+
+    /**
+     * Waga deklaracji.
+     */
     private int rank;
+
+    /**
+     * Id deklarowanego tematu.
+     */
     private int topicId;
+
+    /**
+     * Tytuł deklarowanego tematu.
+     */
     private String topicTitle;
+
+    /**
+     * Imię i nazwisko promotora danego tematu.
+     */
     private String topicSupervisorName;
 
     public DeclarationDto() {

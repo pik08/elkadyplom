@@ -315,7 +315,10 @@ function topicsController($scope, $http) {
 
         $http.post(url, $scope.declarations)
             .success(function (data) {
-                $scope.finishAjaxCallOnSuccess(data, "#declareTopicsModal", false);
+                $scope.successOnSubmit = true;
+                $scope.state = $scope.previousState;
+                $scope.lastAction = '';
+                $("#loadingModal").modal('hide');
             })
             .error(function(data, status, headers, config) {
                 $scope.handleErrorInDialogs(status);

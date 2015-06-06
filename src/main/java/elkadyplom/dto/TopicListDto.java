@@ -6,16 +6,46 @@ import elkadyplom.model.User;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Dto przechowujące listę tematów do wyświetlenia na stronie plus kilka innych parametrów - do wyświetlenia
+ * w widoku listy tematów.
+ */
+
 public class TopicListDto {
+
+    /**
+     * Liczba stron.
+     */
     private int pagesCount;
+
+    /**
+     * Liczba tematów.
+     */
     private long totalTopics;
 
+    /**
+     * Wiadomość o działaniu.
+     */
     private String actionMessage;
+
+    /**
+     * Wiadomość o wyszukiwaniu.
+     */
     private String searchMessage;
 
+    /**
+     * Lista dto z danymi tematów.
+     */
     private List<TopicDto> topics;
 
+    /**
+     * Lista danych promotorów.
+     */
     private List<BasicUserDto> supervisors;
+
+    /**
+     * Lista danych studentów.
+     */
     private List<BasicUserDto> students;
 
     public TopicListDto() {

@@ -16,6 +16,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
+/**
+ * Kontroler obsługujący stronę przypisywania tematów do studentów na podstawie ich deklaracji.
+ */
+
 @Secured("ROLE_ADMIN")
 @Controller
 @RequestMapping(value = "/protected/assign")
@@ -24,11 +28,20 @@ public class AdminAssignTopicsController {
     @Autowired
     DeclarationService declarationService;
 
+    /**
+     * Zwraca widok strony przypisywania tematów.
+     * @return widok strony
+     */
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView welcome() {
         return new ModelAndView("assign");
     }
 
+    /**
+     * Metoda pobierająca listę przyporządkowań tematów.
+     * @param locale informacja o języku
+     * @return ResponseEntity z listą przyporzadkowań tematów albo informacją o błędzie
+     */
     @RequestMapping(value = "/doAssign", method = RequestMethod.GET, produces = "application/json")
     public ResponseEntity<?> doAssignGet(Locale locale) {
 
@@ -39,6 +52,12 @@ public class AdminAssignTopicsController {
         return new ResponseEntity<List<AssignmentDto>>(result, HttpStatus.OK);
     }
 
+    /**
+     * Zapisuje listę przyporządkowań tematów do studentów.
+     * @param assignments tablica przyporządkowań (lista tu nie działa)
+     * @param locale informacja o języku
+     * @return ResponseEntity z listą przyporzadkowań tematów albo informacją o błędzie
+     */
     @RequestMapping(value = "/doAssign", method = RequestMethod.POST, produces = "application/json")
     public ResponseEntity<?> doAssign(@RequestBody AssignmentDto[] assignments, Locale locale) {
 

@@ -575,11 +575,20 @@
                 </button>
             </div>
         </form>
-    </div>
-    <span class="alert alert-error dialogErrorMessage"
-          ng-show="errorOnSubmit">
+        <span class="alert alert-error dialogErrorMessage"
+              ng-show="errorOnSubmit">
         <spring:message code="request.error"/>
-    </span>
+        </span>
+        <span class="alert alert-info dialogErrorMessage"
+              ng-show="successOnSubmit">
+            <spring:message code="request.success"/>
+        </span>
+        <span ng-show="!successOnSubmit && !errorOnSubmit">
+            <br/><br/>
+        </span>
+
+    </div>
+
 </div>
 
 

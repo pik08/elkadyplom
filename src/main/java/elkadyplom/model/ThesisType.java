@@ -1,5 +1,17 @@
 package elkadyplom.model;
 
+/**
+ * Enum reprezentujący typ pracy dyplomowej.
+ */
+
 public enum ThesisType {
-    TYPE_ENGINEER, TYPE_MASTER;
+    /**
+     * Praca inżynierska.
+     */
+    TYPE_ENGINEER,
+
+    /**
+     * Praca magisterska.
+     */
+    TYPE_MASTER;
 }

@@ -4,16 +4,55 @@ package elkadyplom.dto;
 import elkadyplom.model.ThesisType;
 import elkadyplom.model.Topic;
 
+/**
+ * DTO trzymające dane tematu pracy dyplomowej.
+ */
+
 public class TopicDto {
 
+    /**
+     * Identyfikator tematu w bazie.
+     */
     private int id;
+
+    /**
+     * Tytuł.
+     */
     private String title;
+
+    /**
+     * Opis.
+     */
     private String description;
+
+    /**
+     * Identyfikator promotora.
+     */
     private int supervisorId;
+
+    /**
+     * Identyfikator studenta, przypisanego do tematu.
+     */
     private int studentId;
+
+    /**
+     * Imię i nazwisko promotra tematu.
+     */
     private String supervisorName;
+
+    /**
+     * Imię i nazwisko studenta, przypisanego do tematu.
+     */
     private String studentName;
+
+    /**
+     * Czy temat jest powierdzony przez administratora.
+     */
     private boolean confirmed;
+
+    /**
+     * Typ pracy dyplomowej.
+     */
     private ThesisType thesisType;
 
     public TopicDto() {

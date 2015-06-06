@@ -2,16 +2,29 @@ package elkadyplom.model;
 
 import javax.persistence.*;
 
+/**
+ * Encja reprezentująca średnią skumulowaną studenta.
+ */
+
 @Entity
 @Table( name = "cumulative_averages" )
 public class CumulativeAverage {
 
+    /**
+     * Identyfikator.
+     */
     @Id
     @GeneratedValue
     private int id;
 
+    /**
+     * Średnia skumulowana.
+     */
     private double average;
 
+    /**
+     * Student, którego średnia to jest.
+     */
     @ManyToOne(optional = false)
     @JoinColumn(name = "student_id", unique = true)
     private User student;

@@ -4,14 +4,32 @@ import elkadyplom.model.CumulativeAverage;
 
 import java.util.List;
 
+
+/**
+ * DTO z danymi dotyczącymi przypisania tematu do studenta.
+ */
+
 public class AssignmentDto {
 
+    /**
+     * Id studenta w bazie.
+     */
     private int studentId;
 
+    /**
+     * Imię i nazwisko studenta.
+     */
     private String studentName;
 
+    /**
+     * Średnia skumulowana studenta.
+     */
     private double cumulativeAverage;
 
+    /**
+     * Lista zadeklarowanych przez studenta tematów
+     * (maksymalnie jeden z nich powinien mieć zaznaczone, że został studentowi przuporządkowany).
+     */
     List<DeclaredTopicDto> topics;
 
     public AssignmentDto() {

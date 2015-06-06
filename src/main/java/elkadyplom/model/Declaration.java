@@ -2,6 +2,10 @@ package elkadyplom.model;
 
 import javax.persistence.*;
 
+/**
+ * Encja reprezentująca deklarację studenta, że chciałby on realizować dany temat w ramach swojej pracy dyplomowej.
+ */
+
 @Entity
 @Table(name = "declarations")
 public class Declaration {
@@ -10,13 +14,22 @@ public class Declaration {
     @GeneratedValue
     private int id;
 
+    /**
+     * Waga, jaką student przypisuje tematowi. Im większa, tym mniej istotny temat ("pierwszy wybór" a "trzeci wybór").
+     */
     @Column( nullable = false )
     private int rank;
 
+    /**
+     * Student, który składa tę deklarację.
+     */
     @ManyToOne(optional = false)
     @JoinColumn(name = "student_id")
     private User student;
 
+    /**
+     * Deklarowany temat.
+     */
     @ManyToOne(optional = false)
     @JoinColumn(name = "topic_id")
     private Topic topic;
