@@ -6,14 +6,8 @@ import elkadyplom.model.CumulativeAverage;
 import elkadyplom.model.Declaration;
 import elkadyplom.model.Topic;
 import elkadyplom.model.User;
-import elkadyplom.repository.CumulativeAverageRepository;
-import elkadyplom.repository.DeclarationRepository;
-import elkadyplom.service.DeclarationService;
-import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -95,21 +89,21 @@ public class DeclarationServiceTest extends AbstractTestBase {
 
         // pierwszy powinien być stud1
         AssignmentDto dto = result.get(0);
-        assertAssigmentDto(dto, stud1, avg1.getAverage(), 3);
+        assertAssignmentDto(dto, stud1, avg1.getAverage(), 3);
         assertDeclaredTopicDto(dto.getTopics().get(0), sup1Topic2, true);
         assertDeclaredTopicDto(dto.getTopics().get(1), sup1Topic4, false);
         assertDeclaredTopicDto(dto.getTopics().get(2), sup2Topic1, false);
 
         // drugi powinien być stud3
         dto = result.get(1);
-        assertAssigmentDto(dto, stud3, avg3.getAverage(), 3);
+        assertAssignmentDto(dto, stud3, avg3.getAverage(), 3);
         assertDeclaredTopicDto(dto.getTopics().get(0), sup3Topic1, true);
         assertDeclaredTopicDto(dto.getTopics().get(1), sup3Topic3, false);
         assertDeclaredTopicDto(dto.getTopics().get(2), sup2Topic2, false);
 
         // trzeci powinien być stud4
         dto = result.get(2);
-        assertAssigmentDto(dto, stud4, avg4.getAverage(), 4);
+        assertAssignmentDto(dto, stud4, avg4.getAverage(), 4);
         assertDeclaredTopicDto(dto.getTopics().get(0), sup3Topic1, false);
         assertDeclaredTopicDto(dto.getTopics().get(1), sup1Topic1, true);
         assertDeclaredTopicDto(dto.getTopics().get(2), sup3Topic3, false);
@@ -117,7 +111,7 @@ public class DeclarationServiceTest extends AbstractTestBase {
 
         // czwarty powinien być stud2
         dto = result.get(3);
-        assertAssigmentDto(dto, stud2, avg2.getAverage(), 4);
+        assertAssignmentDto(dto, stud2, avg2.getAverage(), 4);
         assertDeclaredTopicDto(dto.getTopics().get(0), sup1Topic2, false);
         assertDeclaredTopicDto(dto.getTopics().get(1), sup3Topic1, false);
         assertDeclaredTopicDto(dto.getTopics().get(2), sup1Topic1, false);
@@ -125,7 +119,7 @@ public class DeclarationServiceTest extends AbstractTestBase {
 
     }
 
-    private void assertAssigmentDto(AssignmentDto dto, User stud, double average, int topicsNumber) {
+    private void assertAssignmentDto(AssignmentDto dto, User stud, double average, int topicsNumber) {
         assertNotNull(dto);
         assertEquals(stud.getId(), dto.getStudentId());
         assertEquals(stud.getName(), dto.getStudentName());

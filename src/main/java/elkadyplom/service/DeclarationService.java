@@ -79,7 +79,39 @@ public class DeclarationService {
         return dtoList;
     }
 
-//    @Secured("ROLE_ADMIN")
+    public boolean saveAssignedTopics(List<AssignmentDto> list) {
+        if (list == null)
+            return false;
+
+        List<Topic> topicsToSave = new ArrayList<Topic>();
+        for (AssignmentDto dto : list) {
+            if (dto == null)
+                return false;
+
+            User student = userRepository.findOne(dto.getStudentId());
+            if (student == null)
+                return false;
+
+            Topic topic = null;
+            if (dto.getTopics() == null)
+                return false;
+            for (DeclaredTopicDto t : dto.getTopics()) {
+                if (t != null && t.isAssigned()) {
+                    topic = topicsRepository.findOne(t.getTopicId());
+                    break;
+                }
+            }
+            if (topic == null || !topic.isConfirmed())
+                return false;
+
+            topic.setStudent(student);
+            topicsToSave.add(topic);
+        }
+
+        topicsRepository.save(topicsToSave);
+        return true;
+    }
+
     public List<AssignmentDto> assignTopics() {
         Iterable<CumulativeAverage> averages = cumulativeAverageRepository.findAll(new Sort(Sort.Direction.DESC, "average"));
         List<Topic> assignedTopics = topicsRepository.findAssignedConfirmedTopics();
