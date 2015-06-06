@@ -68,7 +68,7 @@ public class DeclarationService {
         if (student == null || !student.isStudent())
             return null;
 
-        List<Declaration> declarations = declarationRepository.findByStudent(student);
+        List<Declaration> declarations = declarationRepository.findByStudent(student, new Sort(Sort.Direction.ASC, "rank"));
         if (declarations == null)
             return null;
 
@@ -79,7 +79,7 @@ public class DeclarationService {
         return dtoList;
     }
 
-    @Secured("ROLE_ADMIN")
+//    @Secured("ROLE_ADMIN")
     public List<AssignmentDto> assignTopics() {
         Iterable<CumulativeAverage> averages = cumulativeAverageRepository.findAll(new Sort(Sort.Direction.DESC, "average"));
         List<Topic> assignedTopics = topicsRepository.findAssignedConfirmedTopics();
@@ -95,7 +95,7 @@ public class DeclarationService {
             if ( hasAssignedTopic(avg.getStudent(), assignedTopics) )
                 continue;
 
-            List<Declaration> declarations = declarationRepository.findByStudent(avg.getStudent());
+            List<Declaration> declarations = declarationRepository.findByStudent(avg.getStudent(), new Sort(Sort.Direction.ASC, "rank"));
             if (declarations == null || declarations.isEmpty())
                 continue;
 
@@ -114,7 +114,6 @@ public class DeclarationService {
                 alreadyAssigned = true;
                 assignedTopics.add(topic);
                 topicsList.add(new DeclaredTopicDto(topic, true));
-                break;
             }
 
             assignmentsList.add(new AssignmentDto(avg, topicsList));

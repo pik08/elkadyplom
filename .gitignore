@@ -4,3 +4,4 @@ target/*
 src/.idea/*
 *.iml
 *.log
+data/*

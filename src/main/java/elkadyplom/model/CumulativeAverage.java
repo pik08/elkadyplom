@@ -16,6 +16,10 @@ public class CumulativeAverage {
     @JoinColumn(name = "student_id", unique = true)
     private User student;
 
+    public CumulativeAverage() {
+        // enable default
+    }
+
     public CumulativeAverage(double average, User student) {
         this.average = average;
         this.student = student;
