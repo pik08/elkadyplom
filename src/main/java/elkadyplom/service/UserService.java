@@ -6,11 +6,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import elkadyplom.model.User;
 import elkadyplom.repository.UserRepository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Transactional
 public class UserService {
 
     @Autowired
@@ -39,5 +41,10 @@ public class UserService {
             studentList.add(new BasicUserDto(u));
 
         return studentList;
+    }
+
+    @Transactional
+    public void save(User user) {
+        userRepository.save(user);
     }
 }
