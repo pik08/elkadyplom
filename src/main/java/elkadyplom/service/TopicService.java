@@ -33,9 +33,6 @@ public class TopicService {
     @Autowired
     private UserRepository userRepository;
 
-    @Autowired
-    private DeclarationRepository declarationRepository;
-
     @Transactional(readOnly = true)
     public TopicListDto findAll(int page, int maxResults) {
         Page<Topic> result = executeQueryFindAll(page, maxResults);

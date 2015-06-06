@@ -16,6 +16,9 @@ public interface TopicsRepository extends PagingAndSortingRepository<Topic, Inte
     public final static String FIND_BY_KEYWORD_SUPERVISOR_QUERY =
             "select t from Topic t where t.title like :keyword and t.supervisor = :supervisor";
 
+    public final static String FIND_ASSIGNED_CONFIRMED_TOPICS =
+            "select t from Topic t where t.student is not null and t.confirmed = true";
+
     @Query(FIND_BY_KEYWORD_SUPERVISOR_QUERY)
     public Page<Topic> findByTitleAndSupervisor(@Param("keyword") String keyword, @Param("supervisor") User supervisor, Pageable pageable );
 
@@ -24,4 +27,7 @@ public interface TopicsRepository extends PagingAndSortingRepository<Topic, Inte
     public Page<Topic> findBySupervisor(Pageable pageable, User supervisor);
 
     public Page<Topic> findByStudent(Pageable pageable, User student);
+
+    @Query(FIND_ASSIGNED_CONFIRMED_TOPICS)
+    List<Topic> findAssignedConfirmedTopics();
 }

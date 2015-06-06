@@ -10,6 +10,7 @@ public class Declaration {
     @GeneratedValue
     private int id;
 
+    @Column( nullable = false )
     private int rank;
 
     @ManyToOne(optional = false)
@@ -82,4 +83,5 @@ public class Declaration {
 
         return topic.getSupervisorName();
     }
+
 }

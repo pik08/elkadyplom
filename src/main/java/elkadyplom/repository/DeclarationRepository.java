@@ -2,6 +2,7 @@ package elkadyplom.repository;
 
 import elkadyplom.model.Declaration;
 import elkadyplom.model.User;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -13,7 +14,7 @@ public interface DeclarationRepository extends CrudRepository<Declaration, Integ
 
     public final static String DELETE_BY_STUDENT_QUERY = "delete from Declaration d where d.student = :student";
 
-    public List<Declaration> findByStudent(User student);
+    public List<Declaration> findByStudent(User student, Sort sort);
 
     @Modifying
     @Query(DELETE_BY_STUDENT_QUERY)
