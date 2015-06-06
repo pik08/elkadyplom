@@ -44,4 +44,18 @@ public class CumulativeAverage {
     public void setStudent(User student) {
         this.student = student;
     }
+
+    public int getStudentId() {
+        if (student == null)
+            return 0;
+
+        return student.getId();
+    }
+
+    public String getStudentName() {
+        if (student == null)
+            return "";
+
+        return student.getName();
+    }
 }

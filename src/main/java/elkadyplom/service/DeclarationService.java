@@ -1,6 +1,8 @@
 package elkadyplom.service;
 
+import elkadyplom.dto.AssignmentDto;
 import elkadyplom.dto.DeclarationDto;
+import elkadyplom.dto.DeclaredTopicDto;
 import elkadyplom.model.*;
 import elkadyplom.repository.CumulativeAverageRepository;
 import elkadyplom.repository.DeclarationRepository;
@@ -78,13 +80,15 @@ public class DeclarationService {
     }
 
     @Secured("ROLE_ADMIN")
-    public void assignTopics() {
+    public List<AssignmentDto> assignTopics() {
         Iterable<CumulativeAverage> averages = cumulativeAverageRepository.findAll(new Sort(Sort.Direction.DESC, "average"));
         List<Topic> assignedTopics = topicsRepository.findAssignedConfirmedTopics();
         List<User> supervisors = userRepository.getUserListByRole(Role.ROLE_SUPERVISOR);
 
         if (averages == null || supervisors == null || supervisors.isEmpty() )
-            return;
+            return null;
+
+        List<AssignmentDto> assignmentsList = new ArrayList<AssignmentDto>();
 
         // iterowanie po średnich malejąco: kolejni studenci mają coraz niższe średnie
         for (CumulativeAverage avg : averages) {
@@ -95,38 +99,28 @@ public class DeclarationService {
             if (declarations == null || declarations.isEmpty())
                 continue;
 
+            List<DeclaredTopicDto> topicsList = new ArrayList<DeclaredTopicDto>();
+            boolean alreadyAssigned = false;
             for ( Declaration declaration : declarations ) {
-                if ( isTopicAssigned(declaration.getTopic(), assignedTopics) )
-                    continue;
-
                 Topic topic = declaration.getTopic();
                 if (topic == null)
                     continue;
 
-                if ( isSupervisedStudentsLimitReached(topic.getSupervisor(), assignedTopics) )
+                if ( alreadyAssigned || assignedTopics.contains(topic) || isSupervisedStudentsLimitReached(topic.getSupervisor(), assignedTopics) ) {
+                    topicsList.add(new DeclaredTopicDto(topic));
                     continue;
+                }
 
+                alreadyAssigned = true;
                 assignedTopics.add(topic);
-                topic.setStudent(avg.getStudent());
-                topicsRepository.save(topic);
+                topicsList.add(new DeclaredTopicDto(topic, true));
                 break;
             }
-        }
-    }
 
-    private boolean isTopicAssigned(Topic topic, List<Topic> assignedTopics) {
-        if (topic == null || assignedTopics == null)
-            return false;
-
-        for (Topic t : assignedTopics) {
-            if (t == null)
-                continue;
-
-            if (t.getId() == topic.getId())
-                return true;
+            assignmentsList.add(new AssignmentDto(avg, topicsList));
         }
 
-        return false;
+        return assignmentsList;
     }
 
     private boolean isSupervisedStudentsLimitReached(User supervisor, List<Topic> assignedTopics) {

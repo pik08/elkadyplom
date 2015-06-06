@@ -21,8 +21,6 @@ public class Declaration {
     @JoinColumn(name = "topic_id")
     private Topic topic;
 
-    private boolean assigned = false;
-
     public Declaration() {
         // enable default
     }
@@ -86,11 +84,4 @@ public class Declaration {
         return topic.getSupervisorName();
     }
 
-    public boolean isAssigned() {
-        return assigned;
-    }
-
-    public void setAssigned(boolean assigned) {
-        this.assigned = assigned;
-    }
 }
