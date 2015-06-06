@@ -309,7 +309,7 @@ function topicsController($scope, $http) {
 
         $scope.startDialogAjaxRequest();
 
-        var config = {headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}};
+        var config = {};
 
         $scope.addSearchParametersIfNeeded(config, false);
 

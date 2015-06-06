@@ -28,6 +28,7 @@ import elkadyplom.service.TopicService;
 
 import javax.annotation.processing.SupportedSourceVersion;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
@@ -105,22 +106,11 @@ public class TopicsController {
     }
 
     @RequestMapping(value="/declare", method = RequestMethod.POST, produces = "application/json")
-    public ResponseEntity<?> saveDeclarations(@RequestBody String declarationList,
+    public ResponseEntity<?> saveDeclarations(@RequestBody DeclarationDto[] declarations,
                                               @RequestParam(required = false) String searchFor,
                                               @RequestParam(required = false, defaultValue = DEFAULT_PAGE_DISPLAYED_TO_USER) int page,
                                               Locale locale) {
-
-        ObjectMapper mapper = new ObjectMapper();
-        List<DeclarationDto> myObjects = null;
-        try {
-            myObjects = mapper.readValue(declarationList, new TypeReference<List<DeclarationDto>>() {});
-            if  (myObjects != null) {
-                if (!declarationService.saveDeclarations(myObjects, getCurrentUserEmail())) {
-                    return getBadRequest();
-                }
-            }
-
-        }catch (Exception e){
+        if (!declarationService.saveDeclarations(Arrays.asList(declarations), getCurrentUserEmail())) {
             return getBadRequest();
         }
 
