@@ -32,6 +32,7 @@ public class Topic {
 
     private boolean confirmed = false;
 
+
     public Topic() {
         // enable default
     }
