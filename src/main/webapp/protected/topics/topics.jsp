@@ -66,6 +66,37 @@
             <p><spring:message code="topics.emptyData.text"/></p>
         </div>
 
+        <div>
+        <security:authorize  ifAnyGranted="ROLE_SUPERVISOR, ROLE_ADMIN">
+            <div ng-class="{'text-center': displayCreateTopicButton == true, 'none': displayCreateTopicButton == false}">
+                <br/>
+                <a href="#addTopicsModal"
+                   role="button"
+                   ng-click="resetTopic();"
+                   title="<spring:message code='create'/>&nbsp;<spring:message code='topic'/>"
+                   class="btn btn-inverse"
+                   data-toggle="modal">
+                    <i class="icon-plus"></i>
+                    &nbsp;&nbsp;<spring:message code="topic.create"/>
+                </a>
+            </div>
+        </security:authorize>
+        <security:authorize  ifAnyGranted="ROLE_STUDENT">
+            <div ng-class="{'text-center': displayCreateTopicButton == true, 'none': displayCreateTopicButton == false}">
+                <br/>
+                <a href="#declareTopicsModal"
+                   role="button"
+                   title="<spring:message code="declarations.header"/>"
+                   class="btn btn-inverse"
+                   data-toggle="modal">
+                    <i class="icon-plus"></i>
+                    &nbsp;&nbsp;<spring:message code="declarations.header"/>
+                </a>
+            </div>
+        </security:authorize>
+            <br/>
+        </div>
+
         <div id="gridContainer" ng-class="{'': state == 'list', 'none': state != 'list'}">
             <table class="table table-bordered table-striped">
                 <thead>
@@ -199,37 +230,15 @@
                 </button>
             </div>
         </div>
-        <security:authorize  ifAnyGranted="ROLE_SUPERVISOR, ROLE_ADMIN">
-            <div ng-class="{'text-center': displayCreateTopicButton == true, 'none': displayCreateTopicButton == false}">
-                <br/>
-                <a href="#addTopicsModal"
-                   role="button"
-                   ng-click="resetTopic();"
-                   title="<spring:message code='create'/>&nbsp;<spring:message code='topic'/>"
-                   class="btn btn-inverse"
-                   data-toggle="modal">
-                    <i class="icon-plus"></i>
-                    &nbsp;&nbsp;<spring:message code="topic.create"/>
-                </a>
-            </div>
-        </security:authorize>
-        <security:authorize  ifAnyGranted="ROLE_STUDENT">
-            <div ng-class="{'text-center': displayCreateTopicButton == true, 'none': displayCreateTopicButton == false}">
-                <br/>
-                <a href="#declareTopicsModal"
-                   role="button"
-                   title="<spring:message code="declarations.header"/>"
-                   class="btn btn-inverse"
-                   data-toggle="modal">
-                    <i class="icon-plus"></i>
-                    &nbsp;&nbsp;<spring:message code="declarations.header"/>
-                </a>
-            </div>
-        </security:authorize>
+
 
         <jsp:include page="dialogs/topicsDialogs.jsp"/>
 
     </div>
 </div>
+
+<br/>
+<br/>
+<br/>
 
 <script src="<c:url value="/resources/js/pages/topics.js" />"></script>

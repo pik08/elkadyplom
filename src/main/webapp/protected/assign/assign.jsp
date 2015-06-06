@@ -4,8 +4,38 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
 <div class="row-fluid" ng-controller="adminAssignTopicsController">
-    <button ng-click="doAssign()">Przydziel tematy</button>
-    <button ng-click="acceptAssignments()">Akceptacja</button>
+
+    <div>
+    <a href="#"
+       role="button"
+       ng-click="doAssign();"
+       title="<spring:message code="assign.doAssign"/>"
+       class="btn btn-inverse">
+        <spring:message code="assign.doAssign"/>
+    </a>
+
+    <a href="#"
+       role="button"
+       ng-click="acceptAssignments();"
+       title="<spring:message code="assign.accept"/>"
+       class="btn btn-inverse">
+        <spring:message code="assign.accept"/>
+    </a>
+    <br/><br/>
+    </div>
+
+    <div ng-class="{'alert alert-block alert-error': state == 'error', 'none': state != 'error'}">
+        <h4><i class="icon-info-sign"></i> <spring:message code="error.generic.header"/></h4><br/>
+
+        <p><spring:message code="error.generic.text"/></p>
+    </div>
+
+    <div ng-class="{'alert alert-info': state == 'ok', 'none': state != 'ok'}">
+        <h4><i class="icon-info-sign"></i> <spring:message code="assign.success"/></h4><br/>
+
+        <p><spring:message code="assign.success.text"/></p>
+    </div>
+
 
     <div id="gridContainer">
         <table class="table table-bordered table-striped">

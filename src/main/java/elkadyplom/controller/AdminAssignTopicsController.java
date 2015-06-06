@@ -7,10 +7,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
@@ -29,6 +31,7 @@ public class AdminAssignTopicsController {
 
     @RequestMapping(value = "/doAssign", method = RequestMethod.GET, produces = "application/json")
     public ResponseEntity<?> doAssignGet(Locale locale) {
+
         List<AssignmentDto> result = declarationService.assignTopics();
         if (result == null)
             return new ResponseEntity<String>("Error", HttpStatus.INTERNAL_SERVER_ERROR);
@@ -36,9 +39,12 @@ public class AdminAssignTopicsController {
         return new ResponseEntity<List<AssignmentDto>>(result, HttpStatus.OK);
     }
 
-//    @RequestMapping(value = "/doAssign", method = RequestMethod.POST, produces = "application/json")
-//    public ResponseEntity<?> doAssign(Locale locale) {
-//        declarationService.assignTopics();
-//        return new ResponseEntity<String>("OK", HttpStatus.OK);
-//    }
+    @RequestMapping(value = "/doAssign", method = RequestMethod.POST, produces = "application/json")
+    public ResponseEntity<?> doAssign(@RequestBody AssignmentDto[] assignments, Locale locale) {
+
+        if (!declarationService.saveAssignedTopics(Arrays.asList(assignments)))
+            return new ResponseEntity<String>("Error", HttpStatus.INTERNAL_SERVER_ERROR);
+
+        return new ResponseEntity<String>("OK", HttpStatus.OK);
+    }
 }

@@ -31,6 +31,13 @@
                         </a>
                     </li>
                     </security:authorize>
+                    <security:authorize  ifAnyGranted="ROLE_ADMIN">
+                        <li ng-class="{'active': activeURL == 'assign', '': activeURL != 'assign'}">
+                            <a title='<spring:message code="assign.title"/>' href="<c:url value='/protected/assign/'/>">
+                                <p><spring:message code="assign.title"/></p>
+                            </a>
+                        </li>
+                    </security:authorize>
                 </ul>
                 <ul class="nav pull-right">
                     <li>
