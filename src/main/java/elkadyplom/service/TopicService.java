@@ -77,6 +77,16 @@ public class TopicService {
         return buildResult(result);
     }
 
+    public TopicListDto findForStudents(int page, int maxResults) {
+        Page<Topic> result = executeQueryFindForStudents(page, maxResults);
+
+        if(shouldExecuteSameQueryInLastPage(page, result)){
+            int lastPage = result.getTotalPages() - 1;
+            result = executeQueryFindForStudents(lastPage, maxResults);
+        }
+
+        return buildResult(result);
+    }
 
     public void save(Topic topic) {
         topicsRepository.save(topic);
@@ -115,6 +125,17 @@ public class TopicService {
         return buildResult(result);
     }
 
+    public TopicListDto findByKeywordForStudents(int page, int maxResults, String keyword) {
+        Page<Topic> result = executeQueryFindByKeywordForStudents(page, maxResults, keyword);
+
+        if(shouldExecuteSameQueryInLastPage(page, result)){
+            int lastPage = result.getTotalPages() - 1;
+            result = executeQueryFindByKeywordForStudents(lastPage, maxResults, keyword);
+        }
+
+        return buildResult(result);
+    }
+
     private boolean shouldExecuteSameQueryInLastPage(int page, Page<Topic> result) {
         return isUserAfterOrOnLastPage(page, result) && hasDataInDataBase(result);
     }
@@ -137,6 +158,11 @@ public class TopicService {
         return topicsRepository.findByStudent(pageRequest, student);
     }
 
+    private Page<Topic> executeQueryFindForStudents(int page, int maxResults) {
+        final PageRequest pageRequest = new PageRequest(page, maxResults, sortByNameASC());
+
+        return topicsRepository.findAllConfirmedNotAssigned(pageRequest);
+    }
 
     private Sort sortByNameASC() {
         return new Sort(Sort.Direction.ASC, "title");
@@ -157,6 +183,12 @@ public class TopicService {
         final PageRequest pageRequest = new PageRequest(page, maxResults, sortByNameASC());
 
         return topicsRepository.findByTitleAndSupervisor("%" + name + "%", supervisor, pageRequest);
+    }
+
+    private Page<Topic> executeQueryFindByKeywordForStudents(int page, int maxResults, String name) {
+        final PageRequest pageRequest = new PageRequest(page, maxResults, sortByNameASC());
+
+        return topicsRepository.findConfirmedNotAssignedByTitleLike("%" + name + "%", pageRequest);
     }
 
     private boolean isUserAfterOrOnLastPage(int page, Page<Topic> result) {
@@ -271,6 +303,7 @@ public class TopicService {
         topicsRepository.delete(topicId);
         return true;
     }
+
 
 
 }

@@ -4,6 +4,7 @@ import elkadyplom.dto.BasicUserDto;
 import elkadyplom.model.Topic;
 import elkadyplom.model.User;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
@@ -19,6 +20,12 @@ public interface TopicsRepository extends PagingAndSortingRepository<Topic, Inte
     public final static String FIND_ASSIGNED_CONFIRMED_TOPICS =
             "select t from Topic t where t.student is not null and t.confirmed = true";
 
+    public final static String FIND_NOT_ASSIGNED_CONFIRMED =
+            "select t from Topic t where t.student is null and t.confirmed = true";
+
+    public final static String FIND_NOT_ASSIGNED_CONFIRMED_LIKE =
+            "select t from Topic t where t.student is null and t.confirmed = true and t.title like :keyword";
+
     @Query(FIND_BY_KEYWORD_SUPERVISOR_QUERY)
     public Page<Topic> findByTitleAndSupervisor(@Param("keyword") String keyword, @Param("supervisor") User supervisor, Pageable pageable );
 
@@ -30,4 +37,10 @@ public interface TopicsRepository extends PagingAndSortingRepository<Topic, Inte
 
     @Query(FIND_ASSIGNED_CONFIRMED_TOPICS)
     List<Topic> findAssignedConfirmedTopics();
+
+    @Query(FIND_NOT_ASSIGNED_CONFIRMED_LIKE)
+    Page<Topic> findConfirmedNotAssignedByTitleLike(@Param("keyword") String keyword, Pageable pageable);
+
+    @Query(FIND_NOT_ASSIGNED_CONFIRMED)
+    Page<Topic> findAllConfirmedNotAssigned(Pageable pageable);
 }

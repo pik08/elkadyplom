@@ -60,12 +60,7 @@ public class TopicsController {
 
     @RequestMapping(method = RequestMethod.GET, produces = "application/json")
     public ResponseEntity<?> listAll(@RequestParam int page, Locale locale) {
-        if (isAdmin())
-            return createListResponse(page, locale, true);          // wszystkie tematy
-        else if (isSupervisor())
-            return createListResponse(page, locale, false);        // tylko tematy do niego przypisane
-        else
-            return createListResponse(page, locale, true);          // wszystkie tematy FIXME
+            return createListResponse(page, locale);
     }
 
     @RequestMapping(method = RequestMethod.POST, produces = "application/json")
@@ -73,13 +68,11 @@ public class TopicsController {
                                     @RequestParam(required = false) String searchFor,
                                     @RequestParam(required = false, defaultValue = DEFAULT_PAGE_DISPLAYED_TO_USER) int page,
                                     Locale locale) {
-        boolean all = true;
         if (isAdmin()) {
             if (!topicService.save(topicDto)) {
                 return getBadRequest();
             }
         } else if (isSupervisor()) {
-            all = false;
             if (!topicService.saveAsSupervisor(topicDto, getCurrentUserEmail())) {
                 return getBadRequest();
             }
@@ -91,20 +84,19 @@ public class TopicsController {
             return search(searchFor, page, locale, "message.create.success");
         }
 
-        return createListResponse(page, locale, "message.create.success", all);
+        return createListResponse(page, locale, "message.create.success");
     }
 
+    @Secured("ROLE_STUDENT")
     @RequestMapping(value="/declare", method = RequestMethod.GET, produces = "application/json")
     public ResponseEntity<?> getDeclarations(Locale locale) {
-        if (isAdmin() || isSupervisor())
-            return getBadRequest();
-
         List<DeclarationDto> declarationDtos = declarationService.getDeclarationDtos(getCurrentUserEmail());
         if (declarationDtos == null)
             declarationDtos = new ArrayList<DeclarationDto>();
         return new ResponseEntity<List<DeclarationDto>>(declarationDtos, HttpStatus.OK);
     }
 
+    @Secured("ROLE_STUDENT")
     @RequestMapping(value="/declare", method = RequestMethod.POST, produces = "application/json")
     public ResponseEntity<?> saveDeclarations(@RequestBody DeclarationDto[] declarations,
                                               @RequestParam(required = false) String searchFor,
@@ -118,7 +110,7 @@ public class TopicsController {
             return search(searchFor, page, locale, "message.create.success");
         }
 
-        return createListResponse(page, locale, "message.create.success", true); // FIXME
+        return createListResponse(page, locale, "message.create.success");
     }
 
 
@@ -128,13 +120,11 @@ public class TopicsController {
                                     @RequestParam(required = false) String searchFor,
                                     @RequestParam(required = false, defaultValue = DEFAULT_PAGE_DISPLAYED_TO_USER) int page,
                                     Locale locale) {
-        boolean all = true;
         if (isAdmin()) {
             if (!topicService.update(topicDto)) {
                 return getBadRequest();
             }
         } else if (isSupervisor()) {
-            all = false;
             if (!topicService.updateBySupervisor(topicDto, getCurrentUserEmail())) {
                 return getBadRequest();
             }
@@ -146,7 +136,7 @@ public class TopicsController {
             return search(searchFor, page, locale, "message.update.success");
         }
 
-        return createListResponse(page, locale, "message.update.success", all);
+        return createListResponse(page, locale, "message.update.success");
     }
 
     @RequestMapping(value = "/{topicId}", method = RequestMethod.DELETE, produces = "application/json")
@@ -154,7 +144,6 @@ public class TopicsController {
                                     @RequestParam(required = false) String searchFor,
                                     @RequestParam(required = false, defaultValue = DEFAULT_PAGE_DISPLAYED_TO_USER) int page,
                                     Locale locale) {
-        boolean all = true;
         if (isAdmin()) {
             try {
                 topicService.delete(topicId);
@@ -162,7 +151,6 @@ public class TopicsController {
                 return new ResponseEntity<Object>(HttpStatus.FORBIDDEN);
             }
         } else if (isSupervisor()) {
-            all = false;
             if (!topicService.deleteBySupervisor(topicId, getCurrentUserEmail()))
                 return new ResponseEntity<Object>(HttpStatus.FORBIDDEN);
         } else {
@@ -173,7 +161,7 @@ public class TopicsController {
             return search(searchFor, page, locale, "message.delete.success");
         }
 
-        return createListResponse(page, locale, "message.delete.success", all);
+        return createListResponse(page, locale, "message.delete.success");
     }
 
     @RequestMapping(value = "/{keyword}", method = RequestMethod.GET, produces = "application/json")
@@ -191,7 +179,7 @@ public class TopicsController {
         else if (isSupervisor())
             topicListDto = topicService.findByKeywordForSupervisor(page, maxResults, keyword, getCurrentUserEmail());
         else
-            return getBadRequest();
+            topicListDto = topicService.findByKeywordForStudents(page, maxResults, keyword);
 
         if (!StringUtils.isEmpty(actionMessageKey)) {
             addActionMessageToDto(topicListDto, locale, actionMessageKey, null);
@@ -215,26 +203,31 @@ public class TopicsController {
     }
 
     private TopicListDto listForSupervisor(int page) {
-        String supervisorEmail = getCurrentUserEmail();
-        TopicListDto dto = topicService.findBySupervisor(page, maxResults, supervisorEmail);
+        TopicListDto dto = topicService.findBySupervisor(page, maxResults, getCurrentUserEmail());
         dto.setStudents(userService.getStudentList());
         return dto;
+    }
+
+    private TopicListDto listForStudent(int page) {
+        return topicService.findForStudents(page, maxResults);
     }
 
     private ResponseEntity<TopicListDto> returnListToUser(TopicListDto topicList) {
         return new ResponseEntity<TopicListDto>(topicList, HttpStatus.OK);
     }
 
-    private ResponseEntity<?> createListResponse(int page, Locale locale, boolean all) {
-        return createListResponse(page, locale, null, all);
+    private ResponseEntity<?> createListResponse(int page, Locale locale) {
+        return createListResponse(page, locale, null);
     }
 
-    private ResponseEntity<?> createListResponse(int page, Locale locale, String messageKey, boolean all) {
+    private ResponseEntity<?> createListResponse(int page, Locale locale, String messageKey) {
         TopicListDto topicListDto;
-        if (all)
+        if (isAdmin())
             topicListDto  = listAll(page);
-        else
+        else if (isSupervisor())
             topicListDto = listForSupervisor(page);
+        else
+            topicListDto = listForStudent(page);
 
         addActionMessageToDto(topicListDto, locale, messageKey, null);
 
