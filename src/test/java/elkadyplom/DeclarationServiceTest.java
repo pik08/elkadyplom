@@ -20,7 +20,7 @@ import static org.junit.Assert.*;
 public class DeclarationServiceTest extends AbstractTestBase {
 
     @Test
-    public void assignTopicTest() throws Exception {
+    public void assignTopicAndSaveAssignmentsTest() throws Exception {
         // stwórz promotorów
         User sup1 = getSupervisor("sup1");
         User sup2 = getSupervisor("sup2");
@@ -117,6 +117,21 @@ public class DeclarationServiceTest extends AbstractTestBase {
         assertDeclaredTopicDto(dto.getTopics().get(2), sup1Topic1, false);
         assertDeclaredTopicDto(dto.getTopics().get(3), sup2Topic3, true);
 
+        boolean success = declarationService.saveAssignedTopics(result);
+        assertTrue(success);
+
+        assertTopicHasStudentAssigned(sup1Topic2, stud1);
+        assertTopicHasStudentAssigned(sup2Topic3, stud2);
+        assertTopicHasStudentAssigned(sup3Topic1, stud3);
+        assertTopicHasStudentAssigned(sup1Topic1, stud4);
+    }
+
+    private void assertTopicHasStudentAssigned(Topic topic, User student) {
+        assertNotNull(topic);
+        assertNotNull(student);
+        Topic t = topicsRepository.findOne(topic.getId());
+        assertNotNull(t);
+        assertEquals(student.getId(), t.getStudent().getId());
     }
 
     private void assertAssignmentDto(AssignmentDto dto, User stud, double average, int topicsNumber) {

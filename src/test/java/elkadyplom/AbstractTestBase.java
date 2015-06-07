@@ -43,17 +43,29 @@ abstract public class AbstractTestBase {
     }
 
     protected Topic getTopic(User supervisor) {
-        return getTopic(supervisor, null);
+        return getTopic(supervisor, null, null, true);
     }
 
     protected Topic getTopic(User supervisor, User student) {
+        return getTopic(supervisor, student, "test title", true);
+    }
+
+    protected Topic getTopic(User supervisor, String title) {
+        return getTopic(supervisor, null, title, true);
+    }
+
+    protected Topic getTopic(User supervisor, User student, boolean confirmed) {
+        return getTopic(supervisor, student, null, confirmed);
+    }
+
+    protected Topic getTopic(User supervisor, User student, String title, boolean confirmed) {
         Topic topic = new Topic();
-        topic.setTitle("test title");
+        topic.setTitle( (title == null ? "test title" : title ) );
         if (student != null) {
             topic.setStudent(student);
         }
         topic.setSupervisor(supervisor);
-        topic.setConfirmed(true);
+        topic.setConfirmed(confirmed);
         topic = topicsRepository.save(topic);
         assertNotEquals(topic.getId(), 0);
         return topic;
