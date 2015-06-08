@@ -2,17 +2,10 @@ package elkadyplom;
 
 import elkadyplom.dto.TopicDto;
 import elkadyplom.dto.TopicListDto;
-import elkadyplom.model.Role;
 import elkadyplom.model.Topic;
 import elkadyplom.model.User;
-import elkadyplom.repository.TopicsRepository;
-import elkadyplom.repository.UserRepository;
-import elkadyplom.service.TopicService;
-import elkadyplom.service.UserService;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -24,8 +17,6 @@ import static org.junit.Assert.*;
 @ContextConfiguration("classpath:spring-test.xml")
 public class TopicServiceTest extends AbstractTestBase {
 
-
-
     @Test
     public void saveAndFindAllTopicTest() throws Exception {
         User supervisor = getSupervisor("sup");
@@ -33,7 +24,7 @@ public class TopicServiceTest extends AbstractTestBase {
 
         List<TopicDto> topics = topicService.findAll(0, 2).getTopics();
         assertEquals(1, topics.size());
-        assertTopicDtoEqualsTopic(topics.get(0), topic);
+        assertTopicDtoEqualsTopic(topic, topics.get(0));
     }
 
     @Test
@@ -43,7 +34,7 @@ public class TopicServiceTest extends AbstractTestBase {
 
         List<TopicDto> topics = topicService.findBySupervisor(0, 2, supervisor.getEmail()).getTopics();
         assertEquals(1, topics.size());
-        assertTopicDtoEqualsTopic(topics.get(0), topic);
+        assertTopicDtoEqualsTopic(topic, topics.get(0));
     }
 
     @Test
@@ -54,7 +45,7 @@ public class TopicServiceTest extends AbstractTestBase {
 
         List<TopicDto> topics = topicService.findByAssignedStudent(0, 2, student.getEmail()).getTopics();
         assertEquals("topics size has to be equal 1", 1, topics.size());
-        assertTopicDtoEqualsTopic(topics.get(0), topic);
+        assertTopicDtoEqualsTopic(topic, topics.get(0));
     }
 
     @Test
@@ -73,9 +64,9 @@ public class TopicServiceTest extends AbstractTestBase {
         TopicListDto dto = topicService.findForStudents(0, 5);
         assertNotNull(dto.getTopics());
         assertEquals(3, dto.getTopics().size());
-        assertTopicDtoEqualsTopic(dto.getTopics().get(0), t1);
-        assertTopicDtoEqualsTopic(dto.getTopics().get(1), t5);
-        assertTopicDtoEqualsTopic(dto.getTopics().get(2), t7);
+        assertTopicDtoEqualsTopic(t1, dto.getTopics().get(0));
+        assertTopicDtoEqualsTopic(t5, dto.getTopics().get(1));
+        assertTopicDtoEqualsTopic(t7, dto.getTopics().get(2));
     }
 
     @Test
@@ -89,15 +80,15 @@ public class TopicServiceTest extends AbstractTestBase {
         TopicListDto dto = topicService.findByKeyword(0, 5, "abc");
         assertNotNull(dto.getTopics());
         assertEquals(2, dto.getTopics().size());
-        assertTopicDtoEqualsTopic(dto.getTopics().get(0), t1);
-        assertTopicDtoEqualsTopic(dto.getTopics().get(1), t4);
+        assertTopicDtoEqualsTopic(t1, dto.getTopics().get(0));
+        assertTopicDtoEqualsTopic(t4, dto.getTopics().get(1));
 
         dto = topicService.findByKeyword(0, 5, "ab");
         assertNotNull(dto.getTopics());
         assertEquals(3, dto.getTopics().size());
-        assertTopicDtoEqualsTopic(dto.getTopics().get(0), t1);
-        assertTopicDtoEqualsTopic(dto.getTopics().get(1), t4);
-        assertTopicDtoEqualsTopic(dto.getTopics().get(2), t3);
+        assertTopicDtoEqualsTopic(t1, dto.getTopics().get(0));
+        assertTopicDtoEqualsTopic(t4, dto.getTopics().get(1));
+        assertTopicDtoEqualsTopic(t3, dto.getTopics().get(2));
     }
 
     @Test
@@ -115,8 +106,8 @@ public class TopicServiceTest extends AbstractTestBase {
         TopicListDto dto = topicService.findByKeywordForSupervisor(0, 5, "wer", "sup1");
         assertNotNull(dto.getTopics());
         assertEquals(2, dto.getTopics().size());
-        assertTopicDtoEqualsTopic(dto.getTopics().get(0), t1);
-        assertTopicDtoEqualsTopic(dto.getTopics().get(1), t4);
+        assertTopicDtoEqualsTopic(t1, dto.getTopics().get(0));
+        assertTopicDtoEqualsTopic(t4, dto.getTopics().get(1));
     }
 
     @Test
@@ -135,8 +126,8 @@ public class TopicServiceTest extends AbstractTestBase {
         TopicListDto dto = topicService.findByKeywordForStudents(0, 5, "abc");
         assertNotNull(dto.getTopics());
         assertEquals(2, dto.getTopics().size());
-        assertTopicDtoEqualsTopic(dto.getTopics().get(0), t7);
-        assertTopicDtoEqualsTopic(dto.getTopics().get(1), t2);
+        assertTopicDtoEqualsTopic(t7, dto.getTopics().get(0));
+        assertTopicDtoEqualsTopic(t2, dto.getTopics().get(1));
     }
 
     @Test
@@ -219,16 +210,4 @@ public class TopicServiceTest extends AbstractTestBase {
         assertFalse(topicService.deleteBySupervisor(t3.getId(), "sup"));
         assertNotNull(topicsRepository.findOne(t3.getId()));
     }
-
-    private void assertTopicDtoEqualsTopic(TopicDto topic, Topic topic2) {
-        assertEquals(topic.getTitle(), topic2.getTitle());
-        assertEquals(topic.getThesisType(), topic2.getThesisType());
-        assertEquals(topic.getSupervisorName(), topic2.getSupervisorName());
-        assertEquals(topic.getSupervisorId(), topic2.getSupervisorId());
-        assertEquals(topic.getStudentId(), topic2.getStudentId());
-        assertEquals(topic.getStudentName(), topic2.getStudentName());
-        assertEquals(topic.getDescription(), topic2.getDescription());
-    }
-
-
 }

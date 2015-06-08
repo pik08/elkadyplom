@@ -1,6 +1,7 @@
 package elkadyplom;
 
 import elkadyplom.dto.AssignmentDto;
+import elkadyplom.dto.TopicDto;
 import elkadyplom.model.Role;
 import elkadyplom.model.Topic;
 import elkadyplom.model.User;
@@ -93,5 +94,15 @@ abstract public class AbstractTestBase {
         supervisor = userRepository.save(supervisor);
         assertNotEquals(supervisor.getId(), 0);
         return supervisor;
+    }
+
+    protected void assertTopicDtoEqualsTopic(Topic expectedTopic, TopicDto actualTopic) {
+        assertEquals(expectedTopic.getTitle(), actualTopic.getTitle());
+        assertEquals(expectedTopic.getThesisType(), actualTopic.getThesisType());
+        assertEquals(expectedTopic.getSupervisorName(), actualTopic.getSupervisorName());
+        assertEquals(expectedTopic.getSupervisorId(), actualTopic.getSupervisorId());
+        assertEquals(expectedTopic.getStudentId(), actualTopic.getStudentId());
+        assertEquals(expectedTopic.getStudentName(), actualTopic.getStudentName());
+        assertEquals(expectedTopic.getDescription(), actualTopic.getDescription());
     }
 }

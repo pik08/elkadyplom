@@ -3,5 +3,5 @@ target/*
 *~
 src/.idea/*
 *.iml
-*.log
+*.log.*
 data/*
